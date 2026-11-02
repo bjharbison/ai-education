@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Systems — Understanding AI: History, Hardware & Future</title>
+<style>
+@page { size: 8.5in 11in; margin-top:0.75in; margin-bottom:0.85in; margin-left:1.0in; margin-right:0.625in; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,'Times New Roman',serif;font-size:11pt;line-height:1.65;color:#111;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@media screen{body{background:#d8d4cc;padding:2rem 1rem}.page-wrap{max-width:8.5in;margin:0 auto;background:#fff;box-shadow:0 4px 40px rgba(0,0,0,.3);padding:0.75in 0.625in 0.85in 1.0in}}
+@media print{.page-wrap{padding:0;margin:0}}
+h1{font-family:Georgia,serif;font-size:26pt;font-weight:bold;color:#0f1e35;line-height:1.1;margin-bottom:.5rem;page-break-after:avoid}
+h2{font-family:Georgia,serif;font-size:15pt;font-weight:bold;color:#0f1e35;margin:1.7rem 0 .55rem;line-height:1.2;page-break-after:avoid}
+h3{font-family:Georgia,serif;font-size:12pt;font-weight:bold;font-style:italic;color:#1a2e4a;margin:1.35rem 0 .4rem;page-break-after:avoid}
+h4{font-size:10pt;font-weight:bold;color:#333;margin:1.1rem 0 .3rem;text-transform:uppercase;letter-spacing:.06em;page-break-after:avoid}
+p{margin-bottom:.75rem;text-align:justify;hyphens:auto;orphans:3;widows:3}
+p:last-child{margin-bottom:0}
+strong{font-weight:bold}em{font-style:italic}
+ul,ol{padding-left:1.35rem;margin-bottom:.75rem}li{margin-bottom:.3rem}
+a{color:#1a2e4a;text-decoration:none}
+code{font-family:'Courier New',monospace;font-size:9pt;background:#f2f2ef;padding:0 3px;border-radius:2px}
+.code-block,pre{font-family:'Courier New',monospace;font-size:8pt;line-height:1.5;background:#f2f2ef;border:.5pt solid #ccc;border-left:3pt solid #1a5fa8;padding:.6rem .8rem;margin:.9rem 0;white-space:pre-wrap;word-break:break-all;page-break-inside:avoid}
+.code-block pre{background:none;border:none;padding:0;margin:0}
+.code-header{font-family:'Courier New',monospace;font-size:7.5pt;color:#555;background:#e6e6e2;padding:3px 9px;margin:-.6rem -.8rem .5rem;border-bottom:.5pt solid #ccc}
+.code-lang{font-weight:bold;color:#1a5fa8}.code-fname{color:#777;margin-left:.5rem}
+.kw{color:#8b0000}.fn{color:#00008b}.cm{color:#777;font-style:italic}.st{color:#2e4a1a}.nm{color:#00008b}.cls{color:#5b21b6}
+.formula,.formula-box,.diagram{font-family:'Courier New',monospace;font-size:8pt;line-height:1.55;background:#f8f7f2;border:.5pt solid #ccc;border-left:3pt solid #b45309;padding:.6rem .8rem;margin:.9rem 0;white-space:pre-wrap;page-break-inside:avoid}
+table{width:100%;border-collapse:collapse;margin:.9rem 0;font-size:9pt;page-break-inside:avoid}
+th{background:#0f1e35;color:#fff;padding:6px 9px;text-align:left;font-size:8.5pt}
+td{padding:6px 9px;border-bottom:.5pt solid #ccc;vertical-align:top}
+tr:nth-child(even) td{background:#f8f8f6}
+.info-box{background:#f0f6ff;border-left:3pt solid #1a5fa8;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.warn-box{background:#fffaf0;border-left:3pt solid #b45309;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.case-box{background:#f5f0ff;border-left:3pt solid #5b21b6;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.focus-box,.future,.future-box{background:#fffaf0;border-left:3pt solid #b45309;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.green-box{background:#f0fff4;border-left:3pt solid #1a7a3a;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.box-label{font-size:7.5pt;letter-spacing:.14em;text-transform:uppercase;font-weight:bold;margin-bottom:.4rem}
+.info-box .box-label{color:#1a5fa8}.warn-box .box-label{color:#b45309}.case-box .box-label{color:#5b21b6}
+.focus-box .box-label,.future h4,.future-box h4{color:#b45309;font-family:Georgia;font-style:italic;font-size:10.5pt;font-weight:bold;text-transform:none;letter-spacing:0;margin-bottom:.4rem;display:block}
+.pq,.pull-quote{border-left:3pt solid #0f1e35;padding:.65rem 1rem;margin:1.1rem 0;background:#f8f7f4;page-break-inside:avoid}
+.pq p,.pull-quote p{font-style:italic;font-size:11pt;color:#1a2e4a;text-align:left;margin:0}
+.pq cite,.pull-quote cite{display:block;font-size:8.5pt;color:#888;margin-top:.35rem;font-style:normal}
+.phase-intro{font-style:italic;color:#333;padding:.65rem .85rem;background:#f8f8f4;border-left:2pt solid #0f1e35;margin-bottom:1rem}
+.part-header{padding:1in 0 .5in .3in;border-left:6pt solid #0f1e35;margin-bottom:1.5rem}
+.part-num{font-size:8.5pt;letter-spacing:.2em;text-transform:uppercase;color:#888;margin-bottom:.6rem}
+.part-header h2{font-size:24pt;color:#0f1e35;margin:0 0 .8rem;border:none;padding:0}
+.part-desc{font-size:11pt;font-style:italic;color:#555;line-height:1.6;max-width:5in}
+.part-stats{margin-top:1.2rem;font-size:9pt;color:#888}
+.chapter{page-break-before:always}
+.lab-section{page-break-before:always}
+.lesson-header{margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:.5pt solid #ccc;page-break-after:avoid}
+.lesson-header .lesson-title{font-family:Georgia,serif;font-size:13pt;font-weight:bold;color:#0f1e35}
+.lesson-header .lesson-duration{font-size:9pt;color:#888}
+.lab-header{margin-bottom:1.2rem;padding-bottom:.65rem;border-bottom:2pt solid #0f1e35;page-break-after:avoid}
+.lab-title{font-family:Georgia,serif;font-size:15pt;font-weight:bold;color:#0f1e35}
+.lab-number{font-size:7.5pt;letter-spacing:.15em;text-transform:uppercase;color:#888;margin-bottom:.25rem}
+.lab-meta{font-size:9pt;color:#666;margin-top:.3rem}
+.module-refs{font-size:9pt;color:#555;margin-bottom:.9rem;padding:.4rem .7rem;background:#f2f2ef;border-left:2pt solid #1a5fa8}
+.module-pill{color:#1a5fa8;margin-right:.5rem;font-size:9pt}
+.refs-label{font-weight:bold;color:#555;margin-right:.3rem}
+ol.lab-steps{padding-left:1.2rem}
+li.lab-step{margin-bottom:.7rem;page-break-inside:avoid}
+li.lab-step h4{font-style:normal;margin-bottom:.15rem}
+.timeline{margin:.9rem 0}
+.tl-item{display:flex;gap:.65rem;padding:.4rem 0;border-bottom:.5pt dotted #ddd;page-break-inside:avoid}
+.tl-year{font-weight:bold;color:#0f1e35;font-size:9pt;min-width:40pt;flex-shrink:0}
+.tl-title{font-weight:bold;font-size:10pt;margin-bottom:2px}
+.tl-desc{font-size:9.5pt;color:#444;line-height:1.5}
+.tl-item.major .tl-year{color:#b45309}
+.tl-content{flex:1}
+.stack{margin:.9rem 0}
+.stack-layer{padding:6px 9px;margin-bottom:3px;background:#f2f2ef;border:.5pt solid #ccc;display:flex;justify-content:space-between;page-break-inside:avoid}
+.stack-name{font-weight:bold;font-size:9pt}.stack-desc{font-size:8.5pt;color:#555}
+.pathway{margin:.9rem 0}
+.pathway-step{display:flex;gap:.65rem;padding:.4rem 0;border-bottom:.5pt dotted #ddd;page-break-inside:avoid}
+.pathway-icon{font-weight:bold;color:#0f1e35;min-width:22pt;flex-shrink:0;font-size:9.5pt}
+.pathway-title{font-weight:bold;font-size:10pt;margin-bottom:2px}
+.pathway-desc{font-size:9.5pt;color:#444;line-height:1.5}
+.pathway-content{flex:1}
+.glossary-section{page-break-before:always}
+.glossary-section h2{font-size:17pt;margin-bottom:1.3rem;padding-bottom:.4rem;border-bottom:1pt solid #ccc}
+dl.glossary-list{column-count:2;column-gap:.3in}
+dl.glossary-list dt{font-weight:bold;font-size:9.5pt;color:#0f1e35;margin-top:.8rem;break-after:avoid}
+dl.glossary-list dd{font-size:9pt;color:#333;margin-left:0;line-height:1.55;margin-bottom:.2rem}
+nav,.sidebar,[id*="sidebar"],.hero,.labs-hero,.chapter-nav,.ch-nav,.progress-bar-wrap,
+.phase-header,.phase-badge,.phase-number,.ch-num,.ch-label,.hero-eyebrow,.hero-stats,
+.hero-meta,.hero-tag,.labs-overview,.labs-grid,.lab-card,.lab-filters,.filter-btn,
+.ch-pill,.lab-badge,.lab-header-badge,.gloss-search-wrap,#gs,#glossary-search,
+.term-tooltip,.term-tip,.nav-phase,.nav-lesson,.nav-phase-header,
+.phase-toggle,.nav-chevron,.labs-overview-title{display:none!important}
+.phase-section,.phase-content{background:none!important;border:none!important}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+<div class="part-header">
+  <div class="part-num">Part1</div>
+  <h2>Understanding AI: History, Hardware & Future</h2>
+  <p class="part-desc">History from McCulloch-Pitts to transformers, CUDA, PyTorch, architectures, inference, and geopolitics.</p>
+  <p class="part-stats">10 chapters · ~13,000 words</p>
+</div>
+<div class="container">
+<section class="chapter" id="ch1">
+
+
+<h2>A Short History of AI</h2>
+<p>Artificial intelligence has been invented, abandoned, and reinvented at least four times. The current era — which began in earnest on September 30, 2012, when a neural network demolished a computer vision benchmark in a way no one anticipated — is distinguished from all previous eras by one thing: it has not ended. Understanding why this era is different requires understanding why all the previous ones failed.</p>
+<h3>The First Neurons — 1943–1969</h3>
+<p>The field began with an elegant theoretical claim. In 1943, Warren McCulloch and Walter Pitts published "A Logical Calculus of the Ideas Immanent in Nervous Activity," proposing that neurons could be modelled as simple logic gates — binary threshold units that fire when their weighted inputs exceed a threshold. This was not neuroscience; it was a mathematical abstraction. But it planted the idea that the brain's computations could be replicated in silicon.</p>
+<p>Frank Rosenblatt's Perceptron (1958) went further: a single-layer network of McCulloch-Pitts units that could learn. The learning rule — adjust weights in the direction that reduces error — was simple but genuine. The Perceptron could correctly classify linearly separable patterns. IBM funded a hardware implementation. The Navy funded another. The New York Times reported that the Navy had built a machine "capable of walking, talking, seeing, writing, reproducing itself and being conscious of its existence."</p>
+<p>Marvin Minsky and Seymour Papert ended the party in 1969 with <em>Perceptrons</em>, a book proving mathematically that a single-layer perceptron could not learn the XOR function — a trivially simple logical operation. The implication was devastating: if perceptrons couldn't learn XOR, they couldn't learn much. Funding evaporated. The first AI winter had begun.</p>
+<div class="timeline">
+<div class="tl-item major">
+<div class="tl-year">1943</div>
+<div class="tl-content"><div class="tl-title">McCulloch-Pitts neuron</div><div class="tl-desc">First mathematical model of a neuron as a logical threshold unit. The founding paper of computational neuroscience and neural network theory.</div></div>
+</div>
+<div class="tl-item">
+<div class="tl-year">1958</div>
+<div class="tl-content"><div class="tl-title">Perceptron (Rosenblatt)</div><div class="tl-desc">First learning algorithm for neural networks. Could classify linearly separable patterns. Navy funded hardware implementation.</div></div>
+</div>
+<div class="tl-item">
+<div class="tl-year">1969</div>
+<div class="tl-content"><div class="tl-title">First AI Winter</div><div class="tl-desc">Minsky &amp; Papert prove perceptrons can't learn XOR. Federal funding collapses. The field goes quiet for a decade.</div></div>
+</div>
+<div class="tl-item major">
+<div class="tl-year">1986</div>
+<div class="tl-content"><div class="tl-title">Backpropagation (Rumelhart, Hinton, Williams)</div><div class="tl-desc">Efficient algorithm for computing gradients through multi-layer networks. Solved the XOR problem. Enabled deep learning — in theory. Hardware too slow to prove it in practice yet.</div></div>
+</div>
+<div class="tl-item">
+<div class="tl-year">1995</div>
+<div class="tl-content"><div class="tl-title">Support Vector Machines dominate</div><div class="tl-desc">SVMs offer better theoretical guarantees and more reliable training than neural nets. For a decade, the best practitioners use SVMs for classification, not neural networks.</div></div>
+</div>
+<div class="tl-item">
+<div class="tl-year">2006</div>
+<div class="tl-content"><div class="tl-title">Deep Belief Networks (Hinton)</div><div class="tl-desc">Hinton et al. show deep networks can be trained layer-by-layer as autoencoders, then fine-tuned. The "deep learning" rebranding begins. Still not competitive on benchmarks.</div></div>
+</div>
+<div class="tl-item major">
+<div class="tl-year">2012</div>
+<div class="tl-content"><div class="tl-title">AlexNet — the inflection point</div><div class="tl-desc">Krizhevsky, Sutskever &amp; Hinton win ImageNet by a 10.8-percentage-point margin using a deep CNN trained on two GTX 580 GPUs. The GPU era of AI begins.</div></div>
+</div>
+<div class="tl-item">
+<div class="tl-year">2014</div>
+<div class="tl-content"><div class="tl-title">GANs (Goodfellow)</div><div class="tl-desc">Generative Adversarial Networks: a generator and discriminator trained adversarially. First practical generative model. Leads to photorealistic image synthesis.</div></div>
+</div>
+<div class="tl-item major">
+<div class="tl-year">2017</div>
+<div class="tl-content"><div class="tl-title">"Attention Is All You Need" (Vaswani et al.)</div><div class="tl-desc">The Transformer architecture. Replaces RNNs with self-attention. Scales with compute. Becomes the foundation of GPT, BERT, T5, and every major language model.</div></div>
+</div>
+<div class="tl-item">
+<div class="tl-year">2018</div>
+<div class="tl-content"><div class="tl-title">BERT &amp; GPT-1</div><div class="tl-desc">OpenAI's GPT-1 demonstrates language model pre-training. Google's BERT demonstrates bidirectional pre-training. The "pre-train then fine-tune" paradigm is established.</div></div>
+</div>
+<div class="tl-item major">
+<div class="tl-year">2020</div>
+<div class="tl-content"><div class="tl-title">GPT-3 &amp; the scaling hypothesis</div><div class="tl-desc">175B parameters trained on 300B tokens. In-context learning emerges as an unexpected capability. Kaplan et al.'s scaling laws suggest performance improves predictably with compute.</div></div>
+</div>
+<div class="tl-item">
+<div class="tl-year">2021</div>
+<div class="tl-content"><div class="tl-title">CLIP, DALL-E, Codex</div><div class="tl-desc">Multimodal learning matures. CLIP connects images and text. DALL-E generates images from text. Codex generates code from descriptions — released as GitHub Copilot.</div></div>
+</div>
+<div class="tl-item">
+<div class="tl-year">2022</div>
+<div class="tl-content"><div class="tl-title">Stable Diffusion + ChatGPT</div><div class="tl-desc">Stable Diffusion goes open source. ChatGPT reaches 100M users in two months — the fastest-growing consumer product in history. AI crosses from research into mass public awareness.</div></div>
+</div>
+<div class="tl-item">
+<div class="tl-year">2023</div>
+<div class="tl-content"><div class="tl-title">GPT-4, Llama, Gemini</div><div class="tl-desc">GPT-4 passes bar exam in top 10%. Meta releases Llama, starting the open-weight model movement. Google releases Gemini. The frontier model race accelerates.</div></div>
+</div>
+<div class="tl-item major">
+<div class="tl-year">2024</div>
+<div class="tl-content"><div class="tl-title">Reasoning models &amp; inference-time compute</div><div class="tl-desc">OpenAI o1 demonstrates that letting a model "think longer" at inference time improves reasoning. A new scaling axis — beyond training compute — emerges. DeepSeek R1 replicates it open-source.</div></div>
+</div>
+</div>
+<div class="box case-box">
+<div class="box-label">Why 2012 Was the Real Inflection Point</div>
+<p>Neural networks had existed for 70 years. Backpropagation for training them had existed since 1986. The AlexNet architecture was not radically more sophisticated than what Yann LeCun had built at Bell Labs in the 1990s with LeNet. What changed in 2012 was hardware and data:</p>
+<p><strong>Hardware:</strong> The GTX 580 GPU offered 1.5 TFLOPS of single-precision floating-point compute — roughly 50× more than a contemporary high-end CPU. Krizhevsky spent two weeks porting the convolution operations to CUDA. The result: training that would have taken months on a CPU took days. This made rapid experimentation possible for the first time.</p>
+<p><strong>Data:</strong> ImageNet — 1.2 million labelled images across 1000 categories — had been assembled by Fei-Fei Li at Stanford over three years using Amazon Mechanical Turk, at a cost of roughly $30 per 1000 labels. No such dataset had existed before. Deep learning is empirically hungry; without enough data, the advantage of deep networks over shallow ones is invisible.</p>
+<p>The lesson: transformative AI breakthroughs often have a decade of quiet infrastructure work underneath them. The "overnight success" of deep learning sat on top of CUDA (developed 2006–2008), ImageNet (assembled 2007–2009), and the theoretical foundations of backpropagation (1986). The researchers working on those prerequisites didn't know what they were enabling.</p>
+</div>
+<div class="pq">
+<p>"The field of AI has repeatedly made the mistake of assuming that the algorithms were the hard part. They weren't. The hard part was compute and data, and for most of AI's history, we didn't have enough of either."</p>
+<cite>— Synthesis of multiple AI historians' analyses</cite>
+</div>
+</section>
+<section class="chapter" id="ch2">
+
+
+<h2>The AI Hardware Stack</h2>
+<p>Before you can understand CUDA or PyTorch, you need a mental model of what the hardware is actually doing. AI workloads are fundamentally different from the sequential, branchy code that CPUs were designed for — and understanding that difference explains every design choice in the hardware stack, from why GPUs have thousands of cores to why HBM exists at all.</p>
+<h3>CPU vs GPU — A Philosophical Difference</h3>
+<p>A CPU is designed for <em>latency</em>: getting one task done as fast as possible. It has a small number of powerful cores (8–64), large caches to avoid memory latency, out-of-order execution to extract parallelism from sequential code, and branch predictors to speculatively execute the most likely code path. A CPU is a Formula 1 car optimised for one lap at maximum speed.</p>
+<p>A GPU is designed for <em>throughput</em>: doing thousands of simple tasks simultaneously. A modern GPU (H100) has 16,896 CUDA cores — simple arithmetic units with tiny caches, no branch prediction, and no out-of-order execution. Each core is slow in isolation; collectively they are 100× faster than a CPU for the right workloads. A GPU is a thousand bicycles: slower per unit, but if your task is moving a thousand people across a city simultaneously, bicycles win.</p>
+<p>The "right workload" for a GPU is one that is <strong>data parallel</strong>: the same operation applied independently to a large array of data. Matrix multiplication — the core of neural networks — is maximally data parallel. Computing element C[i][j] of a matrix product requires the dot product of row i of A and column j of B, and every element of C is independent of every other. A GPU can compute all of them simultaneously.</p>
+<h3>The GPU Memory Hierarchy</h3>
+<p>The most important thing to understand about GPU performance is the memory hierarchy — specifically, the enormous gap between on-chip memory (fast, small) and off-chip HBM (slow, large). This gap determines algorithm design more than any other factor:</p>
+<div class="stack">
+<div class="stack-layer" style="background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.2)">
+<span class="stack-name">Registers (~256 KB per SM)</span>
+<span class="stack-desc">~20 TB/s · sub-nanosecond · per-thread</span>
+</div>
+<div class="stack-layer" style="background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.2)">
+<span class="stack-name">Shared memory / L1 cache (~228 KB per SM)</span>
+<span class="stack-desc">~10 TB/s · ~5ns · shared within threadblock</span>
+</div>
+<div class="stack-layer" style="background:rgba(74,158,255,.1);border:1px solid rgba(74,158,255,.2)">
+<span class="stack-name">L2 cache (50 MB total)</span>
+<span class="stack-desc">~6 TB/s · ~30ns · shared across chip</span>
+</div>
+<div class="stack-layer" style="background:rgba(188,140,255,.1);border:1px solid rgba(188,140,255,.2)">
+<span class="stack-name">HBM3 (80 GB)</span>
+<span class="stack-desc">3.35 TB/s · ~100ns · main GPU memory</span>
+</div>
+<div class="stack-layer" style="background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.15)">
+<span class="stack-name">CPU DRAM (via PCIe / NVLink)</span>
+<span class="stack-desc">~50–900 GB/s · µs latency · system memory</span>
+</div>
+</div>
+<p>The ratio between register bandwidth and HBM bandwidth is approximately 6,000:1. An algorithm that keeps its working data in registers or shared memory is 6,000× faster than one that repeatedly reads from HBM. This is why Flash Attention is so important — it restructures the attention calculation to keep intermediate values in on-chip SRAM rather than writing them to and reading from HBM. The arithmetic is identical; the memory access pattern is not.</p>
+<h3>Tensor Cores — Specialised Matrix Hardware</h3>
+<p>Tensor cores are dedicated processing units within each Streaming Multiprocessor (SM) that compute a complete 16×16×16 matrix multiply-accumulate in a single instruction cycle — rather than 4,096 individual multiply-adds. The H100 has 528 tensor cores. At 1979 TFLOPS BF16 peak, roughly 95% of the compute comes from tensor cores; the remaining 5% from regular CUDA cores.</p>
+<p>Tensor cores only help when the data is formatted correctly (specific matrix tile sizes, specific memory layouts) and the computation is actually a matrix multiply. Writing code that properly utilises tensor cores requires either using a library (cuBLAS, cuDNN) or understanding the WMMA (Warp Matrix Multiply Accumulate) API — or writing in Triton, which handles tiling automatically.</p>
+<h3>The H100 Architecture in Plain Language</h3>
+<table class="ctable">
+<tr><th>Component</th><th>Count</th><th>Purpose</th></tr>
+<tr><td>Streaming Multiprocessors (SM)</td><td>132</td><td>The fundamental compute unit; each has CUDA cores, tensor cores, and shared memory</td></tr>
+<tr><td>CUDA cores (FP32)</td><td>16,896</td><td>General-purpose floating-point arithmetic; handle non-matrix operations</td></tr>
+<tr><td>Tensor cores (4th gen)</td><td>528</td><td>Matrix multiply-accumulate; responsible for ~95% of peak FLOPS</td></tr>
+<tr><td>HBM3 stacks</td><td>6</td><td>80 GB total; 3.35 TB/s bandwidth</td></tr>
+<tr><td>L2 cache</td><td>50 MB</td><td>On-chip; ~6 TB/s; shared across all SMs</td></tr>
+<tr><td>NVLink ports</td><td>18</td><td>900 GB/s GPU-to-GPU; for multi-GPU training</td></tr>
+<tr><td>Transformer Engine</td><td>1</td><td>Hardware FP8 support with automatic precision management for training</td></tr>
+</table>
+<div class="box case-box">
+<div class="box-label">Case Study — Why NVIDIA Has a Near-Monopoly</div>
+<p>NVIDIA's dominance in AI compute is not primarily about hardware capability — AMD's MI300X has 192 GB of HBM, more than any H100. It is about software and ecosystem accumulated over 17 years.</p>
+<p>In 2006, NVIDIA released CUDA — a programming model that let researchers write general-purpose code that ran on GPU hardware. It was not an obvious product decision; NVIDIA was a gaming GPU company. But by making GPU programming accessible, NVIDIA attracted the academic research community. Every neural network paper published between 2012 and 2017 assumed CUDA. Every framework built in that era (Caffe, Torch, TensorFlow, PyTorch) had CUDA as its primary hardware target.</p>
+<p>By the time AMD released ROCm (its CUDA equivalent) in 2016, NVIDIA had a 10-year head start in library depth, debugger quality, profiler sophistication, and developer familiarity. The switching cost is not technical — ROCm can run most PyTorch code with minor modifications. The switching cost is the accumulated expertise of every ML engineer who has spent years learning CUDA's memory model, profiling tools, and error messages. That knowledge doesn't transfer. NVIDIA's moat is made of human capital, not silicon.</p>
+</div>
+<h3>CANN — Huawei's AI Compute Stack</h3>
+<p>CANN (Compute Architecture for Neural Networks) is Huawei's full-stack AI compute platform for its Ascend series of AI processors. It is the Chinese answer to CUDA — a proprietary programming model, operator library, and runtime designed to make Ascend hardware usable for AI workloads.</p>
+<p>The Ascend 910B chip (2023) delivers approximately 256 TFLOPS at FP16, comparable to an A100. CANN provides: ACL (Ascend Computing Language) for low-level kernel programming, MindSpore and PyTorch-Ascend adapters for framework support, and HCCL (Huawei Collective Communication Library, equivalent to NCCL) for multi-chip training. Following US export restrictions that blocked A100/H100 sales to China, Huawei's Ascend 910B became the primary high-performance AI chip available in China, deploying in Baidu's ERNIE clusters and various Chinese cloud providers.</p>
+</section>
+<section class="chapter" id="ch3">
+
+
+<h2>CUDA — The Invisible Infrastructure</h2>
+<p>CUDA is to AI what the Linux kernel is to the internet: invisible to most users, foundational to everything, and controlled by one company. Understanding what CUDA actually is — not as a marketing term but as a programming model — is essential for understanding why switching hardware is hard, why AI software is fragmented the way it is, and why NVIDIA's moat is deeper than it appears.</p>
+<h3>The CUDA Programming Model</h3>
+<p>CUDA introduces a hierarchy of parallelism that maps directly onto GPU hardware. When you launch a GPU computation, you specify a kernel — a function that runs on the GPU — along with a <em>grid</em> of <em>thread blocks</em>, each containing a number of <em>threads</em>.</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">CUDA C++</span><span class="code-fname">vector_add.cu</span></div>
+<pre><code><span class="cm">// Each thread computes one element of C = A + B</span>
+__global__ <span class="kw">void</span> <span class="fn">vector_add</span>(<span class="kw">float</span>* A, <span class="kw">float</span>* B, <span class="kw">float</span>* C, <span class="kw">int</span> N) {
+    <span class="cm">// Global thread index</span>
+    <span class="kw">int</span> i = blockIdx.x * blockDim.x + threadIdx.x;
+    <span class="kw">if</span> (i &lt; N) {
+        C[i] = A[i] + B[i];  <span class="cm">// each thread does ONE addition</span>
+    }
+}
+
+<span class="cm">// Launch: 1024 threads per block, ceil(N/1024) blocks</span>
+<span class="fn">vector_add</span>&lt;&lt;&lt;(N+<span class="nm">1023</span>)/<span class="nm">1024</span>, <span class="nm">1024</span>&gt;&gt;&gt;(d_A, d_B, d_C, N);</code></pre>
+</div>
+<p>The hardware mapping: each <strong>thread block</strong> runs on one SM (Streaming Multiprocessor). Threads within a block share the SM's shared memory — enabling fast communication between them. Threads are grouped into <strong>warps</strong> of 32 that execute in lockstep (SIMD). The GPU schedules thousands of warps simultaneously, hiding memory latency by switching to a different warp when one is waiting for data.</p>
+<div class="formula">CUDA execution hierarchy:
+  Grid  → many thread blocks, launched by host
+  Block → up to 1024 threads; share one SM's shared memory
+  Warp  → 32 threads; execute in lockstep (SIMT)
+  Thread → smallest unit; has its own registers
+
+Latency hiding: GPU switches between warps when one stalls.
+A block needing 1000 clock cycles of memory latency
+can be hidden by having ~30 other warps ready to execute.
+This is why GPUs need THOUSANDS of active threads to
+run efficiently — not just hundreds.</div>
+<h3>The CUDA Ecosystem — Where the Real Value Lives</h3>
+<p>Raw CUDA kernel programming is rarely what AI developers interact with. The value of NVIDIA's ecosystem is in the libraries built on top of CUDA that implement the specific operations needed for AI workloads at maximum efficiency:</p>
+<table class="ctable">
+<tr><th>Library</th><th>What it does</th><th>Used by</th></tr>
+<tr><td><code>cuBLAS</code></td><td>Optimised BLAS (matrix multiply, etc.) on GPU. Automatically uses tensor cores.</td><td>PyTorch, TensorFlow, JAX internally</td></tr>
+<tr><td><code>cuDNN</code></td><td>Deep learning primitives: convolutions, attention, normalisation, pooling. Highly optimised per-architecture.</td><td>Every major deep learning framework</td></tr>
+<tr><td><code>NCCL</code></td><td>NVIDIA Collective Communication Library — allreduce, allgather, etc. for multi-GPU/multi-node training.</td><td>PyTorch DDP/FSDP, DeepSpeed, Megatron-LM</td></tr>
+<tr><td><code>TensorRT</code></td><td>Inference optimisation: kernel fusion, quantisation (INT8/FP8), layer fusion, dynamic shapes. Compiles a trained model into a highly optimised inference engine.</td><td>Production inference pipelines</td></tr>
+<tr><td><code>Triton</code></td><td>Python-based kernel language for writing custom GPU operations without raw CUDA. Auto-tiles for tensor cores. Developed by OpenAI.</td><td>Flash Attention, custom activations</td></tr>
+<tr><td><code>CUTLASS</code></td><td>C++ templates for high-performance GEMM and convolution. Used by framework authors; not end users.</td><td>cuBLAS, TensorRT internals</td></tr>
+</table>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python / Triton</span><span class="code-fname">fused_softmax.py — custom GPU kernel in 20 lines</span></div>
+<pre><code><span class="kw">import</span> triton
+<span class="kw">import</span> triton.language <span class="kw">as</span> tl
+
+<span class="cm"># This kernel reads a row, computes softmax, writes result</span>
+<span class="cm"># — entirely within GPU registers, never touching HBM for intermediates</span>
+@triton.jit
+<span class="kw">def</span> <span class="fn">softmax_kernel</span>(X_ptr, Y_ptr, stride, n_cols, BLOCK: tl.constexpr):
+    row = tl.program_id(<span class="nm">0</span>)
+    X = X_ptr + row * stride
+    Y = Y_ptr + row * stride
+    cols = tl.arange(<span class="nm">0</span>, BLOCK)
+    mask = cols &lt; n_cols
+    x = tl.<span class="fn">load</span>(X + cols, mask=mask, other=-<span class="nm">float</span>(<span class="st">'inf'</span>))
+    x = x - tl.<span class="fn">max</span>(x, axis=<span class="nm">0</span>)   <span class="cm"># numerical stability</span>
+    num = tl.<span class="fn">exp</span>(x)
+    denom = tl.<span class="fn">sum</span>(num, axis=<span class="nm">0</span>)
+    tl.<span class="fn">store</span>(Y + cols, num / denom, mask=mask)</code></pre>
+</div>
+<h3>The Challengers — ROCm, CANN, OneAPI</h3>
+<p>Three serious attempts exist to break NVIDIA's CUDA monopoly:</p>
+<p><strong>ROCm (AMD):</strong> AMD's open-source GPU compute stack. The programming model mirrors CUDA closely — HIP (Heterogeneous-compute Interface for Portability) can compile CUDA code for AMD GPUs with minimal changes. ROCm 6.x (2024) closed the gap significantly: PyTorch 2.x supports ROCm as a first-class target, Flash Attention runs on MI300X, and RCCL (ROCm's NCCL equivalent) handles multi-GPU collective communication. The remaining gaps: profiling tools are less mature, fewer third-party libraries test on ROCm, and certain custom kernels written for NVIDIA-specific features (Tensor Memory Accelerator, NVLink) have no equivalent.</p>
+<p><strong>CANN (Huawei):</strong> More different from CUDA than ROCm is. CANN uses its own operator model (TBE — Tensor Boost Engine for custom operator writing) rather than a CUDA-like kernel model. The Ascend ecosystem is primarily targetted at MindSpore (Huawei's own framework) but has growing PyTorch-Ascend support. The practical reality: CANN works well for standard training and inference workloads on standard architectures, but custom kernel development requires learning a separate ecosystem. For Chinese AI labs operating under export controls, there is no alternative.</p>
+<p><strong>OneAPI (Intel):</strong> Intel's unified programming model targeting its own Xe GPU architecture (Gaudi 2/3) and future accelerators. SYCL-based (a C++ standard). Gaudi 3 (2024) delivers 1835 TFLOPS BF16 with 128 GB HBM2e — competitive on paper. The challenge: no CUDA ecosystem equivalent, smaller developer base, and Intel's history of underdelivering on AI chip roadmaps (the NNP-I cancellation).</p>
+<div class="future">
+<h4>Focus Areas for Future Study</h4>
+<ul>
+<li><strong>CUDA profiling (Nsight Systems, Nsight Compute):</strong> The most underused skill in AI engineering. Being able to open an Nsight Compute profile and identify whether a kernel is memory-bound or compute-bound, where warp divergence occurs, and how tensor core utilisation looks is the difference between guessing at performance and understanding it.</li>
+<li><strong>Triton kernel writing:</strong> The best way to understand GPU memory hierarchy in practice. The <a href="https://triton-lang.org/main/getting-started/tutorials/">Triton tutorials</a> (vector add → fused softmax → matrix multiply → Flash Attention) are the clearest practical curriculum for GPU programming that exists.</li>
+<li><strong>PTX (Parallel Thread Execution):</strong> NVIDIA's intermediate assembly language. Understanding PTX explains what compiler optimisations are actually possible and why some CUDA patterns are inherently slow.</li>
+</ul>
+</div>
+</section>
+<section class="chapter" id="ch4">
+
+
+<h2>PyTorch — The Research Standard</h2>
+<p>PyTorch is where almost all serious AI research happens today. It is not the fastest framework (JAX can be faster for some workloads), not the most production-ready (TensorFlow has more deployment tooling), and not the most efficient (TensorRT-compiled models run faster at inference). It is the most widely used because it strikes the right balance between flexibility and productivity, and because the research community converged on it around 2018 — creating a network effect that has only strengthened since.</p>
+<h3>The Intellectual History: Torch → TF → PyTorch</h3>
+<p>The lineage matters. <strong>Theano</strong> (2007, Montreal) was the first framework to automatically differentiate symbolic mathematical expressions and compile them to GPU code. It proved the concept but was difficult to debug because errors in the compiled graph were hard to trace back to Python code.</p>
+<p><strong>TensorFlow</strong> (2015, Google) followed the same "define-then-run" philosophy: you build a computation graph first, then execute it. Powerful for production deployment (the graph could be exported and served), but painful for research — every model change required modifying the graph, and debugging a graph error required understanding the framework internals.</p>
+<p><strong>PyTorch</strong> (2016, Facebook AI Research) chose a different approach: eager execution. Rather than building a graph first, PyTorch executes operations immediately as Python code runs. The result: debugging with <code>print()</code> works. Python's debugger works. Errors point to your code, not the framework's internals. Researchers who had been fighting TensorFlow graphs switched immediately.</p>
+<h3>Core Concepts: Tensor, Autograd, Graph</h3>
+<p>Everything in PyTorch is a tensor — an n-dimensional array of numbers, living on CPU or GPU memory, with a data type (float32, bfloat16, int8, etc.). Tensors support all the mathematical operations you expect, and every operation is recorded in a <strong>computational graph</strong> for automatic differentiation.</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-fname">autograd_demo.py</span></div>
+<pre><code><span class="kw">import</span> torch
+
+<span class="cm"># requires_grad=True tells PyTorch to track this tensor for differentiation</span>
+x = torch.<span class="fn">tensor</span>([<span class="nm">2.0</span>, <span class="nm">3.0</span>], requires_grad=<span class="nm">True</span>)
+y = x ** <span class="nm">2</span>         <span class="cm"># y = [4.0, 9.0] — op recorded in graph</span>
+z = y.<span class="fn">sum</span>()        <span class="cm"># z = 13.0 — still recording</span>
+
+z.<span class="fn">backward</span>()      <span class="cm"># compute dz/dx through the graph</span>
+<span class="fn">print</span>(x.grad)     <span class="cm"># tensor([4., 6.])  — dz/dx_i = 2*x_i</span>
+
+<span class="cm"># The graph is discarded after backward() by default</span>
+<span class="cm"># Call backward(retain_graph=True) to keep it</span></code></pre>
+</div>
+<p>Autograd — automatic differentiation — is what makes neural network training possible in Python without manually deriving gradients. Every PyTorch operation records what it did and how to compute its gradient. When you call <code>.backward()</code> on a loss value, PyTorch walks backward through the recorded operations applying the chain rule, accumulating gradients in each tensor's <code>.grad</code> attribute. This is <strong>backpropagation</strong>, automated.</p>
+<h3>The Training Loop</h3>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-fname">training_loop.py — the canonical pattern</span></div>
+<pre><code><span class="kw">import</span> torch
+<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
+
+model = <span class="cls">MyModel</span>().<span class="fn">cuda</span>()
+optimizer = torch.optim.<span class="cls">AdamW</span>(model.<span class="fn">parameters</span>(), lr=<span class="nm">3e-4</span>)
+loss_fn = nn.<span class="cls">CrossEntropyLoss</span>()
+
+<span class="kw">for</span> batch <span class="kw">in</span> dataloader:
+    inputs, labels = batch[<span class="nm">0</span>].<span class="fn">cuda</span>(), batch[<span class="nm">1</span>].<span class="fn">cuda</span>()
+
+    optimizer.<span class="fn">zero_grad</span>()          <span class="cm"># clear gradients from last step</span>
+    outputs = <span class="fn">model</span>(inputs)        <span class="cm"># forward pass</span>
+    loss = <span class="fn">loss_fn</span>(outputs, labels) <span class="cm"># compute scalar loss</span>
+    loss.<span class="fn">backward</span>()                 <span class="cm"># backward pass: compute gradients</span>
+    optimizer.<span class="fn">step</span>()               <span class="cm"># update weights: w -= lr * grad</span>
+
+<span class="cm"># That's it. 6 lines. Everything else is variation on this pattern.</span></code></pre>
+</div>
+<p>This loop — forward, loss, backward, step — is the heartbeat of every neural network training run, from a 3-layer toy network to GPT-4. The complexity of modern training frameworks (DeepSpeed, Megatron-LM, torchtitan) comes from making this loop work efficiently across thousands of GPUs, not from changing the fundamental structure.</p>
+<h3>PyTorch 2.0 — torch.compile</h3>
+<p>PyTorch 2.0 (2023) added <code>torch.compile()</code> — a just-in-time compiler that takes a Python model function, traces its computation graph using a technique called TorchDynamo, and compiles it to optimised CUDA kernels. The result: 30–200% speedup on typical model training with a single line change (<code>model = torch.compile(model)</code>). The compiler performs: kernel fusion (combining adjacent operations into one kernel to reduce memory reads/writes), layout optimisation (choosing the most cache-friendly tensor memory layout), and automatic operator fusion for Flash Attention patterns.</p>
+<h3>JAX — Google's Functional Alternative</h3>
+<p>JAX (2018) is the AI framework that does everything differently. Where PyTorch is object-oriented and imperative, JAX is functional and expression-based. Its four key transformations — <code>jit()</code> (just-in-time compilation), <code>grad()</code> (automatic differentiation), <code>vmap()</code> (vectorisation over a batch dimension), and <code>pmap()</code> (parallelisation across devices) — can be arbitrarily composed. JAX runs on GPU, TPU, and CPU through XLA, Google's optimising compiler for linear algebra.</p>
+<p>JAX is used by Google DeepMind (AlphaFold, Gemini), many academic labs, and anyone who needs the composability of function transformations. Its drawback: the functional programming model and XLA's compilation latency have a steeper learning curve than PyTorch's imperative style. For most practitioners, PyTorch remains the default; JAX is the expert's choice for specific problems.</p>
+<div class="box case-box">
+<div class="box-label">Case Study — Why TensorFlow Lost the Research Community</div>
+<p>In 2017, TensorFlow was the dominant research framework. By 2020, PyTorch had overtaken it in academic paper citations. By 2022, the majority of new models were PyTorch-first. Google's own researchers increasingly used JAX internally while TensorFlow languished. What happened?</p>
+<p>TensorFlow 1.x's define-then-run graph model made debugging nearly impossible. A Python error in graph construction would surface as a cryptic C++ error deep in the framework. When PyTorch's eager execution made debugging feel like normal Python programming, researchers switched and didn't come back. Google's response — TensorFlow 2.0 with eager mode as default — arrived in 2019, two years after PyTorch had already won the research community's trust. By the time TF2 worked well, too many papers, tutorials, and pretrained models assumed PyTorch.</p>
+<p>The lesson is not that TF2 is bad — it isn't. The lesson is that in developer tools, the switching cost from a familiar ecosystem is enormous, and a multi-year head start in developer experience is nearly impossible to overcome with a technical catch-up alone.</p>
+</div>
+</section>
+<section class="chapter" id="ch5">
+
+
+<h2>The Model Zoo — Architectures That Matter</h2>
+<p>Neural network architectures are not arbitrary engineering choices — each major advance was a specific solution to a specific failure mode of the previous approach. Understanding the progression from perceptrons to transformers to diffusion models and beyond reveals the pattern: each new architecture solves the previous one's fundamental limitation, while inheriting its own.</p>
+<h3>CNNs — The First Practical Deep Architecture</h3>
+<p>Convolutional Neural Networks (CNNs) solved two critical problems that prevented deeper networks from working on images. First, <strong>weight sharing</strong>: instead of separate weights connecting every input pixel to every neuron (which for a 224×224 image would require millions of parameters per layer), a convolutional filter is a small grid of weights (e.g. 3×3) that slides across the image, computing a dot product at each position. The same 9 weights detect the same feature (an edge, a curve) regardless of where it appears in the image — a property called translation equivariance.</p>
+<p>Second, <strong>hierarchical features</strong>: early layers detect edges and textures; middle layers detect shapes and parts; deep layers detect objects. Each layer combines the previous layer's features into increasingly abstract representations. AlexNet had 5 convolutional layers; ResNet (2015) had 152; modern CNNs like EfficientNet achieve near-human accuracy with careful architecture design and compound scaling.</p>
+<p><strong>The limitation:</strong> CNNs process fixed-size inputs, struggle with variable-length sequences, and have no natural way to reason about relationships between distant elements of an input. For images this is acceptable; for language and sequences, it is fatal.</p>
+<h3>RNNs and LSTMs — Sequences, With Memory</h3>
+<p>RNNs (Recurrent Neural Networks) process sequences by maintaining a hidden state that is updated at each step. The hidden state carries information from previous steps, allowing the network to "remember" context. For a sentence of N words, the network runs N times, updating the hidden state each time.</p>
+<p>The LSTM (Long Short-Term Memory, 1997) addressed RNNs' tendency to forget distant context via a sophisticated gating mechanism with separate "forget," "input," and "output" gates controlling what information is retained, added, and exposed from the cell state. LSTMs powered speech recognition, machine translation (Google Translate 2016), and text generation for a decade.</p>
+<p><strong>The limitation:</strong> Sequential processing. To process word 100 of a sentence, the network must first process words 1–99 in order. This is fundamentally non-parallelisable on GPU hardware — you cannot compute step 50 without having computed step 49. Training on long sequences was slow, and gradient flow over hundreds of steps remained imperfect despite the LSTM gating. When the GPU era demanded parallelism, RNNs were structurally unable to deliver it.</p>
+<h3>The Transformer — Solving Everything with Attention</h3>
+<p>The 2017 paper "Attention Is All You Need" replaced recurrence entirely with self-attention — a mechanism where every position in the sequence can directly attend to every other position simultaneously. This solved the parallelism problem: with self-attention, all positions are computed in one large matrix multiplication.</p>
+<div class="formula">Self-attention for one query:
+  Attention(Q, K, V) = softmax(Q·Kᵀ / √d_k) · V
+
+Where for a sequence of length N with dimension d:
+  Q (Queries): what I'm looking for           — N × d_k
+  K (Keys):    what each position has         — N × d_k
+  V (Values):  what to return if attended to  — N × d_v
+  √d_k:        scaling factor (prevents dot products from
+               getting too large in high dimensions)
+
+Interpretation: for each query position, compute how
+much it should attend to each key position (softmax
+over dot products), then take weighted sum of values.
+
+Cost: O(N²) in memory — the key scaling bottleneck
+for long-context models. Flash Attention reduces this
+from O(N²) HBM to O(N) HBM via tiling.</div>
+<p>The transformer architecture surrounds the attention mechanism with: <strong>multi-head attention</strong> (run attention in parallel with different learned projections, then concatenate), <strong>feed-forward networks</strong> (two linear layers with a non-linearity between them, applied independently to each position), <strong>layer normalisation</strong> (stabilises training), and <strong>residual connections</strong> (allow gradients to flow through deep networks without vanishing).</p>
+<h3>BERT vs GPT — Two Philosophies</h3>
+<table class="ctable">
+<tr><th>Property</th><th>BERT (Google, 2018)</th><th>GPT series (OpenAI, 2018–)</th></tr>
+<tr><td>Architecture</td><td>Encoder-only transformer</td><td>Decoder-only transformer</td></tr>
+<tr><td>Attention type</td><td>Bidirectional (sees full context)</td><td>Causal/masked (only sees past tokens)</td></tr>
+<tr><td>Training objective</td><td>Masked Language Modelling (predict masked tokens)</td><td>Next-token prediction (predict next token)</td></tr>
+<tr><td>Use case</td><td>Understanding tasks: classification, NER, QA</td><td>Generation tasks: completion, chat, reasoning</td></tr>
+<tr><td>Fine-tuning style</td><td>Add task-specific head, fine-tune</td><td>Prompt engineering, RLHF, instruction tuning</td></tr>
+<tr><td>Scaling behaviour</td><td>Plateaus; strong at 340M–3B params</td><td>Continues improving with scale; 175B → 1T+</td></tr>
+</table>
+<p>The GPT line "won" at scale because the next-token prediction objective is universal — any text can be training data, and any task can be framed as text generation. BERT's masked language modelling requires pre-tokenised, balanced corpora and produces representations rather than sequences. As models scaled to hundreds of billions of parameters, GPT-style decoders proved more versatile.</p>
+<h3>Diffusion Models — A Different Way to Generate</h3>
+<p>Diffusion models (DDPM, 2020; Stable Diffusion, 2022) generate images through a different process than GANs. Training: add Gaussian noise to real images in T incremental steps until the image is pure noise. Then train a neural network to predict and reverse each noise step (essentially learning to denoise). Generation: start from pure random noise and apply the learned denoising network T times to arrive at a clean image.</p>
+<p>Why diffusion beats GANs for image generation: training is stable (no adversarial game), mode coverage is better (GANs often produce one type of output; diffusion samples the full distribution), and conditioning (on text via CLIP embeddings) is natural. The limitation: T denoising steps means T forward passes through a large neural network per image generated — slow compared to GANs' single forward pass. Distillation methods (DDIM, Consistency Models) reduce this to 4–8 steps while maintaining quality.</p>
+<h3>Mixture of Experts — Scaling Without Proportional Compute</h3>
+<p>Mixture of Experts (MoE) is an architectural trick that increases a model's parameter count without proportionally increasing its compute per token. An MoE layer replaces the standard feed-forward layer with N "expert" sub-networks and a learned routing function that activates only K of them for each input token (typically K=2 out of N=8 or N=64).</p>
+<p>GPT-4 is widely reported to be a ~1.76T parameter MoE model with 16 experts, activating 2 per token — making its effective compute per token comparable to a 110B dense model. Mixtral 8×7B (2023, Mistral AI) demonstrated that open-weight MoE could match GPT-3.5 performance at substantially lower inference cost. Deepseek V2/V3 (2024) pushed MoE to 256 experts, achieving GPT-4-class performance at dramatically lower training cost.</p>
+<h3>State Space Models — The Attention Alternative</h3>
+<p>State Space Models (SSMs), and specifically Mamba (2023), represent a serious alternative to transformer attention for sequence modelling. SSMs model sequences as a continuous dynamical system: a hidden state evolves according to learned matrices, with inputs driving the state and the state producing outputs. Mamba introduces a selective mechanism that lets the SSM choose, for each input token, how much to update its hidden state and how much of the state to expose to the output — essentially attention's key function without the O(N²) cost.</p>
+<p><strong>The appeal:</strong> O(N) memory and O(N) compute vs transformer's O(N²) attention cost. Mamba matches transformer performance on language modelling at moderate context lengths. <strong>The current reality:</strong> transformers with Flash Attention are well-optimised; Mamba's GPU kernels are less mature. At the time of writing, hybrid models mixing SSM and attention layers (Jamba, Zamba) are emerging as a practical compromise.</p>
+<div class="future">
+<h4>Focus Areas for Future Study</h4>
+<ul>
+<li><strong>Read "Attention Is All You Need" (Vaswani et al., 2017):</strong> Eight pages. The original transformer paper is readable, the architecture diagram is essential, and having read it means you understand the primary source rather than someone's explanation of it.</li>
+<li><strong>Andrej Karpathy's nanoGPT / build-nanogpt:</strong> Building a GPT from scratch in ~300 lines of PyTorch is the fastest way to develop genuine intuition for what a transformer is. His video walkthrough is exceptional.</li>
+<li><strong>The Chinchilla paper (Hoffmann et al., 2022):</strong> The most important empirical result in recent LLM research — optimal training requires much more data than previously assumed, and most early LLMs (including GPT-3) were significantly undertrained relative to their compute budget.</li>
+</ul>
+</div>
+</section>
+<section class="chapter" id="ch6">
+
+
+<h2>Training at Scale — How Big Models Are Made</h2>
+<p>Training GPT-3 cost an estimated $4–12M in compute. Training GPT-4 likely cost $50–100M. Training a frontier 2025 model may cost $500M–$1B. Understanding what you are actually paying for — and why it costs that much — requires understanding the full systems picture of how a large-scale training run works.</p>
+<h3>What a Training Run Actually Is</h3>
+<p>A training run is the process of adjusting the parameters (weights) of a neural network to minimise a loss function on a large dataset. For an LLM, the loss function is simple: predict the next token in the training corpus. The parameters are adjusted incrementally over millions of gradient steps, each using a random mini-batch of training data.</p>
+<div class="formula">Training compute estimate (Chinchilla):
+  C ≈ 6 × N × D  (FLOPs)
+
+Where:
+  N = number of model parameters
+  D = number of training tokens
+  6 = 2 forward + 4 backward (approximate)
+
+Chinchilla optimal ratio: D ≈ 20 × N
+  GPT-3: N=175B params, D=300B tokens → undertrained
+  Llama 3 70B: N=70B params, D=15T tokens → compute-optimal+
+
+At $1 per A100-hour (cloud spot), 1 A100 does ~312 TFLOPS FP16:
+  Training Llama 3 70B from scratch: ~6.4 × 10²³ FLOPs
+  ≈ 2 million A100-hours ≈ ~$2M at spot pricing</div>
+<h3>Distributed Training — Four Kinds of Parallelism</h3>
+<p>A 70B parameter model in BF16 occupies 140 GB of memory. An H100 has 80 GB of HBM. A single GPU cannot fit the model, let alone store gradients and optimizer states needed for training. Distributed training solves this by splitting work across many GPUs in four complementary ways:</p>
+<div class="box info-box">
+<div class="box-label">Data Parallelism (DP)</div>
+<p>Each GPU holds a complete copy of the model. Different GPUs process different mini-batches of data. After each forward+backward pass, gradients are synchronised across all GPUs using an all-reduce collective. Memory requirement: full model + gradients + optimizer states on every GPU. Works well for models that fit on one GPU.</p>
+</div>
+<div class="box info-box">
+<div class="box-label">Tensor Parallelism (TP)</div>
+<p>Individual matrix multiplications are split across GPUs. A 4096×4096 linear layer is split into four 1024×4096 pieces, one per GPU. After each layer, partial results are all-gathered. Requires high-bandwidth intra-node communication (NVLink). Each GPU processes the full batch but only a shard of each weight matrix. Reduces per-GPU memory proportionally to TP degree.</p>
+</div>
+<div class="box info-box">
+<div class="box-label">Pipeline Parallelism (PP)</div>
+<p>Model layers are assigned to different GPUs in sequence. GPU 1 processes layers 1–8, GPU 2 processes layers 9–16, etc. Micro-batches flow through the pipeline; while GPU 2 processes micro-batch 1, GPU 1 processes micro-batch 2 ("pipeline filling"). Reduces inter-node communication to activations passing between stages — lower bandwidth than TP. Introduces pipeline "bubbles" (idle cycles at start/end).</p>
+</div>
+<div class="box info-box">
+<div class="box-label">ZeRO / FSDP</div>
+<p>DeepSpeed ZeRO and PyTorch FSDP shard optimizer states (ZeRO-1), gradients (ZeRO-2), or parameters themselves (ZeRO-3 / FSDP) across data-parallel ranks. ZeRO-3 reduces per-GPU memory by DP-degree, enabling models too large for a single GPU to train with data parallelism. Cost: all-gather communication before each layer (reconstructing the full parameter shard on-the-fly).</p>
+</div>
+<h3>Mixed Precision Training</h3>
+<p>Training in full FP32 (4 bytes per parameter) has been largely abandoned for large models. The standard approach is mixed precision training: keep a FP32 master copy of weights for numerical stability; perform forward pass and gradient computation in BF16 (2 bytes per parameter); update the FP32 master weights. This halves the activation memory, enables tensor core utilisation, and reduces communication bandwidth without sacrificing training stability.</p>
+<div class="formula">Why BF16, not FP16?
+  FP32:  1 sign + 8 exponent + 23 mantissa bits (dynamic range: 10⁻³⁸ to 10³⁸)
+  FP16:  1 sign + 5 exponent + 10 mantissa bits (dynamic range: 10⁻⁵  to 10⁴·⁸)
+  BF16:  1 sign + 8 exponent + 7  mantissa bits (dynamic range: same as FP32)
+
+FP16 overflows easily during training (large gradient norms trigger inf/nan).
+BF16 has the same exponent as FP32 — same dynamic range — so it doesn't
+overflow, at the cost of less mantissa precision (which rarely matters for
+gradients). BF16 training is essentially drop-in replaceable with FP32
+for LLMs. FP16 requires loss scaling hacks that BF16 makes unnecessary.</div>
+<h3>RLHF — How ChatGPT Learned to Be Helpful</h3>
+<p>RLHF (Reinforcement Learning from Human Feedback) is the technique that turned GPT-3's impressive-but-unreliable text completion into ChatGPT's helpful assistant behaviour. It has three stages:</p>
+<p><strong>1. Supervised Fine-Tuning (SFT):</strong> Fine-tune the pretrained model on a dataset of human-written examples of good responses to prompts. This establishes the "assistant voice" and basic instruction-following behaviour.</p>
+<p><strong>2. Reward Model Training:</strong> Show human raters multiple model completions for the same prompt and have them rank them by quality. Train a separate neural network (the reward model) to predict these human preferences. The reward model learns a scalar quality score for any (prompt, response) pair.</p>
+<p><strong>3. PPO Optimisation:</strong> Use Proximal Policy Optimisation — a reinforcement learning algorithm — to fine-tune the SFT model to maximise the reward model's score on its outputs, while adding a KL-divergence penalty to prevent the model from drifting too far from the SFT model (which would cause reward hacking — the model learns to produce responses that score high with the reward model but aren't actually good).</p>
+<div class="box case-box">
+<div class="box-label">Case Study — The Carbon Cost of Frontier Training</div>
+<p>A single training run for a frontier model consumes energy comparable to a small town. Estimates (necessarily imprecise since companies don't publish exact figures): GPT-3 training ≈ 1,287 MWh (approximately the annual electricity use of 120 US households). GPT-4 training: estimated 50 GWh+ (approximately the annual use of 5,000 households). A hypothetical GPT-5-scale training run at 100× GPT-4 compute: ~5 TWh — comparable to the annual electricity consumption of a small country like Honduras.</p>
+<p>This is not a reason to stop doing AI research, but it is a serious engineering constraint. The energy required means frontier model training happens at specialised facilities with dedicated power infrastructure, often near hydroelectric or nuclear power. Microsoft's partnership with Constellation Energy to restart Three Mile Island Unit 1 was directly motivated by AI compute demand.</p>
+<p>The more productive framing: the energy cost of running a trained model at inference is far smaller than training, and the world runs far more inference than training. Optimising inference efficiency — quantisation, speculative decoding, model distillation — is not just a performance concern; it is an energy and cost concern at civilisational scale.</p>
+</div>
+</section>
+<section class="chapter" id="ch7">
+
+
+<h2>Inference — Where AI Lives in Production</h2>
+<p>Training gets the attention, but inference is where AI actually runs in the world. Every ChatGPT response, every Copilot suggestion, every image generation — all inference. And the engineering constraints of inference are almost exactly opposite to those of training, which is why the two require different hardware, different software, and different mental models.</p>
+<h3>Training vs Inference — Different Problems</h3>
+<table class="ctable">
+<tr><th>Property</th><th>Training</th><th>Inference</th></tr>
+<tr><td>Goal</td><td>Minimise loss over dataset</td><td>Minimise latency AND cost per request</td></tr>
+<tr><td>Batch size</td><td>Maximise (1024–8192 tokens/batch)</td><td>Variable (1 token to thousands)</td></tr>
+<tr><td>Compute bound?</td><td>Usually yes (large batches)</td><td>Often no (small batches = memory bound)</td></tr>
+<tr><td>Memory model</td><td>Gradients + optimizer states dominate</td><td>KV cache dominates at long context</td></tr>
+<tr><td>Hardware</td><td>H100 / A100 (high HBM bandwidth + NVLink)</td><td>H100 for throughput; L40S for cost; edge for latency</td></tr>
+<tr><td>Precision</td><td>BF16 / FP8 training</td><td>INT8, INT4, FP8 quantisation</td></tr>
+<tr><td>Duration</td><td>Weeks to months per run</td><td>Milliseconds to seconds per request</td></tr>
+</table>
+<h3>The KV Cache — Why Context Has a Memory Cost</h3>
+<p>In autoregressive generation (producing tokens one at a time), each new token requires attending over all previous tokens. Without caching, this means recomputing the key and value tensors for all prior tokens at every step — O(N²) total compute for a sequence of length N. The KV cache stores these key and value tensors in HBM as they are computed, so each new token only needs to compute its own K/V and attend over the cached K/V from prior tokens.</p>
+<p>The cost: KV cache size = 2 (key + value) × N_layers × N_heads × d_head × sequence_length × bytes_per_element. For Llama 3 70B (80 layers, 8 KV heads, d_head=128) in FP16 at 8192 tokens: 2 × 80 × 8 × 128 × 8192 × 2 bytes ≈ 21 GB per request. A server with 80 GB HBM can handle at most 3–4 concurrent requests at this context length before HBM fills up — concurrency is directly limited by KV cache memory.</p>
+<h3>Continuous Batching and PagedAttention</h3>
+<p>Continuous batching (vLLM, 2023) is the key operational insight that made LLM serving economically viable. In naive batching, a request occupies GPU memory for its entire duration — from first token to last. If one request in a batch of 8 finishes early, that GPU memory is wasted until the whole batch completes. Continuous batching inserts new requests into the batch as soon as a slot frees, maximising GPU utilisation.</p>
+<p>PagedAttention (vLLM's underlying mechanism) manages KV cache memory like virtual memory in an OS. Rather than pre-allocating a contiguous chunk of HBM for each request's maximum possible context, KV cache pages are allocated dynamically and can be non-contiguous — allowing efficient memory sharing and reducing waste from over-allocation. The result: vLLM typically achieves 10–20× higher throughput than naive serving on the same hardware.</p>
+<h3>Quantisation — Trading Precision for Speed</h3>
+<p>Quantisation reduces the numerical precision of model weights and/or activations, decreasing memory footprint and increasing effective memory bandwidth. Key methods:</p>
+<table class="ctable">
+<tr><th>Method</th><th>Precision</th><th>Size vs FP16</th><th>Quality loss</th><th>Tool</th></tr>
+<tr><td>FP16</td><td>16-bit float</td><td>1×</td><td>Reference</td><td>PyTorch default</td></tr>
+<tr><td>BF16</td><td>16-bit bfloat</td><td>1×</td><td>Negligible</td><td>PyTorch .to(bfloat16)</td></tr>
+<tr><td>INT8 (W8A8)</td><td>8-bit int weights + activations</td><td>0.5×</td><td>Minimal (0.5–1% on benchmarks)</td><td>bitsandbytes, TensorRT</td></tr>
+<tr><td>GPTQ</td><td>4-bit int weights (activation FP16)</td><td>0.25×</td><td>Small (1–3% on benchmarks)</td><td>AutoGPTQ, ExLlamaV2</td></tr>
+<tr><td>AWQ</td><td>4-bit int, activation-aware scaling</td><td>0.25×</td><td>Less than GPTQ at same bitwidth</td><td>llm-awq, vLLM</td></tr>
+<tr><td>GGUF Q4_K_M</td><td>4-bit, mixed precision by layer</td><td>~0.28×</td><td>Small, model-dependent</td><td>llama.cpp, Ollama</td></tr>
+<tr><td>FP8</td><td>8-bit float (E4M3 or E5M2)</td><td>0.5×</td><td>Near-lossless with calibration</td><td>H100 hardware, TensorRT-LLM</td></tr>
+</table>
+<p>The practical impact: a Llama 3 70B model in FP16 requires 140 GB of HBM — two H100s minimum. The same model in Q4_K_M via llama.cpp runs on a single MacBook Pro with 64 GB unified memory, or a consumer GPU with 48 GB VRAM. The quality difference on most tasks is small enough to be acceptable for local use.</p>
+<h3>Speculative Decoding — The Clever Trick</h3>
+<p>Speculative decoding (2022) exploits the observation that small "draft" models are fast but inaccurate, while large "target" models are accurate but slow. The trick: use a small draft model to generate K candidate tokens speculatively, then verify all K tokens with a single forward pass of the large model. If the large model agrees with the draft tokens (which it does most of the time for predictable text), K tokens are accepted in the time of one forward pass — K× throughput improvement. If the large model disagrees, the first disagreeing token is corrected and generation continues.</p>
+<p>Speculative decoding improves latency for single-request serving but does not improve throughput under heavy batch load (the verification pass still takes the same time). It is particularly effective for coding (highly predictable tokens) and less effective for creative tasks (unpredictable vocabulary).</p>
+<h3>Inference Serving Frameworks</h3>
+<p>The production inference ecosystem has consolidated around a few key frameworks, each with different trade-offs:</p>
+<div class="box green-box">
+<div class="box-label">vLLM — The Production Standard</div>
+<p>Open-source (Apache 2.0), PagedAttention, continuous batching, supports most open models, good multi-GPU support. The default choice for production deployment. GPU-only (primarily NVIDIA, ROCm support improving). Python API, OpenAI-compatible REST server.</p>
+</div>
+<div class="box green-box">
+<div class="box-label">TensorRT-LLM — Maximum NVIDIA Performance</div>
+<p>NVIDIA's first-party inference engine. Compiles models into highly optimised TensorRT engines with kernel fusion, INT8/FP8 quantisation, and in-flight batching. Highest throughput on NVIDIA hardware; more complex to use than vLLM. Required for production-grade NVIDIA deployment where you need every last token/second.</p>
+</div>
+<div class="box green-box">
+<div class="box-label">llama.cpp + Ollama — Edge and Local</div>
+<p>llama.cpp (Georgi Gerganov, 2023): pure C/C++ LLM inference with GGUF quantisation, running on CPU, Apple Metal, CUDA, and ROCm. Ollama wraps llama.cpp in a clean CLI and REST API. The standard for local LLM deployment — what runs behind open-webui, LM Studio, and most local AI tools.</p>
+</div>
+</section>
+<section class="chapter" id="ch8">
+
+
+<h2>The AI Software Ecosystem</h2>
+<p>The software ecosystem surrounding AI models is enormous and evolving rapidly. Understanding which tools occupy which role — and why they exist — is as important as understanding the models themselves.</p>
+<h3>Hugging Face — The App Store of AI</h3>
+<p>Hugging Face (founded 2016, originally a chatbot company) pivoted to become the central repository for open AI models and the maintainer of the <code>transformers</code> library, which provides a unified API for hundreds of models from different research groups and companies. Its significance is hard to overstate: it is the infrastructure layer that made open AI research composable. Before Hugging Face, every research group maintained their own model loading code, checkpointing format, and tokenisation logic. The <code>transformers</code> library standardised these, allowing researchers to switch from BERT to RoBERTa to T5 with a single line of code change.</p>
+<p>The Hub hosts 500,000+ models (as of 2024), including Llama 3, Mistral, Falcon, and Stable Diffusion weights. <code>datasets</code> library, <code>evaluate</code> library, and <code>PEFT</code> library (for fine-tuning) round out the ecosystem. If CUDA is the hardware infrastructure layer, Hugging Face is the model infrastructure layer.</p>
+<h3>Fine-Tuning — Adapting Models to Your Task</h3>
+<p>LoRA (Low-Rank Adaptation, 2021) is the dominant technique for fine-tuning large models without updating all parameters. The insight: the weight updates during fine-tuning have low intrinsic rank. Instead of updating the full N×M weight matrix, LoRA adds a low-rank decomposition: ΔW = A × B where A is N×r and B is r×M, with r ≪ min(N,M). Only A and B are trained (typically r=8 or r=16), reducing trainable parameters by 10,000× for a 7B model. The base model stays frozen, so a single base model can have hundreds of LoRA adapters for different tasks swapped in and out.</p>
+<p>QLoRA (2023) combines LoRA with 4-bit quantisation of the base model — enabling fine-tuning of a 70B model on a single A100 80G, something previously requiring 16+ GPUs. QLoRA is now the standard for budget fine-tuning.</p>
+<h3>Agents and Tool Use</h3>
+<p>AI agents extend language models from question-answering systems to action-taking systems. The core pattern is a loop: the model receives observations, reasons about what to do, takes an action (calling a tool, writing to memory, browsing the web), receives the result, and repeats. Function calling (OpenAI, 2023) standardised how models signal their intent to call external tools — the model returns structured JSON indicating which function to call with which arguments, rather than embedded text like "I will now search for..."</p>
+<p><strong>LangChain</strong> (2022): the first popular framework for chaining LLM calls with tools. Became synonymous with "over-engineered" as its abstraction layers made simple tasks complex. Still useful for rapid prototyping.</p>
+<p><strong>LlamaIndex</strong> (2022): specialised in retrieval-augmented generation — connecting LLMs to external document stores. Better focus than LangChain for document Q&amp;A applications.</p>
+<p><strong>DSPy</strong> (2023, Stanford): a programming model for "compiling" LLM pipelines — automatically optimising prompts and few-shot examples for a given task and metric rather than hand-crafting them. More principled than LangChain; higher learning curve.</p>
+<h3>Retrieval-Augmented Generation and Vector Databases</h3>
+<p>RAG (Retrieval-Augmented Generation) addresses the fundamental limitation that language models don't know about documents that didn't exist during training. At inference time, retrieve relevant documents from an external store based on the query, inject them into the context, and let the model answer using this retrieved information. This requires: an embedding model (converts text to dense vectors), a vector database (stores and retrieves vectors by similarity), and a generation model (synthesises the retrieved context into an answer).</p>
+<p>Vector databases: <strong>Pinecone</strong> (managed, easy), <strong>Weaviate</strong> (open-source, feature-rich), <strong>pgvector</strong> (PostgreSQL extension — if you're already running Postgres, this is the simplest option), <strong>Chroma</strong> (local dev-friendly), <strong>Qdrant</strong> (Rust, fast, open-source). The choice depends primarily on whether you need managed infrastructure, existing database integration, or maximum performance.</p>
+<div class="box case-box">
+<div class="box-label">The Open vs Closed Model Debate</div>
+<p>The AI community has a genuine philosophical and commercial disagreement about whether frontier AI models should be open-weight (weights publicly released) or closed (API-only). The major positions:</p>
+<p><strong>For open models (Meta, Mistral, Hugging Face):</strong> Open weights enable research, allow fine-tuning for specific use cases, reduce dependency on API providers, and allow deployment in regulated environments where data cannot leave your infrastructure. Llama 3 70B performs comparably to GPT-4 class models at many tasks and can run on hardware you own.</p>
+<p><strong>For closed models (OpenAI, Anthropic, Google):</strong> Frontier capabilities require billions in training compute accessible only to well-capitalised companies. Closed APIs ensure safety review before deployment. Open-weight releases of truly frontier models would provide capabilities to anyone, including malicious actors, with no usage controls.</p>
+<p><strong>The honest state of play (2024–2025):</strong> Open-weight models from Meta (Llama 3.1 405B) and Alibaba (Qwen 2.5) are competitive with GPT-4 on benchmarks at a model size that can be run on 8 H100s. DeepSeek R1 (2025) matched o1's reasoning benchmark performance with fully open weights and a published training recipe, at a reported training cost of ~$6M — a dramatic compression of the frontier-open gap. The era of a 6–12 month performance gap between open and closed frontier models appears to be ending.</p>
+</div>
+</section>
+<section class="chapter" id="ch9">
+
+
+<h2>The Chip War Comes to AI</h2>
+<p>Artificial intelligence has become the primary theatre of the technology cold war between the United States and China. The competition is not primarily about software or algorithms — those diffuse globally within months. It is about compute: who controls the hardware that trains the largest models, who controls the supply chain that produces that hardware, and what happens if that supply chain fractures.</p>
+<h3>How NVIDIA Built an Unassailable Lead</h3>
+<p>In 2006, NVIDIA was a $3B GPU company whose primary business was selling graphics cards to gamers. Its investment in CUDA was a speculative bet that GPUs had applications beyond graphics rendering. The bet paid off when researchers discovered that CUDA-enabled GPUs were ideal for neural network training. By the time the deep learning wave crested in 2015–2017, NVIDIA had accumulated a decade of software investment, developer relationships, and library depth that no competitor could quickly replicate.</p>
+<p>The financial result was extraordinary. NVIDIA's market capitalisation went from $30B in 2019 to $3.3 trillion in 2024 — a 110× increase. The H100 GPU, which costs roughly $3,000 to manufacture (based on analyst estimates of TSMC wafer costs, packaging, and assembly), sold for $25,000–40,000 on the open market in 2023–2024, implying gross margins of 80%+. This pricing power is not gouging; it reflects genuine scarcity of a product that cannot quickly be produced by anyone else. Only TSMC can manufacture the H100's GA102 die at N4 process; only SK Hynix reliably supplied HBM3 in volume; only NVIDIA has the CUDA ecosystem. The supply chain is concentrated in ways that create extraordinary pricing power.</p>
+<h3>US Export Controls — The BIS Approach</h3>
+<p>The US Bureau of Industry and Security (BIS) has progressively tightened export controls on advanced semiconductors to China since 2022, using two mechanisms:</p>
+<p><strong>Performance thresholds:</strong> The October 2022 rules imposed export licence requirements on chips exceeding specific performance thresholds — originally calibrated to block A100 and H100. NVIDIA responded by designing the A800 and H800, which throttle NVLink bandwidth and compute to fall below the thresholds while preserving most performance for local workloads. The October 2023 rules tightened the thresholds to catch A800/H800 as well.</p>
+<p><strong>Chip-to-chip interconnect limits:</strong> The 2023 rules also restrict chips based on interconnect bandwidth — preventing Chinese customers from effectively linking many chips together even if individual chips are below compute thresholds. This targets the cluster-level aggregate performance rather than per-chip specs.</p>
+<p>The enforcement challenge: chips can be transshipped through third countries (Malaysia, Singapore, UAE) before reaching Chinese customers. The US has imposed secondary sanctions and increased scrutiny of chip distributors in these countries, but enforcement is imperfect and demand is high.</p>
+<div class="box case-box">
+<div class="box-label">Case Study — Huawei Ascend 910B: The Chinese Response</div>
+<p>Following the initial export controls, Huawei accelerated development of the Ascend 910B — its most powerful AI training chip. Released to volume production in late 2023, the 910B delivers approximately 256 TFLOPS BF16 on Huawei's CANN-based software stack. Chinese AI labs including Baidu (ERNIE), Alibaba (Tongyi Qianwen training), and Baidu Cloud report using clusters of Ascend 910B chips for production training.</p>
+<p>The catch: the Ascend 910B is manufactured by SMIC (Semiconductor Manufacturing International Corporation), China's most advanced foundry, using a 7nm-equivalent process node. SMIC cannot access ASML's EUV machines (also subject to export controls), so its 7nm-equivalent is produced using 193nm ArF immersion with aggressive multiple patterning. The resulting transistor density is lower than TSMC's N7 and the yield is reportedly lower, making the economics of scale difficult. Huawei reportedly produces chips at volumes sufficient for internal and domestic cloud customer demand, but not at the price points competitive with NVIDIA's economics when NVIDIA can sell freely.</p>
+<p>The broader strategic picture: China is not going to be prevented from developing AI by chip export controls. The controls slow the pace of frontier model development in China by 12–24 months per generation — enough time for US-based labs to maintain a lead, but not enough to prevent Chinese AI development from progressing. DeepSeek's R1 model (January 2025), trained on a cluster of H800s purchased before the tightened export controls, demonstrated that a small team with constrained hardware can produce frontier-class reasoning models by innovating on training efficiency rather than brute-force scale.</p>
+</div>
+<h3>TSMC, Taiwan, and the CHIPS Act</h3>
+<p>TSMC manufactures approximately 90% of the world's most advanced logic chips at its facilities in Taiwan. The concentration of this manufacturing capacity on an island that the PRC government regards as sovereign Chinese territory — and regularly conducts military exercises simulating blockade — is the most significant geopolitical supply chain risk in the global technology sector.</p>
+<p>The CHIPS Act (Creating Helpful Incentives to Produce Semiconductors, US, 2022) provided $52.7B in direct subsidies and $24B in tax credits for US semiconductor manufacturing. The primary beneficiaries: TSMC (building N4 and N3 fabs in Arizona), Intel (building leading-edge fabs in Ohio and Germany), Samsung (Texas fab expansion), and Micron (Idaho DRAM fab). The EU Chips Act (€43B) targets similar geographic diversification for European supply.</p>
+<p>The honest assessment: these investments will produce meaningful volumes of US-manufactured advanced chips by 2027–2028. But TSMC's Arizona fabs will not replicate the full manufacturing ecosystem of Hsinchu overnight. Taiwan's semiconductor cluster includes 3,000+ specialised suppliers — materials, equipment maintenance, process engineers — that have built up over 35 years. A fab building is a capital expenditure; a manufacturing ecosystem is a civilisational asset built over decades.</p>
+<h3>Gulf State AI Ambitions</h3>
+<p>Saudi Arabia (Public Investment Fund, Humain initiative), UAE (G42, Technology Innovation Institute), and Qatar are acquiring AI compute at scale — purchasing hundreds of thousands of NVIDIA GPUs and partnering with US hyperscalers for cloud AI infrastructure. These purchases represent both genuine national AI development ambitions and a secondary market for chips that might otherwise be redirected to sanctioned entities. The US government's concern: advanced AI chips and their resulting capabilities could proliferate to entities it does not want to have them, even if the direct buyer is a US-aligned Gulf state. The 2024 AI Diffusion Framework attempted to address this through tiered export rules, though its long-term enforcement effectiveness is uncertain.</p>
+</section>
+<section class="chapter" id="ch10">
+
+
+<h2>The Future — What the Evidence Actually Suggests</h2>
+<p>Making predictions about AI has historically been a reliable way to be wrong. The field's history is littered with confident pronouncements — about winters that didn't come, capabilities that were decades away, and milestones that arrived ten years early. What we can do is apply careful thinking to the evidence we have, distinguish what we know from what we are guessing, and identify the genuine uncertainties rather than offering a false sense of precision.</p>
+<h3>Scaling Laws — Empirical but Contested</h3>
+<p>The scaling laws (Kaplan et al., 2020; Hoffmann et al., 2022 "Chinchilla") establish an empirical regularity: for transformer language models, loss on a held-out dataset decreases as a power law in training compute (and thus in model size and training data). Doubling the compute budget reliably reduces test loss by a predictable factor.</p>
+<div class="formula">Simplified scaling law (Chinchilla regime):
+  L(C) ≈ A · C^(-α)
+
+Where C = training compute (FLOPs), α ≈ 0.05–0.10
+
+Meaning: 10× more compute → ~10% reduction in loss
+Loss maps roughly to benchmark performance.
+
+Key result: to train optimally, scale data proportionally
+to model size: D_optimal ≈ 20 × N_params
+
+GPT-3 (N=175B, D=300B) was undertrained by ~10×.
+Llama 3 (N=8B, D=15T) is compute-optimal.
+Llama 3 70B vs GPT-3 175B: similar benchmark performance
+at dramatically different inference cost — smaller, better-trained.</div>
+<p>The contested question: do scaling laws continue indefinitely? The empirical evidence through 2024 suggests yes — frontier models trained with more compute continue to improve. But "improvement on benchmarks" and "improvement on the tasks we actually care about" are not identical. There are growing signs of benchmark saturation (models achieving near-100% on some evaluations originally considered hard), suggesting we need better evaluations rather than a fundamental slowdown. Whether there is a wall that scaling cannot pass — what researchers call "data wall" (running out of high-quality internet text) or "task wall" (fundamental limitations on what next-token prediction can learn) — is genuinely unknown and the subject of active debate.</p>
+<h3>Inference-Time Compute — A New Scaling Axis</h3>
+<p>OpenAI's o1 model (2024) demonstrated something qualitatively different from prior scaling: allocating more compute at <em>inference time</em> — letting the model "think longer" before answering — improves performance on reasoning tasks, sometimes dramatically. o1 on the International Mathematics Olympiad improved from 13% (GPT-4-level) to 83% by using extended chain-of-thought reasoning during inference.</p>
+<p>This matters architecturally because it represents a new scaling axis orthogonal to training compute. Rather than needing to train a larger model, you can run the same model for longer per query. DeepSeek R1 (2025) produced the same capability open-source, demonstrating the technique is replicable. The economic implication: inference costs more per query (the model runs for longer), but training a "reasoner" may be dramatically cheaper than training a "knower." The question of whether this axis also hits walls — whether there are reasoning problems that simply cannot be solved by thinking longer in a language model — is an open empirical question.</p>
+<h3>Multimodality — Vision, Audio, Video as First Class</h3>
+<p>The most capable AI models in 2025 are not text-only. GPT-4o, Claude 3.5, Gemini 1.5 Pro all process images, audio, and video as native inputs alongside text. The architectural trend: a shared transformer backbone processing token sequences, where tokens can be image patches (Vision Transformer / ViT approach), audio spectral frames, or video frames alongside text tokens. The training mixture determines which modalities the model handles well.</p>
+<p>The near-term trajectory: real-time voice assistants (GPT-4o's native audio mode eliminates the STT→LLM→TTS pipeline latency), video understanding models that can reason about long video sequences (Gemini 1.5 Pro's 1M token context), and agentic computer-use models that observe screen state and interact with GUI applications. Each of these was demonstrated in 2024 and will mature into reliable production systems in 2025–2026.</p>
+<div class="box warn-box">
+<div class="box-label">Claims to Evaluate Sceptically</div>
+<p><strong>"AGI by [year]":</strong> AGI has no agreed definition. When companies say "AGI," they mean different things — from "matches human performance on a specific benchmark suite" to "general reasoning comparable to a human expert across all domains." Evaluate claims by asking: which specific definition, on which evaluation, validated by whom?</p>
+<p><strong>Benchmark performance = real capability:</strong> Models are increasingly evaluated on the same benchmarks they are trained on (contamination), and high performance on MMLU or HumanEval does not necessarily predict performance on genuinely novel tasks. Always look for evaluations the model was not specifically optimised for.</p>
+<p><strong>"This architecture will replace transformers":</strong> Said about SSMs (Mamba), spiking neural networks, liquid neural networks, and others. Transformers have not been replaced despite consistent predictions because they have accumulated tooling, interpretability research, and hardware optimisation investment. Novel architectures must be dramatically better to overcome these advantages — "competitive on small-scale benchmarks" is not sufficient.</p>
+</div>
+<h3>Energy — The Hard Physical Constraint</h3>
+<p>AI compute demand is growing faster than power infrastructure can be built. A single H100 draws 700W; a cluster of 100,000 H100s draws 70 MW — the output of a large power station. Training a frontier model in 2025 requires ~100–500 MW for weeks to months. Data centre power demand in the US is projected to grow from 17 GW in 2022 to 35–50 GW by 2030, largely driven by AI.</p>
+<p>This is not a reason AI development stops. But it is a hard constraint on how quickly frontier training scales, and it will reshape where AI infrastructure is built (near nuclear power, hydroelectric, or stranded renewable energy) and how it is designed (liquid cooling, efficiency improvements). The companies that solve the energy problem — either through more efficient training (DeepSeek's efficiency innovations), better inference serving (quantisation, speculative decoding), or securing abundant power supply — will have a structural cost advantage.</p>
+<h3>What to Learn Next — A Honest Roadmap</h3>
+<div class="box focus-box">
+<div class="box-label">If you have 3 months</div>
+<ul>
+<li><strong>Fast.ai Practical Deep Learning:</strong> The most intuitive entry into training real models. Code-first, concept-later. Free.</li>
+<li><strong>Andrej Karpathy's "Zero to Hero" series:</strong> Build a micrograd (backprop from scratch), a character-level language model, and a GPT in pure PyTorch. The best-structured technical curriculum for understanding what's actually happening inside a model.</li>
+<li><strong>Hugging Face course:</strong> Using transformers, fine-tuning with PEFT/LoRA, deployment. Gets you from theory to running models in a week.</li>
+</ul>
+</div>
+<div class="box focus-box">
+<div class="box-label">If you have 6 months (adding depth)</div>
+<ul>
+<li><strong>Triton GPU kernel tutorials:</strong> Understand the memory hierarchy in practice. Write a fused softmax, a matrix multiply, a Flash Attention kernel. This transitions you from "user of AI tools" to "person who understands why they work."</li>
+<li><strong>Read primary papers:</strong> "Attention Is All You Need" (2017), "BERT" (2018), "Scaling Laws" (Kaplan 2020), "Chinchilla" (2022), "Flash Attention" (2022), "LoRA" (2022), "Llama 3" (2024). These are readable and freely available.</li>
+<li><strong>Run a training run:</strong> Fine-tune a 7B model with QLoRA on a custom dataset. Nothing teaches the systems constraints as clearly as watching a GPU OOM on your first attempt and reasoning through why.</li>
+</ul>
+</div>
+<div class="box focus-box">
+<div class="box-label">Given your intelligence background specifically</div>
+<ul>
+<li><strong>Information operations + LLMs:</strong> Synthetic media detection, influence operation analysis, narrative tracking at scale using embedding similarity. Your existing IO analysis expertise + LLM technical depth is a rare combination that has direct intelligence community applications.</li>
+<li><strong>Open-source intelligence tooling:</strong> Projects like TRAPLINE (which you've built) benefit from understanding embedding models, semantic search, and entity extraction at the API level — and from understanding what the models are actually doing well enough to know when they fail.</li>
+<li><strong>Geopolitical AI analysis:</strong> The material in Chapter 9, understood technically, is a professional differentiator. Most geopolitical analysts don't understand HBM capacity constraints or what CANN's limitations mean for Chinese AI development timelines. Most AI engineers don't have your background in intelligence analysis. The intersection is unusually valuable.</li>
+</ul>
+</div>
+</section>
+</div>
+</div>
+</body>
+</html>

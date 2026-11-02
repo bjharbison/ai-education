@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Systems — High Bandwidth Memory: From Fab to Fleet</title>
+<style>
+@page { size: 8.5in 11in; margin-top:0.75in; margin-bottom:0.85in; margin-left:1.0in; margin-right:0.625in; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,'Times New Roman',serif;font-size:11pt;line-height:1.65;color:#111;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@media screen{body{background:#d8d4cc;padding:2rem 1rem}.page-wrap{max-width:8.5in;margin:0 auto;background:#fff;box-shadow:0 4px 40px rgba(0,0,0,.3);padding:0.75in 0.625in 0.85in 1.0in}}
+@media print{.page-wrap{padding:0;margin:0}}
+h1{font-family:Georgia,serif;font-size:26pt;font-weight:bold;color:#0f1e35;line-height:1.1;margin-bottom:.5rem;page-break-after:avoid}
+h2{font-family:Georgia,serif;font-size:15pt;font-weight:bold;color:#0f1e35;margin:1.7rem 0 .55rem;line-height:1.2;page-break-after:avoid}
+h3{font-family:Georgia,serif;font-size:12pt;font-weight:bold;font-style:italic;color:#1a2e4a;margin:1.35rem 0 .4rem;page-break-after:avoid}
+h4{font-size:10pt;font-weight:bold;color:#333;margin:1.1rem 0 .3rem;text-transform:uppercase;letter-spacing:.06em;page-break-after:avoid}
+p{margin-bottom:.75rem;text-align:justify;hyphens:auto;orphans:3;widows:3}
+p:last-child{margin-bottom:0}
+strong{font-weight:bold}em{font-style:italic}
+ul,ol{padding-left:1.35rem;margin-bottom:.75rem}li{margin-bottom:.3rem}
+a{color:#1a2e4a;text-decoration:none}
+code{font-family:'Courier New',monospace;font-size:9pt;background:#f2f2ef;padding:0 3px;border-radius:2px}
+.code-block,pre{font-family:'Courier New',monospace;font-size:8pt;line-height:1.5;background:#f2f2ef;border:.5pt solid #ccc;border-left:3pt solid #1a5fa8;padding:.6rem .8rem;margin:.9rem 0;white-space:pre-wrap;word-break:break-all;page-break-inside:avoid}
+.code-block pre{background:none;border:none;padding:0;margin:0}
+.code-header{font-family:'Courier New',monospace;font-size:7.5pt;color:#555;background:#e6e6e2;padding:3px 9px;margin:-.6rem -.8rem .5rem;border-bottom:.5pt solid #ccc}
+.code-lang{font-weight:bold;color:#1a5fa8}.code-fname{color:#777;margin-left:.5rem}
+.kw{color:#8b0000}.fn{color:#00008b}.cm{color:#777;font-style:italic}.st{color:#2e4a1a}.nm{color:#00008b}.cls{color:#5b21b6}
+.formula,.formula-box,.diagram{font-family:'Courier New',monospace;font-size:8pt;line-height:1.55;background:#f8f7f2;border:.5pt solid #ccc;border-left:3pt solid #b45309;padding:.6rem .8rem;margin:.9rem 0;white-space:pre-wrap;page-break-inside:avoid}
+table{width:100%;border-collapse:collapse;margin:.9rem 0;font-size:9pt;page-break-inside:avoid}
+th{background:#0f1e35;color:#fff;padding:6px 9px;text-align:left;font-size:8.5pt}
+td{padding:6px 9px;border-bottom:.5pt solid #ccc;vertical-align:top}
+tr:nth-child(even) td{background:#f8f8f6}
+.info-box{background:#f0f6ff;border-left:3pt solid #1a5fa8;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.warn-box{background:#fffaf0;border-left:3pt solid #b45309;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.case-box{background:#f5f0ff;border-left:3pt solid #5b21b6;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.focus-box,.future,.future-box{background:#fffaf0;border-left:3pt solid #b45309;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.green-box{background:#f0fff4;border-left:3pt solid #1a7a3a;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.box-label{font-size:7.5pt;letter-spacing:.14em;text-transform:uppercase;font-weight:bold;margin-bottom:.4rem}
+.info-box .box-label{color:#1a5fa8}.warn-box .box-label{color:#b45309}.case-box .box-label{color:#5b21b6}
+.focus-box .box-label,.future h4,.future-box h4{color:#b45309;font-family:Georgia;font-style:italic;font-size:10.5pt;font-weight:bold;text-transform:none;letter-spacing:0;margin-bottom:.4rem;display:block}
+.pq,.pull-quote{border-left:3pt solid #0f1e35;padding:.65rem 1rem;margin:1.1rem 0;background:#f8f7f4;page-break-inside:avoid}
+.pq p,.pull-quote p{font-style:italic;font-size:11pt;color:#1a2e4a;text-align:left;margin:0}
+.pq cite,.pull-quote cite{display:block;font-size:8.5pt;color:#888;margin-top:.35rem;font-style:normal}
+.phase-intro{font-style:italic;color:#333;padding:.65rem .85rem;background:#f8f8f4;border-left:2pt solid #0f1e35;margin-bottom:1rem}
+.part-header{padding:1in 0 .5in .3in;border-left:6pt solid #0f1e35;margin-bottom:1.5rem}
+.part-num{font-size:8.5pt;letter-spacing:.2em;text-transform:uppercase;color:#888;margin-bottom:.6rem}
+.part-header h2{font-size:24pt;color:#0f1e35;margin:0 0 .8rem;border:none;padding:0}
+.part-desc{font-size:11pt;font-style:italic;color:#555;line-height:1.6;max-width:5in}
+.part-stats{margin-top:1.2rem;font-size:9pt;color:#888}
+.chapter{page-break-before:always}
+.lab-section{page-break-before:always}
+.lesson-header{margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:.5pt solid #ccc;page-break-after:avoid}
+.lesson-header .lesson-title{font-family:Georgia,serif;font-size:13pt;font-weight:bold;color:#0f1e35}
+.lesson-header .lesson-duration{font-size:9pt;color:#888}
+.lab-header{margin-bottom:1.2rem;padding-bottom:.65rem;border-bottom:2pt solid #0f1e35;page-break-after:avoid}
+.lab-title{font-family:Georgia,serif;font-size:15pt;font-weight:bold;color:#0f1e35}
+.lab-number{font-size:7.5pt;letter-spacing:.15em;text-transform:uppercase;color:#888;margin-bottom:.25rem}
+.lab-meta{font-size:9pt;color:#666;margin-top:.3rem}
+.module-refs{font-size:9pt;color:#555;margin-bottom:.9rem;padding:.4rem .7rem;background:#f2f2ef;border-left:2pt solid #1a5fa8}
+.module-pill{color:#1a5fa8;margin-right:.5rem;font-size:9pt}
+.refs-label{font-weight:bold;color:#555;margin-right:.3rem}
+ol.lab-steps{padding-left:1.2rem}
+li.lab-step{margin-bottom:.7rem;page-break-inside:avoid}
+li.lab-step h4{font-style:normal;margin-bottom:.15rem}
+.timeline{margin:.9rem 0}
+.tl-item{display:flex;gap:.65rem;padding:.4rem 0;border-bottom:.5pt dotted #ddd;page-break-inside:avoid}
+.tl-year{font-weight:bold;color:#0f1e35;font-size:9pt;min-width:40pt;flex-shrink:0}
+.tl-title{font-weight:bold;font-size:10pt;margin-bottom:2px}
+.tl-desc{font-size:9.5pt;color:#444;line-height:1.5}
+.tl-item.major .tl-year{color:#b45309}
+.tl-content{flex:1}
+.stack{margin:.9rem 0}
+.stack-layer{padding:6px 9px;margin-bottom:3px;background:#f2f2ef;border:.5pt solid #ccc;display:flex;justify-content:space-between;page-break-inside:avoid}
+.stack-name{font-weight:bold;font-size:9pt}.stack-desc{font-size:8.5pt;color:#555}
+.pathway{margin:.9rem 0}
+.pathway-step{display:flex;gap:.65rem;padding:.4rem 0;border-bottom:.5pt dotted #ddd;page-break-inside:avoid}
+.pathway-icon{font-weight:bold;color:#0f1e35;min-width:22pt;flex-shrink:0;font-size:9.5pt}
+.pathway-title{font-weight:bold;font-size:10pt;margin-bottom:2px}
+.pathway-desc{font-size:9.5pt;color:#444;line-height:1.5}
+.pathway-content{flex:1}
+.glossary-section{page-break-before:always}
+.glossary-section h2{font-size:17pt;margin-bottom:1.3rem;padding-bottom:.4rem;border-bottom:1pt solid #ccc}
+dl.glossary-list{column-count:2;column-gap:.3in}
+dl.glossary-list dt{font-weight:bold;font-size:9.5pt;color:#0f1e35;margin-top:.8rem;break-after:avoid}
+dl.glossary-list dd{font-size:9pt;color:#333;margin-left:0;line-height:1.55;margin-bottom:.2rem}
+nav,.sidebar,[id*="sidebar"],.hero,.labs-hero,.chapter-nav,.ch-nav,.progress-bar-wrap,
+.phase-header,.phase-badge,.phase-number,.ch-num,.ch-label,.hero-eyebrow,.hero-stats,
+.hero-meta,.hero-tag,.labs-overview,.labs-grid,.lab-card,.lab-filters,.filter-btn,
+.ch-pill,.lab-badge,.lab-header-badge,.gloss-search-wrap,#gs,#glossary-search,
+.term-tooltip,.term-tip,.nav-phase,.nav-lesson,.nav-phase-header,
+.phase-toggle,.nav-chevron,.labs-overview-title{display:none!important}
+.phase-section,.phase-content{background:none!important;border:none!important}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+<div class="part-header">
+  <div class="part-num">Part3</div>
+  <h2>High Bandwidth Memory: From Fab to Fleet</h2>
+  <p class="part-desc">HBM fabrication, TSV processing, die stacking, quality testing, AI deployment, and runtime monitoring.</p>
+  <p class="part-stats">13 lessons · ~20,000 words</p>
+</div>
+<main id="main">
+<div class="phase-section open" id="phase1">
+
+<div class="phase-content">
+<div class="phase-intro" style="border-color:#0ea5e9">High Bandwidth Memory begins as silicon wafers processed through some of the most demanding semiconductor fabrication steps in existence. The stacked-die architecture requires mastery of Through-Silicon Vias, microbump bonding, and thermal compression — processes that push the limits of what lithography, deposition, and CMP can achieve at sub-10µm pitch.</div>
+<div class="lesson" id="p1l1">
+<div class="lesson-header"><span class="lesson-title">DRAM Cell Architecture &amp; the HBM Die</span> <span class="lesson-duration">(~4 hrs)</span></div>
+<p>A single HBM stack begins its life as conventional silicon wafers — processed through standard DRAM fabrication before anything unique to HBM begins. Understanding the DRAM cell and the structural demands of the HBM die gives you the foundation to reason about every process challenge that follows: why dies must be thinned, why TSVs are necessary, and why yield management is so unforgiving in a stacked architecture.</p>
+<h3>The 1T1C DRAM Cell</h3>
+<p>Every bit of storage in HBM is a single 1T1C cell: one access transistor, one storage capacitor. The transistor connects the capacitor to the bitline when the wordline is asserted — allowing the sense amplifier to read the stored charge and, on write, to drive new charge onto the capacitor. The design is deliberately minimal. Complexity per cell destroys density; at 10nm process nodes, a DRAM array packs 12–16 Gbit per die.</p>
+<div class="diagram">
+Wordline (WL) ──────────────────┐
+                                │ Gate
+                         ┌──────┴──────┐
+                         │  N-MOSFET   │  ← Pass transistor (access device)
+                         │  ~10nm node │
+                         └──────┬──────┘
+                                │ Source/Drain
+                         ┌──────┴──────┐
+                         │  Capacitor  │  Charged   = logic "1"
+                         │  ~20–22 fF  │  Uncharged = logic "0"
+                         │ (deep trench│  Refresh required every ~64ms
+                         │  or stacked)│
+                         └──────┬──────┘
+                                │
+                           ─────────── Plate / VSS
+
+Bitline (BL) ──── (connects to transistor drain) ───────────────────────────
+</div>
+<p>The capacitor's stored charge leaks continuously through sub-threshold current in the transistor and through the capacitor dielectric itself. This is why DRAM requires periodic refresh — every cell must be read and rewritten before its charge falls below the sense amplifier's discrimination threshold. At elevated temperatures, leakage accelerates and refresh interval must shorten. HBM's thermal management requirements are partly driven by keeping junction temperatures low enough to maintain acceptable refresh characteristics.</p>
+<h3>DRAM Process Technology</h3>
+<p>DRAM uses a specialized process node — not the same as leading-edge logic. While cutting-edge logic is at 3nm, production DRAM sits at 10–18nm half-pitch because the capacitor structures and cell array layout require different optimization trade-offs. The two dominant capacitor architectures are:</p>
+<div class="grid-2">
+<div class="card">
+<div class="card-icon">🏙️</div>
+<div class="card-title">Stacked Capacitor (COB)</div>
+<p>Capacitor Over Bitline: tall cylinder capacitors built above the array. Used by Samsung and SK Hynix. Heights reach 3–4µm above the silicon surface, requiring careful CMP and gap-fill. Enables higher capacitance density as geometry shrinks by making the cylinder taller.</p>
+</div>
+<div class="card">
+<div class="card-icon">🏗️</div>
+<div class="card-title">Deep Trench Capacitor</div>
+<p>Capacitor etched deep into the substrate below the transistor. Historically used by Micron. Trench depth reaches 50–60µm on older nodes. Provides excellent mechanical stability and low topography above the silicon surface — advantageous for lithography overlay.</p>
+</div>
+</div>
+<h3>What Makes an HBM Die Different</h3>
+<p>A standard DDR5 DRAM die is designed for wire bonding to a PCB — its interface pads are on the front surface, the die is ~750µm thick, and it communicates through a 64-bit bus. An HBM DRAM die is designed for a fundamentally different integration approach:</p>
+<table>
+<tr><th>Parameter</th><th>DDR5 SDRAM</th><th>HBM3 DRAM Die</th><th>Why Different</th></tr>
+<tr><td>Die thickness</td><td>~750 µm</td><td>~50 µm</td><td>Stack height, TSV aspect ratio</td></tr>
+<tr><td>Bus width</td><td>64-bit</td><td>128-bit × 8 channels = 1024-bit</td><td>Bandwidth through vertical integration</td></tr>
+<tr><td>I/O interface</td><td>Front-side wire bonds</td><td>TSV + microbumps</td><td>Vertical stacking requirement</td></tr>
+<tr><td>Package</td><td>TSOP/BGA on PCB</td><td>Bare die on interposer</td><td>CoWoS co-packaging</td></tr>
+<tr><td>Bandwidth per stack</td><td>~89 GB/s</td><td>~819 GB/s (HBM3)</td><td>9× wider bus × higher frequency</td></tr>
+<tr><td>Power per GB/s</td><td>~7 mW/GB/s</td><td>~3.5 mW/GB/s</td><td>Short on-stack traces vs long PCB traces</td></tr>
+</table>
+<h3>The Logic Die (Base Die)</h3>
+<p>Every HBM stack includes one logic die at the bottom — distinct from the DRAM dies stacked above it. The logic die is manufactured on a leading-edge logic process (not DRAM process) and contains the physical layer interface (PHY) that translates between the HBM protocol and the memory controller on the GPU. It also houses the per-channel error correction engines, the DFT (Design for Test) infrastructure, and the temperature sensors that report to the system management interface.</p>
+<div class="info-box">
+<div class="box-label">Why the Logic Die Matters</div>
+<p>The PHY on the logic die is one of the most complex circuits in the package. It must drive signals across the ~55µm microbump interface to the DRAM die above at multi-Gbps rates, while compensating for process variation, temperature gradients across the stack, and the capacitive load of thousands of TSVs. SK Hynix, Samsung, and Micron each design proprietary PHYs — the logic die is where most of the HBM vendor differentiation lives, and where power efficiency improvements between generations are achieved.</p>
+</div>
+<h3>HBM Generation Roadmap</h3>
+<table>
+<tr><th>Generation</th><th>Year</th><th>Bandwidth/Stack</th><th>Capacity</th><th>Stack Height</th><th>Key Advance</th></tr>
+<tr><td>HBM1</td><td>2015</td><td>128 GB/s</td><td>1 GB</td><td>4 dies</td><td>First commercial TSV DRAM</td></tr>
+<tr><td>HBM2</td><td>2016</td><td>256 GB/s</td><td>8 GB</td><td>4–8 dies</td><td>Pseudo-channel mode, ECC</td></tr>
+<tr><td>HBM2E</td><td>2019</td><td>460 GB/s</td><td>8–16 GB</td><td>8 dies</td><td>Higher frequency, improved PHY</td></tr>
+<tr><td>HBM3</td><td>2022</td><td>819 GB/s</td><td>24 GB</td><td>8–12 dies</td><td>Doubled channels (16), on-die ECC</td></tr>
+<tr><td>HBM3E</td><td>2024</td><td>1.2 TB/s</td><td>36 GB</td><td>12 dies</td><td>Higher data rate, 12-hi stack</td></tr>
+<tr><td>HBM4</td><td>2025+</td><td>~2 TB/s</td><td>48+ GB</td><td>16 dies</td><td>Hybrid bonding, integrated logic</td></tr>
+</table>
+<div class="analogy-box">
+<div class="box-label">The Fundamental Trade-off</div>
+<p>Every HBM engineering decision is a negotiation between bandwidth, capacity, power, and cost. More stack layers add capacity and bandwidth but increase assembly complexity and reduce yield. Finer bump pitch enables more signal connections but tightens alignment tolerances. Thinner dies allow taller stacks but increase handling risk and die strength concerns. Understanding these tensions lets you reason about why each generation made the specific architectural choices it did — and predict the direction of HBM5 and beyond.</p>
+</div>
+</div>
+<div class="lesson" id="p1l2">
+<div class="lesson-header"><span class="lesson-title">Through-Silicon Vias (TSVs)</span> <span class="lesson-duration">(~5 hrs)</span></div>
+<p>Through-Silicon Vias are the structural invention that makes HBM possible. Without a reliable way to route thousands of electrical signals vertically through a 50µm silicon die, the 1024-bit wide bus that defines HBM's bandwidth advantage cannot exist. TSV fabrication draws from nearly every subdiscipline of semiconductor manufacturing — plasma etching, ALD, PVD, electroplating, and CMP — and each step must be executed to tolerances of single-digit nanometers on a feature that is 5µm across and 50µm deep.</p>
+<h3>TSV Geometry and Electrical Requirements</h3>
+<p>An HBM TSV is a cylindrical copper conductor running from the front (active) surface of a DRAM die to the back surface. After die thinning, its geometry is approximately 5µm diameter × 50µm deep — an aspect ratio of 10:1. This is at the edge of what DRIE can achieve reliably. Electrical requirements are tight: resistance below 5Ω, capacitance below 100fF, leakage to substrate below 1nA, and breakdown voltage above 5V.</p>
+<div class="diagram">
+Cross-section of a single TSV:
+
+ Front surface of die
+ ──────────────────────────────────────────────────────────
+ │  Metal pad (landing pad — connects to active wiring)   │
+ └─────────────────┬────────────────────────────────────--┘
+                   │
+   ┌───────────────┼──────────────┐   ← SiO₂ liner (100–200nm)
+   │  ░ Si substrate║  Cu fill  ░ │       isolates Cu from Si
+   │  ░░░░░░░░░░░░░║░░░░░░░░░░░░ │   ← TaN barrier (10–20nm)
+   │               ║              │       prevents Cu diffusion
+   │               ║              │   Depth: ~50µm after thinning
+   │               ║              │   Diameter: ~5µm
+   │  ░░░░░░░░░░░░░║░░░░░░░░░░░░ │   Aspect ratio: ~10:1
+   └───────────────┼──────────────┘
+                   │
+ ──────────────────────────────────────────────────────────
+ Back surface (after thinning — TSV tip revealed)
+ │  Backside RDL pad (connects to microbump landing)      │
+</div>
+<h3>TSV Integration Timing Options</h3>
+<div class="grid-2">
+<div class="card">
+<div class="card-title">Via-First</div>
+<p>TSVs etched before any transistor layers. Allows deepest vias but complicates subsequent lithography due to surface topography. Used in some MEMS applications; rarely in HBM.</p>
+</div>
+<div class="card">
+<div class="card-title">Via-Middle (HBM standard)</div>
+<p>TSVs formed after FEOL transistors but before BEOL metal wiring. Balances process compatibility with access to deep silicon. Dominant approach for all HBM generations.</p>
+</div>
+<div class="card">
+<div class="card-title">Via-Last (Front)</div>
+<p>TSVs formed after all processing, etching through completed metal layers. Highest risk of damage to existing structures. Used in packaging interposers where TSV density is lower.</p>
+</div>
+<div class="card">
+<div class="card-title">Via-Last (Back)</div>
+<p>TSVs etched from the back side of a thinned wafer. Common in image sensors. Avoids risk to front-side processing but requires handling fragile thinned wafers throughout etch and fill.</p>
+</div>
+</div>
+<h3>Step-by-Step TSV Process (Via-Middle)</h3>
+<ol class="lab-steps">
+<li class="lab-step">
+<h4>Hard Mask Deposition and Patterning</h4>
+<p>A SiO₂ or hard mask" data-slug="photoresist"&gt;SiN hard mask is deposited over the wafer surface and patterned by 193nm immersion lithography" data-slug="arf"&gt;ArF immersion lithography. The patterned mask defines each TSV location with ~±5nm overlay accuracy. Overlay error at this step directly translates to TSV-to-transistor proximity variance — critical for managing keep-out zone dimensions across the die.</p>
+</li>
+<li class="lab-step">
+<h4>Deep Reactive Ion Etching (Bosch Process)</h4>
+<p>The Bosch process alternates between two steps at 10–15 second intervals: an SF₆ etch cycle (isotropic silicon removal, ~4µm/cycle) and a C₄F₈ passivation cycle that deposits a fluorocarbon polymer on all surfaces. Ion bombardment removes the polymer only at the trench bottom, allowing downward progress while the sidewall polymer prevents lateral etching. Result: scalloped but nearly vertical sidewalls, 10:1 aspect ratio achievable. Etch rate: ~2–4µm/min. A 50µm deep TSV takes ~15–25 minutes.</p>
+</li>
+<li class="lab-step">
+<h4>Scallop Smoothing</h4>
+<p>The Bosch process leaves periodic scallops (~100–200nm amplitude) on TSV sidewalls. A brief isotropic etch smooths these before liner deposition, improving conformality and reducing the risk of dielectric thinning at scallop peaks. Surface roughness target: &lt;50nm Ra.</p>
+</li>
+<li class="lab-step">
+<h4>Thermal Oxidation or PECVD Liner</h4>
+<p>A 100–200nm SiO₂ liner is grown or deposited on the TSV sidewalls. This is the primary isolation barrier between the copper fill and the silicon substrate. Dielectric integrity is critical: a single pinhole creates a leakage path that will cause data corruption under HBM's high-frequency switching. PECVD offers better step coverage into deep vias than thermal oxidation for high-aspect-ratio features.</p>
+</li>
+<li class="lab-step">
+<h4>TaN/Cu Barrier and Seed Layer (PVD)</h4>
+<p>A ~10nm TaN adhesion/barrier layer and ~100nm Cu seed layer are deposited by Physical Vapor Deposition. The TaN prevents copper diffusion into silicon — copper creates deep-level recombination centers that destroy transistor minority carrier lifetime. Coverage at the bottom of a 5µm × 50µm hole is geometrically limited; ionized PVD (iPVD) with directional ion flux is used to maintain adequate bottom coverage.</p>
+</li>
+<li class="lab-step">
+<h4>Bottom-Up Copper Electroplating</h4>
+<p>Electrochemical deposition fills the via from the bottom upward. The plating bath contains copper sulfate electrolyte plus three organic additives: accelerator (bottom-preferential deposition), suppressor (inhibits side-wall deposition), and leveler (smooths the top surface). Precise control of concentrations, current density (~1–5 mA/cm²), and temperature (~25°C) determines fill quality. Voids at the via bottom are a primary reliability failure mode; bottom-up fill eliminates this by design.</p>
+</li>
+<li class="lab-step">
+<h4>Anneal and CMP Planarization</h4>
+<p>After plating, copper is annealed at ~200°C to recrystallize the grain structure, reducing resistivity from ~2.2 µΩ·cm to ~1.7 µΩ·cm and improving electromigration lifetime. CMP then removes the copper overburden, leaving TSV tops flush with the dielectric. Two-step CMP: a high-rate copper removal step, then a gentler buff controlling dishing (&lt;30nm) and erosion (&lt;10nm). Post-CMP profilometry maps surface topography across the full wafer.</p>
+</li>
+</ol>
+<h3>TSV Stress and Keep-Out Zones</h3>
+<p>Copper (CTE: 17 ppm/°C) and silicon (CTE: 2.6 ppm/°C) expand at very different rates under temperature cycling. The copper TSV exerts radial compressive and tensile stress on the surrounding silicon lattice. Piezoresistive models show this stress measurably shifts NMOS and PMOS threshold voltages within 10–15µm of each TSV.</p>
+<div class="formula">
+TSV Resistance:    R = ρ·L / A = 1.7µΩ·cm × 50µm / π(2.5µm)² ≈ 4.3 Ω
+TSV Capacitance:   C = 2πε·L / ln(r_outer/r_inner) ≈ 50–80 fF
+RC time constant:  τ = 4.3Ω × 65fF ≈ 280 ps
+
+At HBM3 (4.8 Gbps/pin, UI ≈ 208ps):
+TSV RC is fast enough at current speeds, but at HBM4 (&gt;8 Gbps)
+equalization at the logic die PHY becomes necessary to compensate
+inter-symbol interference from TSV capacitance.
+
+Keep-out zones:
+  NMOS: no active transistors within ~5µm of TSV edge
+  PMOS: ~8µm (more sensitive to compressive stress)
+  Area penalty: 15–25% of die area near TSV arrays
+</div>
+<div class="warn-box">
+<div class="box-label">Backside Reveal — The Final Step</div>
+<p>After all front-side processing is complete, the wafer is thinned from ~750µm to ~50µm by backside mechanical grinding followed by CMP. This exposes the copper tips of every TSV on the backside. These exposed tips — protruding ~1–2µm above the ground silicon surface — become the landing pads for microbumps in the stacking step. The thinning process is mechanically precarious: a 50µm silicon wafer is extremely fragile and must be temporarily bonded to a carrier wafer for support throughout backside processing and subsequent handling.</p>
+</div>
+</div>
+<div class="lesson" id="p1l3">
+<div class="lesson-header"><span class="lesson-title">Die Stacking, Microbumps &amp; Hybrid Bonding</span> <span class="lesson-duration">(~5 hrs)</span></div>
+<p>Individual KGD-qualified DRAM dies and the logic base die must be assembled into a single functional stack. This stacking process — die bonding, microbump formation, thermal compression bonding, and underfill encapsulation — is where the accumulated yield of individual dies is converted into a finished package yield, and where the most demanding mechanical precision requirements in semiconductor packaging are enforced.</p>
+<h3>Microbump Structure and Formation</h3>
+<p>A microbump is a small electromechanical joint — typically a copper pillar with a tin-silver (SnAg) cap — that simultaneously provides electrical continuity and mechanical attachment between die surfaces. HBM3E uses a microbump pitch of approximately 55µm with bump diameter ~25µm and height ~15–20µm.</p>
+<div class="diagram">
+Die N+1 surface (DRAM):
+  ┌─────┐  ┌─────┐  ┌─────┐  ┌─────┐  ← Cu landing pads on TSV backside
+     ▲      ▲      ▲      ▲
+  ┌──┴──┐┌──┴──┐┌──┴──┐┌──┴──┐         ← SnAg solder cap (~3µm)
+  │ Ni  ││ Ni  ││ Ni  ││ Ni  │         ← Ni barrier (~2µm)
+  │     ││     ││     ││     │         ← Cu pillar (~12µm height)
+  └──┬──┘└──┬──┘└──┬──┘└──┬──┘
+     ▼      ▼      ▼      ▼
+  ┌─────┐  ┌─────┐  ┌─────┐  ┌─────┐  ← UBM pads on die N
+Die N surface (DRAM or Logic die):
+
+Pitch: ~55µm  |  Height: ~15–20µm  |  Coplanarity tolerance: ±2µm
+</div>
+<p>Microbumps are formed by electroplating copper pillars directly on the wafer surface using a photoresist mold. A photoresist defines the bump locations; copper is plated into the openings; resist is stripped; the seed layer is etched away between bumps. The SnAg cap is plated last. Each bump must be within ±2µm of target height (coplanarity) — height variation causes insufficient compression at short bumps and excessive stress at tall ones during bonding.</p>
+<h3>Thermal Compression Bonding (TCB)</h3>
+<p>TCB is the dominant die-stacking method for HBM. A bond head picks each DRAM die by vacuum, uses IR alignment marks to achieve sub-micron overlay, then presses the die onto the stack while applying heat.</p>
+<ol class="lab-steps">
+<li class="lab-step">
+<h4>Die Pickup and Pre-alignment</h4>
+<p>A vacuum collet picks the die from the diced wafer tape frame. Machine vision reads alignment marks on the die surface with sub-100nm accuracy. The bond head rotates and translates to bring the die into alignment with the target stack, correcting for die-to-die offset. Temperature is ramped to ~150°C (pre-bond).</p>
+</li>
+<li class="lab-step">
+<h4>Contact and Force Application</h4>
+<p>The die is lowered to contact the stack at a controlled velocity. Initial force is light (0.1–0.5N per bump array) to avoid damaging the SnAg caps. Bond head temperature is ramped to 250–280°C — above SnAg liquidus (~221°C) to allow solder to flow and wet the landing pad.</p>
+</li>
+<li class="lab-step">
+<h4>Dwell at Bonding Temperature</h4>
+<p>Force is increased to the bonding setpoint (1–5N/mm²) and held for 1–5 seconds. The molten SnAg wets the copper landing pad, forming Cu-Sn intermetallic compounds (Cu₃Sn, Cu₆Sn₅) at both interfaces. These intermetallics are the actual electrical and mechanical joint — harder and higher-melting than the original solder, with improved electromigration resistance.</p>
+</li>
+<li class="lab-step">
+<h4>Cooldown Under Force and Release</h4>
+<p>Temperature is ramped down while maintaining bonding force, preventing the solder from pulling back off the pad during solidification. Force is released once below ~150°C. Total cycle time: 5–15 seconds per die. Throughput on a multi-head bonder: 1000–3000 die bonds per hour.</p>
+</li>
+</ol>
+<h3>Hybrid Bonding — HBM4 and Beyond</h3>
+<p>Microbump bonding has a fundamental pitch limitation: you cannot make reliable solder bumps much smaller than ~30µm. HBM4 requires more interconnects per unit area than microbumps can provide. The solution is hybrid bonding — eliminating solder entirely and bonding copper-to-copper by diffusion.</p>
+<div class="grid-2">
+<div class="card">
+<div class="card-title">Microbumping (HBM1–3E)</div>
+<p><strong>Pitch:</strong> 55µm → 40µm achievable<br/>
+<strong>Joint height:</strong> 15–20µm<br/>
+<strong>Mechanism:</strong> Solder reflow, intermetallic formation<br/>
+<strong>Thermal budget:</strong> 250–280°C<br/>
+<strong>Bandwidth scaling:</strong> Limited by achievable pitch</p>
+</div>
+<div class="card">
+<div class="card-title">Hybrid Bonding (HBM4+)</div>
+<p><strong>Pitch:</strong> &lt;10µm demonstrated, &lt;5µm target<br/>
+<strong>Joint height:</strong> ~0µm (dies nearly touching)<br/>
+<strong>Mechanism:</strong> Cu–Cu interdiffusion at low temp<br/>
+<strong>Surface prep:</strong> CMP to &lt;0.3nm Ra, plasma activation<br/>
+<strong>Bandwidth scaling:</strong> 4–10× more connections per area</p>
+</div>
+</div>
+<p>In hybrid bonding, both die surfaces are planarized to atomic smoothness by CMP, then activated with a dilute HF dip or plasma treatment. The dies are brought into contact at room temperature — van der Waals forces spontaneously bond the dielectric surfaces across the entire interface. A low-temperature anneal (~200°C) then drives copper-copper interdiffusion across the bond interface, forming a continuous metallic conductor. No solder, no reflow, no bump height variability. The primary challenge is surface preparation: even a single 1µm particle prevents the surrounding area from bonding, and a 0.5nm surface roughness target requires state-of-the-art CMP process control.</p>
+<h3>Non-Conductive Film (NCF) Underfill</h3>
+<p>Traditional capillary underfill — liquid epoxy wicked under the die by surface tension — becomes impractical at microbump pitches below 40µm because silica filler particles (~1–5µm) clog the narrow gaps. HBM3E and beyond use Non-Conductive Film (NCF): a thin solid epoxy film pre-laminated onto the die surface before bonding. When the die is bonded under heat and pressure, the NCF flows, encapsulates all microbumps, and cures simultaneously with bond formation. Benefits: no void concerns, uniform thickness, compatible with sub-40µm pitch.</p>
+<h3>Stack Assembly Sequence</h3>
+<table>
+<tr><th>Step</th><th>Operation</th><th>Key Metric</th><th>Equipment</th></tr>
+<tr><td>1</td><td>Logic die placement on interposer</td><td>Overlay &lt;1µm</td><td>Flip-chip bonder</td></tr>
+<tr><td>2</td><td>DRAM die 1 bond to logic die</td><td>Force ±5%, Temp ±2°C</td><td>TCB bonder</td></tr>
+<tr><td>3</td><td>DRAM dies 2–N sequential bonding</td><td>Cumulative height &lt;±10µm</td><td>TCB bonder</td></tr>
+<tr><td>4</td><td>NCF cure or CUF dispense/cure</td><td>Void area &lt;0.1%</td><td>SAM inspection</td></tr>
+<tr><td>5</td><td>Post-bond electrical test</td><td>100% inter-die continuity</td><td>Boundary scan, BIST</td></tr>
+<tr><td>6</td><td>Stack singulation (if wafer-level)</td><td>Chip edge quality</td><td>Dicing saw / laser</td></tr>
+</table>
+<div class="info-box">
+<div class="box-label">Mass Reflow vs Sequential TCB</div>
+<p>Some HBM assembly processes use mass reflow bonding — placing all dies simultaneously and reflowing in a belt furnace — rather than sequential TCB. Mass reflow is higher throughput but offers less control over individual joint quality and cannot easily accommodate die-by-die co-planarity correction. TCB dominates for premium HBM products where yield and reliability take priority. The industry is actively developing collective die-to-wafer hybrid bonding, which would combine mass reflow throughput with hybrid bonding's sub-10µm pitch capability.</p>
+</div>
+</div>
+<div class="lesson" id="p1l4">
+<div class="lesson-header"><span class="lesson-title">Silicon Interposer &amp; CoWoS Integration</span> <span class="lesson-duration">(~4 hrs)</span></div>
+<p>An assembled HBM stack is one component in a heterogeneous integration package that must be co-designed with the GPU, TPU, or AI ASIC it serves. The silicon interposer and CoWoS packaging technology are what enable HBM's bandwidth to be physically delivered to the logic die — understanding their design and fabrication is essential for understanding the total system cost, yield, and thermal behavior.</p>
+<h3>Why the Silicon Interposer Exists</h3>
+<p>An HBM stack presents 1024 data signals plus address/command and power pins at the bottom of the logic die in a tight bump array. The GPU die sitting beside it must connect to all 1024 data signals simultaneously. The routing density required — hundreds of fine-pitch wires spanning millimeters between two dies — is far beyond what an organic PCB substrate can achieve.</p>
+<div class="formula">
+Organic substrate trace pitch: 10–20 µm minimum
+Silicon interposer RDL pitch:   0.4–2 µm (standard IC litho tools)
+Density advantage:              5–50× more routing per unit area
+
+H100 HBM bus: 1024 bits × 6 stacks = 6144 signal traces
+All routed across ~800mm² silicon interposer at sub-micron pitch.
+Impossible on organic at any practical area.
+</div>
+<h3>Interposer Fabrication</h3>
+<p>The silicon interposer is fabricated on 200mm or 300mm silicon wafers using a process optimized for passive wiring rather than active devices:</p>
+<ol class="lab-steps">
+<li class="lab-step">
+<h4>TSV Formation in Interposer</h4>
+<p>Like HBM dies, the interposer requires TSVs to connect its front-side RDL (facing the dies) to its back-side RDL (facing the package substrate). Interposer TSV diameter is typically 10–15µm — larger than HBM die TSVs because the interposer is thicker (~100–150µm) and die-to-die routing density is lower than die-to-logic density. Same DRIE + liner + Cu electroplate process as HBM TSVs.</p>
+</li>
+<li class="lab-step">
+<h4>Front-Side RDL (Redistribution Layer)</h4>
+<p>4–8 metal layers of copper wiring at 0.4–2µm pitch route signals between die landing pads. The process mirrors back-end-of-line in logic ICs: damascene copper in low-k dielectric, CMP after each layer. Finest layers route at sub-micron pitch directly under the die bumps; coarser layers fan out toward the interposer edges where TSVs connect to the backside.</p>
+</li>
+<li class="lab-step">
+<h4>Wafer Thinning</h4>
+<p>The interposer wafer is thinned from ~750µm to ~100–150µm by backside grinding and CMP, revealing TSV copper tips on the backside. Thin enough to keep total package height manageable; thick enough to maintain mechanical stiffness and avoid warpage during die attachment.</p>
+</li>
+<li class="lab-step">
+<h4>Back-Side RDL and C4 Bump Formation</h4>
+<p>Coarser (2–5µm pitch) back-side RDL fans signals out from TSV tips to the larger C4 solder bump footprint connecting to the organic package substrate. C4 bumps (~60–100µm diameter) are electroplated or ball-dropped and reflowed. The assembled interposer is then diced and placed on the organic substrate.</p>
+</li>
+</ol>
+<h3>CoWoS Integration Cross-Section</h3>
+<div class="diagram">
+CoWoS-S Package Cross-Section:
+
+  ┌──────────┐  ┌──────────┐  ┌──────────┐  ← HBM stacks (×N)
+  │ DRAM ×8  │  │ DRAM ×8  │  │          │
+  │  Logic   │  │  Logic   │  │  GPU Die │
+  └────┬─────┘  └────┬─────┘  └────┬─────┘
+  µbumps │       µbumps │      C4 bumps │
+  ┌─────┴──────────────┴────────────┴────┐
+  │       Silicon Interposer             │  ~100µm thick, ~800mm²
+  │   RDL routing at 0.4–2µm pitch       │
+  └─────────────────┬────────────────────┘
+               C4 bumps (~100µm pitch)
+  ┌─────────────────┴────────────────────┐
+  │         Organic Package Substrate    │
+  └─────────────────┬────────────────────┘
+               BGA solder balls
+  ┌─────────────────┴────────────────────┐
+  │           Server PCB                 │
+  └──────────────────────────────────────┘
+</div>
+<h3>CoWoS Variants</h3>
+<div class="grid-2">
+<div class="card">
+<div class="card-title">CoWoS-S (Silicon Interposer)</div>
+<p>Highest routing density. Proven for H100, A100, AMD MI300X. Large-area silicon interposer is expensive but offers maximum bandwidth density. Reticle-stitching required for interposers &gt;~800mm². Used where bandwidth is the priority.</p>
+</div>
+<div class="card">
+<div class="card-title">CoWoS-R (RDL Interposer)</div>
+<p>Uses an organic-like RDL build-up layer on silicon instead of a fully processed interposer. Lower cost, coarser pitch (2–5µm). Suitable when bandwidth requirements are moderate. Emerging for mid-range AI inference accelerators where cost-per-TOPS matters.</p>
+</div>
+</div>
+<h3>Thermal Design of the Co-Packaged System</h3>
+<p>Placing HBM stacks millimeters from a 700W GPU die creates a severe thermal environment. HBM3E has a maximum junction temperature of 85°C and must dissipate 10–15W per stack. Both GPU die and HBM stacks are cooled via the package lid and heat spreader above them.</p>
+<table>
+<tr><th>Thermal Parameter</th><th>Value</th><th>Implication</th></tr>
+<tr><td>HBM3E max junction temp</td><td>85°C</td><td>Hard reliability limit — exceeded temps cause retention failures and accelerated aging</td></tr>
+<tr><td>HBM3E typical power per stack</td><td>10–15 W</td><td>6 stacks = 60–90W of HBM heat in the package</td></tr>
+<tr><td>GPU die power (H100 SXM5)</td><td>700 W</td><td>Dominant heat source; thermally couples to HBM through interposer</td></tr>
+<tr><td>Thermal resistance (junction to coolant, DLC)</td><td>~0.125 °C/W per stack</td><td>With 20°C coolant: HBM Tj ≈ 22°C — excellent margin</td></tr>
+<tr><td>Thermal resistance (junction to ambient, air)</td><td>~0.4–0.6 °C/W</td><td>HBM Tj may approach 75–80°C under sustained load — tight margin</td></tr>
+</table>
+<div class="analogy-box">
+<div class="box-label">Scale Reference: The H100 Package</div>
+<p>The NVIDIA H100 SXM5 contains: 1× H100 GPU die (814mm², 80 billion transistors, TSMC 4N process), 6× HBM3 stacks (each with 8 DRAM dies + 1 logic die = 54 total dies), all on an ~800mm² silicon interposer. Total die count in the package: 55+. Total microbump connections: millions. Total HBM bandwidth: 3.35 TB/s. The assembled package is roughly credit-card-sized and costs ~$30,000 at 2024 prices — with the interposer alone accounting for a meaningful fraction of that cost due to its large area and yield considerations.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="phase-section" id="phase2">
+
+<div class="phase-content">
+<div class="phase-intro" style="border-color:#f59e0b">HBM testing is among the most complex in the semiconductor industry. A single stack contains billions of cells distributed across 8 or more dies, interconnected by thousands of TSVs and microbumps. Testing must find defects at every level — individual cells, TSV continuity, inter-die connectivity, and full-stack electrical performance — while being fast enough to not consume the entire cost savings from integration.</div>
+<div class="lesson" id="p2l1">
+<div class="lesson-header"><span class="lesson-title">Wafer-Level Test &amp; Known-Good Die</span> <span class="lesson-duration">(~4 hrs)</span></div>
+<p>Before a single die is placed into a stack, it must pass a comprehensive qualification process that verifies not just that it works, but that it will continue to work under the stresses of stacking, system integration, and operational life. This Known-Good Die qualification is the economic and technical cornerstone of heterogeneous integration — and understanding its challenges explains why HBM-equipped accelerators are difficult to produce at high volume and why yield engineering is a primary competitive differentiator among SK Hynix, Samsung, and Micron.</p>
+<h3>The KGD Economic Problem</h3>
+<p>Stacking multiplies individual die yield loss. If each die has 97% probability of being functional, an 8-die stack has only 0.97⁸ ≈ 78% stack yield from the memory dies alone, before any assembly losses. To achieve 90% final stack yield, each die must be tested to near-100% confidence.</p>
+<div class="formula">
+Stack yield model:
+
+  Y_stack = Y_die^N × Y_assembly × (1 - P_escape)
+
+Where:
+  Y_die       = per-die functional yield after test
+  N           = number of dies in stack
+  Y_assembly  = microbump bonding + underfill yield (~97–99%)
+  P_escape    = probability a bad die passes test (test coverage gap)
+
+Example (HBM3, N=8):
+  Y_die=0.99, Y_assembly=0.98, P_escape=0.001
+  Y_stack = 0.99^8 × 0.98 × 0.999 = 0.923 × 0.98 × 0.999 ≈ 90.4%
+
+  If Y_die drops to 0.95:
+  Y_stack = 0.95^8 × 0.98 × 0.999 ≈ 0.663 × 0.98 ≈ 64.9%  ← not commercially viable
+
+Each percentage point of per-die yield has an 8× amplified effect on stack yield.
+This is why HBM memory vendors invest heavily in process control and repair redundancy.
+</div>
+<h3>Wafer Probe Infrastructure for HBM</h3>
+<p>Wafer probe for HBM requires specialized equipment beyond standard DRAM probe. The probe card must simultaneously contact:</p>
+<ul>
+<li><strong>Front-side pads</strong>: Standard perimeter pads giving access to data I/O and address/command buses</li>
+<li><strong>TSV tips (backside)</strong>: After backside grinding, TSV copper tips are exposed and must be probed for TSV-specific tests — requiring either flip-probe or temporary bonding to a carrier with front-side probe access</li>
+<li><strong>Temperature-controlled chuck</strong>: Tests run at -40°C, 25°C, and 125°C minimum. Many faults are temperature-dependent and invisible at room temperature</li>
+</ul>
+<h3>Cell Array Test: March Algorithms</h3>
+<p>Testing every cell in an 8Gbit HBM die through an external tester interface would take hours — economically impossible. Built-In Self-Test (BIST) engines on the die execute test algorithms at full operating speed internally, with the tester only monitoring pass/fail and capturing failure addresses.</p>
+<table>
+<tr><th>Algorithm</th><th>Complexity</th><th>Fault Types Detected</th><th>Production Use</th></tr>
+<tr><td>MATS+</td><td>4N</td><td>SAF, TF</td><td>Fast screen only</td></tr>
+<tr><td>March X</td><td>6N</td><td>SAF, TF, AF</td><td>Common production</td></tr>
+<tr><td>March C-</td><td>10N</td><td>SAF, TF, CF (partial)</td><td>Standard production</td></tr>
+<tr><td>March SS</td><td>22N</td><td>SAF, TF, CF, DRF, IRF</td><td>Qualification / sampling</td></tr>
+</table>
+<p>SAF = Stuck-At Fault, TF = Transition Fault, CF = Coupling Fault (one cell affects another), DRF = Data Retention Fault, IRF = Incorrect Read Fault. Production test typically runs March C- for speed. March SS is run on a sample basis for process monitoring and at new process node introduction.</p>
+<h3>Data Retention Test</h3>
+<p>A data retention fault — a cell that loses its charge too quickly — will not be detected by standard March tests unless the test deliberately inserts a wait period. KGD qualification includes long-pause retention tests: write a pattern, wait 500ms to several seconds at elevated temperature (~125°C), then read back. This screens for cells with weak capacitance, leaky transistors, or substrate leakage paths that would fail in-system. Temperature acceleration is roughly 2× per 10°C — a 500ms test at 125°C approximates a 64ms test at 105°C operating condition.</p>
+<h3>TSV-Specific Electrical Tests</h3>
+<ol class="lab-steps">
+<li class="lab-step">
+<h4>TSV Open Detection</h4>
+<p>A broken TSV (void, incomplete fill, or mechanical crack) creates an open circuit. Detected by forcing a known current through each TSV and measuring the resulting voltage using Kelvin 4-wire measurement — eliminating probe resistance from the measurement. Target resistance: &lt;5Ω. Open TSVs typically show &gt;100Ω or infinite resistance. A high-resistance TSV that passes DC test may still fail at AC (GHz) operating frequencies due to frequency-dependent impedance effects.</p>
+</li>
+<li class="lab-step">
+<h4>TSV Short Detection</h4>
+<p>Copper bridging between adjacent TSVs (from incomplete seed layer etch or plating splash) creates shorts. Detected by measuring leakage between adjacent TSV pairs with one at VDD and one at GND. Target: &lt;1nA leakage. Shorts typically show microamp or milliamp currents — easily distinguishable. Inter-TSV shorts are the most common TSV fabrication defect at high aspect ratios.</p>
+</li>
+<li class="lab-step">
+<h4>TSV-to-Substrate Leakage</h4>
+<p>A pinhole in the TSV dielectric liner creates a leakage path from the copper TSV to the silicon substrate. Detected by biasing the TSV at operating voltage and measuring substrate leakage current. Even sub-nA leakage is problematic: it represents a path that can grow through oxide degradation over device lifetime, eventually causing catastrophic data errors or device latchup.</p>
+</li>
+</ol>
+<h3>Redundancy Repair Flow</h3>
+<p>HBM dies contain spare rows and columns in each sub-array. During test, failing cell addresses are captured by the BIST engine and stored in an on-chip fail buffer. A repair algorithm determines which spare rows/columns can substitute to eliminate all failing cells. The mapping is programmed into the die through laser fuse blowing or electrical anti-fuse (e-fuse) programming. Post-repair test re-runs the full cell array algorithm to verify all repairs are effective.</p>
+<div class="grid-2">
+<div class="card">
+<div class="card-title">Laser Fuse Repair</div>
+<p>A laser pulse vaporizes a metal fuse link on the die surface. Permanent, zero resistance in programmed state. Requires transfer to a laser trim station between test steps. Cannot be reversed or reprogrammed. Widely used in DRAM for decades.</p>
+</div>
+<div class="card">
+<div class="card-title">Electrical Anti-Fuse (e-Fuse)</div>
+<p>A high-voltage pulse permanently short-circuits a thin gate oxide. Can be programmed in-system without special equipment. Allows final repair programming after packaging. Used in HBM for flexibility, though the programming circuit adds area to the logic die.</p>
+</div>
+</div>
+<div class="tip-box">
+<div class="box-label">Accelerated Life Test / Burn-In</div>
+<p>Manufacturing test catches hard defects present at fabrication. Accelerated Life Test (burn-in) catches infant mortality — devices that are marginally functional at test but fail within the first hours of operation due to latent defects. HBM KGD burn-in operates dies at 125°C junction temperature at 1.1–1.2× nominal voltage for 48–168 hours. The elevated temperature and voltage accelerate oxide wear-out, electromigration, and threshold voltage drift by 5–10× (Arrhenius acceleration factor). Post-burn-in re-test removes dies that now fail. Only survivors — having passed both manufacturing defect test and accelerated aging — earn the KGD designation.</p>
+</div>
+</div>
+<div class="lesson" id="p2l2">
+<div class="lesson-header"><span class="lesson-title">Post-Stack &amp; Post-Assembly Test</span> <span class="lesson-duration">(~5 hrs)</span></div>
+<p>Once dies are stacked and the HBM assembly is complete, a new population of potential defects becomes accessible to test — inter-die connectivity failures, underfill voids, and stack-level thermal behavior — while simultaneously some individual-die failure modes become physically inaccessible. Post-assembly test must navigate this changed topology efficiently, because the assembled stack is worth far more than the sum of its individual dies.</p>
+<h3>Changed Test Access After Stacking</h3>
+<p>Pre-stacking, every die pad is directly accessible to probe needles. Post-stacking, only the bottom surface of the logic die and the top surface of the top DRAM die are accessible. All intermediate die surfaces — including every inter-die microbump interface — are sealed under underfill and inaccessible to physical probing. Inter-die tests must be performed electrically through the logic die's JTAG boundary scan chain, or non-destructively through the package body using acoustic or X-ray techniques.</p>
+<h3>JTAG Boundary Scan and Inter-Die Testing</h3>
+<p>The HBM logic die implements a JTAG (IEEE 1149.1) boundary scan chain that wraps every inter-die signal at each die interface. The test controller forces known values at every output cell and captures the values at every input cell — effectively turning the JTAG chain into a controllable loopback for inter-die connectivity testing.</p>
+<ol class="lab-steps">
+<li class="lab-step">
+<h4>Microbump Continuity Test</h4>
+<p>Each microbump connection is tested by forcing a logic '1' at the driving boundary scan cell (logic die output) and verifying the receiving cell (DRAM die input) captures '1'. Then force '0', verify '0'. An open microbump fails to propagate the driven value — the input cell sees the opposite logic level due to its pull resistor. This also catches partial opens: high-resistance connections that pass DC test but fail at AC operating frequencies.</p>
+</li>
+<li class="lab-step">
+<h4>TSV Chain Continuity Through Die Levels</h4>
+<p>For multi-die stacks, a signal may traverse multiple TSV-microbump-TSV chains through several die levels. Boundary scan can test the entire vertical chain as a unit, or with appropriate DFT can break the chain at each interface to localize failures to a specific die level. Resistance of a chain of 4 TSVs plus 3 microbump joints: ~25Ω typically, &gt;100Ω for a marginal joint, open for a hard failure.</p>
+</li>
+<li class="lab-step">
+<h4>DRAM Functional Re-Test Through Logic Die PHY</h4>
+<p>The full DRAM cell array test (March algorithms, retention test) is re-run on the assembled stack through the logic die PHY, at operating interface speed. This catches any DRAM die that passed pre-stack wafer probe but degraded due to mechanical stress during the bonding process. It also enables tests specific to the assembled stack — like inter-die crosstalk under simultaneous switching — that cannot be performed on individual dies.</p>
+</li>
+<li class="lab-step">
+<h4>Power-On Self-Test via Logic Die</h4>
+<p>At first power-on, the logic die executes a comprehensive BIST sequence across all DRAM channels simultaneously. Results are reported through the HBM mode register interface to the host memory controller. Any remaining unrepaired failures are flagged; if within specification, the host records them for monitoring. If beyond repair budget, the stack is rejected.</p>
+</li>
+</ol>
+<h3>Scanning Acoustic Microscopy (SAM)</h3>
+<p>SAM is the primary non-destructive technique for imaging the internal structure of assembled stacks. A focused ultrasound beam (50–200MHz) scans across the package surface. The beam reflects at material interfaces — proportional to acoustic impedance mismatch. Air-filled voids reflect almost all incident energy. By gating the time-of-flight, reflections from specific depths can be imaged — creating a depth-resolved map of the package interior.</p>
+<div class="grid-2">
+<div class="card">
+<div class="card-title">C-Scan (Plan View)</div>
+<p>Top-down image at a selected depth, defined by a time gate. Underfill voids appear as bright spots (strong reflection from air-solid interface). Delaminations appear as planar bright regions. Used for production screening — automated image analysis flags packages with void area exceeding specification (&lt;0.5% of underfill area).</p>
+</div>
+<div class="card">
+<div class="card-title">B-Scan (Cross-Section)</div>
+<p>Acoustic cross-section along a scan line. Shows depth profile of internal interfaces. Useful for failure analysis: distinguishing surface delamination from deep underfill void, characterizing crack propagation depth. Slower than C-scan but provides 3D spatial context. Combined with X-ray CT for comprehensive failure analysis.</p>
+</div>
+</div>
+<h3>X-Ray CT Inspection</h3>
+<p>For failure analysis on returned assemblies, 3D X-ray computed tomography provides sub-micron resolution imaging of internal structures without sectioning. A rotating X-ray source and detector acquire thousands of 2D projections; reconstruction algorithms compute the 3D density map. Microbump height variation, voiding, cracked intermetallics, and delaminated underfill are all visible. X-ray CT is too slow for 100% production screening but essential for understanding failure mechanisms and feeding back to process improvement.</p>
+<h3>Temperature-Stressed Reliability Testing</h3>
+<p>HBM reliability qualification per JEDEC JESD238 includes multiple temperature-stress protocols:</p>
+<table>
+<tr><th>Test</th><th>Conditions</th><th>Duration</th><th>Failure Mode Targeted</th></tr>
+<tr><td>HTOL</td><td>85°C junction, 1.2× Vnom, functional</td><td>1000 hours</td><td>Oxide wear-out, electromigration, hot carrier injection</td></tr>
+<tr><td>HTSL</td><td>125°C, no bias</td><td>1000 hours</td><td>Intermetallic growth, corrosion</td></tr>
+<tr><td>Thermal Cycling</td><td>-40°C to +125°C, air-to-air</td><td>500–1000 cycles</td><td>Solder joint fatigue, TSV delamination, underfill cracking</td></tr>
+<tr><td>HAST</td><td>130°C, 85% RH, 1.2× Vnom</td><td>96–264 hours</td><td>Moisture-induced corrosion, dendritic growth</td></tr>
+<tr><td>ESD</td><td>HBM 2kV, CDM 500V per pin</td><td>Per-pin test</td><td>Gate oxide damage, junction burnout</td></tr>
+</table>
+<h3>System-Level Test (SLT)</h3>
+<p>The final qualification gate is System-Level Test — running actual AI workloads on the fully assembled accelerator in a functional server board. SLT catches failure modes invisible to component test:</p>
+<ul>
+<li><strong>Power integrity failures</strong>: VDD droop under transient load that causes HBM read/write errors only at full bandwidth utilization</li>
+<li><strong>Thermal throttling behavior</strong>: Verifying the device meets sustained performance specs after thermal steady-state — not just at cold start</li>
+<li><strong>Application-specific error patterns</strong>: Large GEMMs and attention softmax produce HBM access patterns that stress the memory subsystem differently than synthetic tests</li>
+<li><strong>NVLink/PCIe co-stress</strong>: HBM errors that only manifest under simultaneous high-bandwidth NVLink traffic due to power supply interaction and ground bounce</li>
+</ul>
+<div class="info-box">
+<div class="box-label">SLT at Hyperscaler Scale</div>
+<p>NVIDIA, Google, and AMD run SLT on every shipped datacenter accelerator. For a production volume of 100,000+ H100s per quarter, SLT is parallelized across thousands of test boards simultaneously. Published reliability data indicates roughly 0.5–1% of accelerators fail SLT despite passing all component-level tests. Catching these in the factory avoids field failures in production clusters — where a single bad GPU can corrupt a multi-week training run representing millions of dollars of compute time.</p>
+</div>
+</div>
+<div class="lesson" id="p2l3">
+<div class="lesson-header"><span class="lesson-title">Error Correction &amp; Reliability Standards</span> <span class="lesson-duration">(~3 hrs)</span></div>
+<p>No memory technology is perfect during operation. Cell defects develop over time as gate oxides age, electromigration shifts contact resistances, and radiation events flip stored bits. HBM's multi-layer error correction architecture is designed to handle this gracefully — correcting errors transparently, escalating what cannot be corrected, and building up a comprehensive picture of device health that allows operators to act before catastrophic failure occurs.</p>
+<h3>Error Types and Their Origins</h3>
+<div class="grid-2">
+<div class="card">
+<div class="card-icon">⚡</div>
+<div class="card-title">Soft Errors (Transient)</div>
+<p>A bit flips once due to an external event — a high-energy particle (cosmic ray neutron or alpha particle from package materials) strikes the storage node and deposits enough charge to flip the stored state. The cell itself is undamaged. Rate: ~1 error per 10⁹ device-hours at sea level, ~10× higher at aircraft altitude. Correctable by ECC; the cell functions correctly on subsequent accesses.</p>
+</div>
+<div class="card">
+<div class="card-icon">🔧</div>
+<div class="card-title">Hard Errors (Permanent)</div>
+<p>A cell permanently fails due to material degradation — gate oxide breakdown, electromigration opening a TSV, dielectric failure in a capacitor, or charge trapping in the transistor. Manifests as stuck-at-0, stuck-at-1, or high-resistance access. Cannot be corrected by ECC if uncorrectable multi-bit. Requires physical redundancy substitution (row/column repair) or page retirement.</p>
+</div>
+</div>
+<h3>HBM On-Die ECC Architecture</h3>
+<p>Every HBM2 and later generation implements on-die ECC that executes entirely within the HBM stack, invisible to the memory controller. Each 128-bit data burst is protected by an 8-bit ECC codeword generated and checked within the logic die — providing SECDED (Single Error Correct, Double Error Detect) with no host-visible latency penalty.</p>
+<div class="diagram">
+HBM3 ODECC Data Organization:
+
+  128-bit data word from DRAM cell array
+  ┌────────────────────────────────────────────────────────────┐
+  │  D[127:0]  —  128 data bits                                │
+  └────────────────────────────────────────────────────────────┘
+                              +
+  ┌───────────────┐
+  │  ECC[7:0]    │  ← 8 Hamming check bits, stored in dedicated
+  │  (ECC cells) │    ECC cells, invisible to host address space
+  └───────────────┘
+                              =
+  136-bit codeword, checked by syndrome logic in logic die
+
+  On Read:
+  ① Read 128 data bits + 8 ECC bits
+  ② Compute syndrome from received codeword
+  ③ Syndrome = 0: no error → pass data to PHY
+  ④ Syndrome = 1-bit error: correct bit, pass data, log CE
+  ⑤ Syndrome = 2-bit error: pass with error flag, log UE, signal host
+</div>
+<h3>ECC Coverage Hierarchy in Production Systems</h3>
+<table>
+<tr><th>Level</th><th>Location</th><th>Coverage</th><th>Latency Impact</th><th>Visibility</th></tr>
+<tr><td>On-Die ECC (ODECC)</td><td>HBM logic die</td><td>1-bit correct, 2-bit detect per 128b burst</td><td>None — pipelined into memory access</td><td>CE/UE counters via NVML</td></tr>
+<tr><td>System ECC</td><td>GPU memory controller</td><td>Multi-bit correction across wider codeword</td><td>~ns — absorbed in DRAM latency budget</td><td>Driver-level error events to OS</td></tr>
+<tr><td>Application ECC</td><td>Software / ML framework</td><td>Checksum validation of model weights</td><td>Varies — typically training checkpoint overhead</td><td>Application error flags</td></tr>
+</table>
+<h3>Page Retirement Mechanism</h3>
+<p>When a physical HBM page accumulates enough errors that ECC can no longer correct them reliably, the GPU driver retires that page — permanently removing it from the usable address space. The GPU continues operating with slightly reduced effective memory capacity.</p>
+<ol class="lab-steps">
+<li class="lab-step">
+<h4>Uncorrectable Error Detection and Address Logging</h4>
+<p>ODECC detects a double-bit error and signals the memory controller via the error status register. The controller records the physical address of the failing burst, increments the uncorrectable error counter, and generates an interrupt to the driver. The driver logs the physical address to its internal retirement candidate table and to NVML's accessible error registers.</p>
+</li>
+<li class="lab-step">
+<h4>Retirement Decision</h4>
+<p>NVIDIA's retirement policy: retire immediately on any double-bit uncorrectable error, or after single-bit correctable errors on one page exceed a threshold (~100 errors per page over lifetime). The page is marked bad in the page allocator's free list. A GPU reset is required for the retirement to take full effect — until then, the page is in a "pending retirement" state.</p>
+</li>
+<li class="lab-step">
+<h4>Pending Retirement and Driver Reset</h4>
+<p>Some retirements are "pending" — flagged but not yet activated, requiring a GPU reset to complete. nvidia-smi shows both active and pending retirements. Monitoring pending count is important: a GPU with pending retirements that is never reset continues to use the bad pages until the next reboot, risking data corruption.</p>
+</li>
+<li class="lab-step">
+<h4>Capacity Reduction and Replacement Threshold</h4>
+<p>Each retired page reduces usable HBM by 2MB (standard page size). The GPU continues operating until retired page count exceeds NVIDIA's replacement threshold (varies by model but typically triggers an RMA recommendation at &gt;64 DBE-retired pages). A GPU with many retired pages is monitored closely and scheduled for replacement at the next maintenance window.</p>
+</li>
+</ol>
+<h3>JEDEC HBM Reliability Standards</h3>
+<p>JEDEC publishes the definitive specifications for HBM reliability qualification:</p>
+<ul>
+<li><strong>JESD235D</strong> — HBM2E specification: timing, interface protocol, electrical parameters, and reliability test requirements</li>
+<li><strong>JESD238B</strong> — HBM3 / HBM3E specification: 9.6 Gbps/pin, 1024-bit bus, on-die ECC requirements, HBM3E 12-hi stack definition</li>
+<li><strong>JESD79-5C</strong> — DRAM reliability qualification: HTOL, HTSL, TC, HAST conditions, sample sizes (minimum 45 lots), and FIT rate limits (&lt;10 FIT per Gbit)</li>
+<li><strong>JESD89C</strong> — Soft error measurement and reporting methodology for memory devices</li>
+</ul>
+<div class="warn-box">
+<div class="box-label">Correctable Error Rate as Failure Predictor</div>
+<p>A healthy HBM device may see zero correctable errors over months of operation. A device with developing hard failures typically shows a correctable error rate that escalates from zero to tens per hour over days or weeks before the first uncorrectable error appears. This monotonically rising CE rate is the most reliable field indicator of impending HBM failure. Hyperscaler operators monitor this trend continuously and trigger proactive GPU replacement when CE rate exceeds a threshold or shows a statistically significant increasing trend — avoiding training run corruption and unplanned downtime entirely.</p>
+</div>
+<div class="analogy-box">
+<div class="box-label">ECC and the Bathtub Curve</div>
+<p>HBM failure rates follow the classic reliability bathtub curve: high early-failure rate during infant mortality (screened by burn-in), a long flat useful-life period with only random soft errors, then a rising wear-out phase as oxides age and electromigration progresses. ODECC is designed to handle the random soft errors in the flat region. It also buys time during the early wear-out phase — correcting single-bit hard errors until they cluster into uncorrectable multi-bit faults. Monitoring CE rate reveals exactly where on the bathtub curve each device sits at any given time.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="phase-section" id="phase3">
+
+<div class="phase-content">
+<div class="phase-intro" style="border-color:#a78bfa">A single H100 with 80GB of HBM3 is an impressive engineering achievement. One hundred thousand of them, linked by 400Gb/s InfiniBand, cooled by direct liquid cooling, and fed by megawatts of power infrastructure, is a different engineering problem entirely. This phase covers the systems-level architecture of HBM at hyperscaler scale — from rack design to power delivery to the network topology that determines how fast those memory bandwidths can actually be utilized.</div>
+<div class="lesson" id="p3l1">
+<div class="lesson-header"><span class="lesson-title">HBM in AI Accelerator Architecture</span> <span class="lesson-duration">(~5 hrs)</span></div>
+<p>HBM exists because large-scale AI workloads — transformer training and inference — have a memory access pattern that exhausts conventional DRAM bandwidth by orders of magnitude. Understanding the arithmetic of these workloads is prerequisite to understanding every HBM architecture decision: why bandwidth matters more than latency, why capacity determines what models can fit, and why the industry has invested billions in the stacked-die architecture rather than simply using more chips of cheaper memory.</p>
+<h3>Roofline Analysis: Why AI is Memory-Bound</h3>
+<p>The Roofline model characterizes workload performance by its arithmetic intensity — the ratio of floating-point operations to bytes of memory traffic. Every hardware platform has a peak compute throughput and a peak memory bandwidth; the ratio defines the machine's "ridge point." Workloads below the ridge point are memory-bandwidth-limited; above it, compute-limited.</p>
+<div class="formula">
+Arithmetic Intensity (AI) = FLOPs / Bytes_transferred
+
+H100 SXM5 parameters:
+  Peak compute:    989 TFLOPS (FP16, no sparsity)
+  Peak bandwidth:  3.35 TB/s
+  Ridge point:     989e12 / 3.35e12 ≈ 295 FLOP/byte
+
+Key workload arithmetic intensities:
+  LLM inference, batch=1:     ~1–5 FLOP/byte   ← 60× below ridge → memory bound
+  LLM inference, batch=32:    ~30–60 FLOP/byte  ← still memory bound
+  LLM inference, batch=512+:  ~200+ FLOP/byte   ← approaching ridge
+  LLM training, large batch:  ~300–800 FLOP/byte ← compute bound or near ridge
+  Attention with KV cache:    ~5–15 FLOP/byte   ← memory bound at all batch sizes
+
+Conclusion: at any batch size practical for interactive inference,
+GPU compute engines are largely idle. HBM bandwidth is the binding constraint.
+</div>
+<h3>Where Bytes Come From: Weight Loading</h3>
+<p>During autoregressive LLM generation, the model produces one token per forward pass. Every forward pass loads every model parameter from HBM through the computation units and discards it — parameters are not reused across tokens in this regime. For a 70B parameter model in FP16, that is 140 GB of data transferred per token generated, regardless of sequence length or context size.</p>
+<div class="grid-2">
+<div class="card">
+<div class="card-icon">⚖️</div>
+<div class="card-title">Model Weight Traffic</div>
+<p>70B params × 2 bytes/param (FP16) = 140 GB per token. At H100's 3.35 TB/s bandwidth, minimum time = 140GB / 3350GB·s⁻¹ ≈ <strong>42 ms per token</strong>. This sets a hard ceiling of ~24 tokens/second per GPU — a fundamental physics limit, not a software optimization opportunity.</p>
+</div>
+<div class="card">
+<div class="card-icon">📋</div>
+<div class="card-title">KV Cache Traffic</div>
+<p>For a 4096-token context, the KV cache for 70B (80 layers, 4096 kv-dim) is ~35 GB. Each token generation must stream this KV cache through the attention mechanism. At 3.35 TB/s, ~10 ms per token just for KV reads — and this grows linearly with context length.</p>
+</div>
+</div>
+<h3>HBM Capacity Determines Maximum Model Size</h3>
+<p>A model can only run on a GPU if its weights (plus KV cache, activations, and framework overhead) fit in HBM. The memory requirement depends on precision and whether you are training or inferring:</p>
+<table>
+<tr><th>Model</th><th>Params</th><th>FP16 Inference</th><th>BF16 Training (Adam)</th><th>Min GPU Config (inference)</th></tr>
+<tr><td>Llama 3 8B</td><td>8B</td><td>16 GB</td><td>~128 GB</td><td>1× H100 80G</td></tr>
+<tr><td>Llama 3 70B</td><td>70B</td><td>140 GB</td><td>~1.1 TB</td><td>2× H200 141G</td></tr>
+<tr><td>Llama 3 405B</td><td>405B</td><td>810 GB</td><td>~6.5 TB</td><td>6× H200 or 5× MI300X</td></tr>
+<tr><td>Mixtral 8×7B (MoE)</td><td>47B active</td><td>~90 GB</td><td>~750 GB</td><td>2× H100 80G</td></tr>
+<tr><td>INT4 quantized 70B</td><td>70B</td><td>~35 GB</td><td>N/A</td><td>1× H100 80G (fits!)</td></tr>
+</table>
+<p>Quantization — reducing precision from FP16 to INT8 or INT4 — directly reduces HBM footprint and proportionally increases effective bandwidth (the same physical bandwidth moves twice or four times the parameter count). This is why quantization research (GPTQ, AWQ, GGUF) has enormous practical impact: it converts a model that requires 2 GPUs into one that fits on 1, changing both cost and latency fundamentally.</p>
+<h3>HBM Generation Bandwidth Scaling</h3>
+<table>
+<tr><th>GPU</th><th>HBM Gen</th><th>Capacity</th><th>Bandwidth</th><th>Year</th><th>Flagship Use</th></tr>
+<tr><td>V100</td><td>HBM2</td><td>32 GB</td><td>900 GB/s</td><td>2018</td><td>First mass AI HBM</td></tr>
+<tr><td>A100 80G</td><td>HBM2e</td><td>80 GB</td><td>2.0 TB/s</td><td>2020</td><td>GPT-3 training era</td></tr>
+<tr><td>H100 SXM5</td><td>HBM3</td><td>80 GB</td><td>3.35 TB/s</td><td>2022</td><td>LLM training + serving</td></tr>
+<tr><td>H200</td><td>HBM3e</td><td>141 GB</td><td>4.8 TB/s</td><td>2024</td><td>Large model inference</td></tr>
+<tr><td>B200</td><td>HBM3e</td><td>192 GB</td><td>8.0 TB/s</td><td>2025</td><td>Next-gen training</td></tr>
+<tr><td>AMD MI300X</td><td>HBM3</td><td>192 GB</td><td>5.3 TB/s</td><td>2024</td><td>Large model hosting</td></tr>
+</table>
+<h3>Multi-GPU HBM Aggregation</h3>
+<p>When a model exceeds single-GPU HBM capacity, multiple GPUs pool their memory. The communication fabric determines how efficiently that aggregate bandwidth can actually be used. Tensor parallelism splits individual matrix multiplications across GPUs, with each GPU streaming its shard from local HBM and exchanging partial results via the interconnect.</p>
+<div class="diagram">
+8× H100 DGX H100 — NVLink/NVSwitch topology:
+
+  GPU0   GPU1   GPU2   GPU3   GPU4   GPU5   GPU6   GPU7
+  80GB   80GB   80GB   80GB   80GB   80GB   80GB   80GB
+    \      \      \      \    /      /      /      /
+     └──────└──── NVSwitch ────┘──────┘──────┘
+              900 GB/s bidirectional per GPU pair
+
+  Total aggregate HBM:     8 × 80 GB  =  640 GB
+  Total HBM bandwidth:     8 × 3.35   = 26.8 TB/s
+  Cross-GPU (NVLink) bw:   8 × 900    =  7.2 TB/s
+  Boundary: NVLink is 4× slower than local HBM → minimize cross-GPU traffic
+</div>
+<div class="analogy-box">
+<div class="box-label">The Memory Wall</div>
+<p>Compute throughput has improved roughly 10,000× over 20 years (Moore's Law + specialization). Memory bandwidth has improved only ~20× over the same period. HBM narrows this gap by 10–15× vs conventional DRAM, but cannot close it entirely. This "memory wall" is why memory-efficient algorithms — Flash Attention (reduces HBM reads by fusing operations), speculative decoding (improves arithmetic intensity), quantization (moves more weights per byte of bandwidth) — deliver commercial value comparable to new hardware generations.</p>
+</div>
+</div>
+<div class="lesson" id="p3l2">
+<div class="lesson-header"><span class="lesson-title">Rack Architecture, Power, &amp; Cooling</span> <span class="lesson-duration">(~5 hrs)</span></div>
+<p>The theoretical bandwidth of an HBM stack is only useful if the surrounding infrastructure — power, cooling, and network — can sustain the operating conditions under which HBM runs at specification. At hyperscaler scale, every design decision in rack architecture, power distribution, and interconnect topology has direct consequences for whether those terabytes-per-second numbers translate into actual model training throughput or sit throttled by thermal limits and network bottlenecks.</p>
+<h3>Power Delivery Chain to HBM</h3>
+<p>An H100 SXM5 draws up to 700W at peak load. A DGX H100 with 8 GPUs draws up to 10.2 kW. Power enters the datacenter at 480V AC and must be converted, regulated, and stabilized before arriving at the 1.1V HBM supply rail on the silicon interposer.</p>
+<div class="diagram">
+Power delivery hierarchy to HBM:
+
+Utility Grid ──► UPS / ATS ──► 480V 3-phase AC
+                                    │
+                              Rack PDU (480V→208V)
+                                    │
+                              Server PSU  (~94% efficient)
+                              208V AC → 12V DC
+                                    │
+                              VRM on server board  (~88% efficient)
+                              12V DC → 1.1V HBM rail
+                                    │
+                              Package substrate power planes
+                                    │
+                              Silicon interposer power mesh
+                                    │
+                              HBM Logic Die + DRAM array
+
+Total wall-to-HBM efficiency: ~83%
+HBM power: ~15W/stack × 6 stacks = 90W delivered
+Wall power just for HBM: 90W / 0.83 ≈ 108W
+</div>
+<h3>Power Delivery Network (PDN) and Voltage Droop</h3>
+<p>Rapid changes in HBM access patterns cause transient current demands. A burst of simultaneous reads across all channels can pull tens of amperes in nanoseconds. The inductance and resistance of the PDN converts this current transient to a voltage droop at the HBM supply. If the voltage droops below VDDmin (~1.05V for HBM3), sense amplifier setup times are violated and data errors occur.</p>
+<ul>
+<li><strong>On-die decaps (HBM logic die):</strong> ~100–200 nF. Filter GHz-range transients within ~1 mm of the circuits.</li>
+<li><strong>Interposer-mounted MLCCs:</strong> 10–100 nF discrete caps placed on the silicon interposer directly under die attach. Filter 10–100 MHz transients.</li>
+<li><strong>Package substrate bulk caps:</strong> µF-range MLCCs. Handle MHz-range droop.</li>
+<li><strong>VRM output capacitance:</strong> 100–1000 µF electrolytic + ceramic. Handles kHz-range transients and steady-state regulation.</li>
+</ul>
+<div class="formula">
+Voltage droop estimate (simplified L-di/dt model):
+
+  ΔV = L × (ΔI / Δt)
+
+  Package trace inductance L ≈ 0.5–2 nH (package substrate)
+  Transient ΔI ≈ 10 A (burst memory access, all channels)
+  Rise time Δt ≈ 1 ns
+
+  ΔV = 1.5nH × 10A / 1ns = 15 mV
+
+  This is within the ±33 mV (±3%) budget at 1.1V.
+  Without adequate on-die and interposer decoupling, ΔV could reach 50–100 mV
+  → setup time violations → HBM correctable errors → data corruption.
+</div>
+<h3>Cooling: From Air to Direct Liquid</h3>
+<p>Traditional air-cooled data centers use cold aisles and CRAC units to remove heat. Physics limits air cooling to ~3–5 kW per rack unit for dense servers. A single DGX H100 in a 10U chassis at 10.2 kW requires either extreme airflow (6,000+ CFM, unacceptable noise and fan power) or a different cooling approach entirely.</p>
+<table>
+<tr><th>Cooling Type</th><th>Max Rack Density</th><th>HBM Tj Typical</th><th>PUE Range</th><th>Infrastructure</th></tr>
+<tr><td>Air (rear-door HX)</td><td>~30 kW/rack</td><td>70–80°C</td><td>1.3–1.6</td><td>Existing data centers</td></tr>
+<tr><td>Direct Liquid (rear-door CDU)</td><td>~60 kW/rack</td><td>55–65°C</td><td>1.15–1.25</td><td>Chilled water loop to rack</td></tr>
+<tr><td>Direct Liquid (cold plate)</td><td>80–120 kW/rack</td><td>45–55°C</td><td>1.03–1.15</td><td>Cold plates on every GPU</td></tr>
+<tr><td>Immersion (single-phase)</td><td>200+ kW/rack</td><td>40–50°C</td><td>1.02–1.05</td><td>Dielectric fluid bath, custom racks</td></tr>
+</table>
+<p>NVIDIA's NVL72 (72× B200 GPUs in a single rack at ~120 kW) is only possible with cold-plate DLC. The HBM3e on these GPUs would reach 85°C junction temperature within minutes under air cooling — triggering HW thermal throttle and sustaining far below peak bandwidth. With DLC at 20°C inlet water, HBM Tj stays below 55°C with a 30°C margin to the reliability limit.</p>
+<h3>Cold Plate Thermal Path</h3>
+<div class="formula">
+Thermal resistance from HBM junction to coolant (DLC cold plate):
+
+  R_j_to_case (HBM through interposer + TIM1): 0.08 °C/W
+  R_case_to_lid (package lid):                 0.01 °C/W
+  R_TIM2 (lid to cold plate interface):        0.03 °C/W
+  R_cold_plate (water-cooled copper fins):     0.005 °C/W
+  ──────────────────────────────────────────────────────
+  R_total:                                     ≈ 0.125 °C/W
+
+  At 15W per HBM stack and 20°C inlet coolant:
+  HBM Tj = 20 + (15 × 0.125) = 21.9°C   ← 63°C below the 85°C limit
+
+  Compare air cooling (R_total ≈ 0.5 °C/W, case at 55°C ambient):
+  HBM Tj = 55 + (15 × 0.5) = 62.5°C    ← 22.5°C margin, tight for sustained load
+</div>
+<h3>Cluster Network Topology</h3>
+<p>HBM bandwidth is only useful if the network between GPUs can distribute data quickly enough for collective communication (all-reduce for gradients, all-gather for model weights in ZeRO). The interconnect hierarchy determines the effective utilization of each GPU's HBM.</p>
+<table>
+<tr><th>Layer</th><th>Technology</th><th>Bandwidth</th><th>Latency</th></tr>
+<tr><td>Within GPU</td><td>HBM ↔ SM</td><td>3.35 TB/s</td><td>~100 ns</td></tr>
+<tr><td>GPU-to-GPU (same node)</td><td>NVLink 4.0</td><td>900 GB/s bidirectional</td><td>~1 µs</td></tr>
+<tr><td>Node-to-node (same rack)</td><td>InfiniBand NDR 400Gb/s</td><td>~50 GB/s</td><td>~2 µs</td></tr>
+<tr><td>Rack-to-rack (same pod)</td><td>IB spine switches</td><td>~50 GB/s</td><td>~5 µs</td></tr>
+<tr><td>Cross-pod</td><td>IB or Ethernet 400GbE</td><td>~50 GB/s</td><td>~10–50 µs</td></tr>
+</table>
+<div class="warn-box">
+<div class="box-label">The 18× Bandwidth Cliff at Node Boundary</div>
+<p>Within a DGX H100 node, NVLink provides 900 GB/s per GPU — a meaningful fraction of each GPU's 3.35 TB/s HBM bandwidth. The moment gradient communication crosses the node boundary onto InfiniBand (400 Gb/s = 50 GB/s), available bandwidth drops 18×. A training run that fits within a single node is dramatically faster than one requiring inter-node collective communication. This is why model architects and training engineers spend significant effort on memory efficiency — keeping model shards within one node's aggregate HBM avoids the inter-node cliff entirely.</p>
+</div>
+<h3>Power and Cooling Planning at Scale</h3>
+<table>
+<tr><th>Cluster Size</th><th>GPU Count</th><th>Raw Power</th><th>Cooling Required</th><th>Example</th></tr>
+<tr><td>Small</td><td>64 H100s</td><td>~0.6 MW</td><td>Air + rear-door HX</td><td>University cluster</td></tr>
+<tr><td>Medium</td><td>1,024 H100s</td><td>~8 MW</td><td>DLC required</td><td>Mid-tier cloud pod</td></tr>
+<tr><td>Large</td><td>16,384 H100s</td><td>~130 MW</td><td>DLC + facility chilled water</td><td>Hyperscaler region</td></tr>
+<tr><td>Frontier-scale</td><td>100,000+ H100s</td><td>~800 MW</td><td>Dedicated power plant</td><td>xAI Colossus, Meta</td></tr>
+</table>
+</div>
+<div class="lesson" id="p3l3">
+<div class="lesson-header"><span class="lesson-title">Memory Partitioning, MIG &amp; Virtualization</span> <span class="lesson-duration">(~6 hrs)</span></div>
+<p>A $30,000 H100 running a single exclusive workload would be economically absurd at hyperscaler scale. GPU HBM must be shared across multiple users, workloads, and priority levels while maintaining strict isolation guarantees. The technologies enabling this — MIG, time-slicing, vGPU, and framework-level memory management — are also the foundation of how AI infrastructure is packaged into cloud services and how operators maximize the return on each joule of HBM bandwidth purchased.</p>
+<h3>NVIDIA Multi-Instance GPU (MIG) — Architecture</h3>
+<p>MIG was introduced with the A100 and refined on the H100. It partitions the GPU into up to 7 independent GPU Instances (GIs), each receiving a hardware-enforced slice of HBM, L2 cache, compute SMs, memory controllers, and DMA engines. The partition boundaries are enforced in the memory address translation hardware — no software bug or malicious process can read another GI's HBM pages.</p>
+<div class="diagram">
+H100 80GB — Physical resource partitioning in MIG:
+
+                    ┌───────────────────────────────────────────────┐
+SM slices:          │  14  │  14  │  14  │  14  │  14  │  14  │  14 │  (7 × 14 SMs)
+                    ├───────────────────────────────────────────────┤
+L2 cache slices:    │  7×  │  7×  │  7×  │  7×  │  7×  │  7×  │  7× │
+                    ├───────────────────────────────────────────────┤
+HBM slices:         │ 10GB │ 10GB │ 10GB │ 10GB │ 10GB │ 10GB │ 10GB│
+                    ├───────────────────────────────────────────────┤
+Memory controllers: │  2   │  2   │  2   │  2   │  2   │  2   │  2  │
+                    └───────────────────────────────────────────────┘
+
+MIG profiles (combinable within hardware limits):
+  1g.10gb  = 1 SM slice + 10GB HBM    (7 instances max)
+  2g.20gb  = 2 SM slices + 20GB HBM   (3 instances max, with 1g leftover)
+  3g.40gb  = 3 SM slices + 40GB HBM   (2 instances max)
+  4g.40gb  = 4 SM slices + 40GB HBM   (1 instance)
+  7g.80gb  = all SMs + all HBM        (no MIG, full GPU)
+</div>
+<h3>MIG Configuration and Management</h3>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Bash</span><span class="code-filename">mig_setup.sh</span></div>
+<pre><code><span class="cm"># Enable MIG mode (requires root, GPU reset)</span>
+sudo nvidia-smi -i 0 -mig 1
+sudo nvidia-smi --gpu-reset -i 0
+
+<span class="cm"># List available MIG profiles on H100</span>
+nvidia-smi mig -lgip
+
+<span class="cm"># Create 3× 3g.40gb instances (splits 80GB into 2×40GB + logic overhead)</span>
+<span class="cm"># First create GPU instances (GI), then compute instances (CI) within each</span>
+sudo nvidia-smi mig -cgi 9,9,9 -C   <span class="cm"># 9 = profile ID for 3g.40gb on H100</span>
+
+<span class="cm"># List all MIG devices</span>
+nvidia-smi mig -lgi    <span class="cm"># GPU instances</span>
+nvidia-smi mig -lci    <span class="cm"># Compute instances within each GI</span>
+
+<span class="cm"># Each MIG instance appears as a separate device in CUDA:</span>
+nvidia-smi -L
+<span class="cm">#  GPU 0: NVIDIA H100 SXM5 80GB (UUID: GPU-xxxx)</span>
+<span class="cm">#    MIG 3g.40gb  Device 0: (UUID: MIG-xxxx)   ← 40GB slice</span>
+<span class="cm">#    MIG 3g.40gb  Device 1: (UUID: MIG-xxxx)   ← 40GB slice</span>
+
+<span class="cm"># To target a specific MIG instance in CUDA:</span>
+<span class="kw">export</span> CUDA_VISIBLE_DEVICES=MIG-<span class="st">&lt;UUID&gt;</span></code></pre>
+</div>
+<h3>Time-Sliced Sharing vs MIG</h3>
+<p>MIG provides spatial partitioning — each user gets dedicated hardware simultaneously. Time-slicing provides temporal partitioning — users share the full GPU but take turns, with the GPU context-switching between workloads at configurable intervals (1–50ms). The trade-offs are significant:</p>
+<table>
+<tr><th>Dimension</th><th>MIG (spatial)</th><th>Time-slicing (temporal)</th></tr>
+<tr><td>HBM isolation</td><td>Hardware-enforced, complete</td><td>None — HBM is shared</td></tr>
+<tr><td>HBM performance</td><td>Proportional to slice size, guaranteed</td><td>Variable, depends on competing workloads</td></tr>
+<tr><td>Noisy neighbor effect</td><td>Eliminated</td><td>Significant — one tenant can monopolize bandwidth</td></tr>
+<tr><td>Max concurrent users</td><td>7 (H100)</td><td>Dozens possible</td></tr>
+<tr><td>Security</td><td>Strong (hardware)</td><td>Weaker (software only)</td></tr>
+<tr><td>Use case</td><td>Cloud GPU, regulated workloads</td><td>Dev/test, cost-optimized batch</td></tr>
+</table>
+<h3>PyTorch HBM Allocator Deep Dive</h3>
+<p>PyTorch's CUDA memory allocator is a caching allocator — it acquires large blocks from CUDA and subdivides them internally, retaining freed memory in a pool rather than returning it to CUDA immediately (which would be slow). Understanding this behavior is essential for diagnosing HBM OOM errors and memory leaks in training pipelines.</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">hbm_allocator_debug.py</span></div>
+<pre><code><span class="kw">import</span> torch
+
+<span class="cm"># Three-tier memory accounting:</span>
+alloc  = torch.cuda.<span class="fn">memory_allocated</span>()    <span class="cm"># bytes in live tensors</span>
+reserv = torch.cuda.<span class="fn">memory_reserved</span>()     <span class="cm"># bytes held by caching allocator</span>
+cached = reserv - alloc                    <span class="cm"># bytes cached but not in live tensors</span>
+<span class="fn">print</span>(f<span class="st">"Live:   {alloc  / 2**30:.2f} GiB  ← tensors you can see"</span>)
+<span class="fn">print</span>(f<span class="st">"Cached: {cached / 2**30:.2f} GiB  ← freed but held in pool"</span>)
+<span class="fn">print</span>(f<span class="st">"Total:  {reserv / 2**30:.2f} GiB  ← what nvidia-smi shows"</span>)
+
+<span class="cm"># Full allocator stats — reveals fragmentation</span>
+stats = torch.cuda.<span class="fn">memory_stats</span>()
+active_segs  = stats[<span class="st">'active_segments.all.current'</span>]
+inactive_seg = stats[<span class="st">'inactive_split_bytes.all.current'</span>]
+<span class="fn">print</span>(f<span class="st">"Active segments: {active_segs}"</span>)
+<span class="fn">print</span>(f<span class="st">"Inactive split:  {inactive_seg / 2**20:.1f} MiB (fragmentation)"</span>)
+
+<span class="cm"># Expandable segments (PyTorch 2.0+) — prevents fragmentation</span>
+<span class="cm"># Set before any CUDA operations in the process:</span>
+<span class="kw">import</span> os
+os.environ[<span class="st">'PYTORCH_CUDA_ALLOC_CONF'</span>] = <span class="st">'expandable_segments:True'</span>
+<span class="cm"># Allows tensors to span non-contiguous physical pages</span>
+<span class="cm"># Eliminates most "OOM despite apparent free memory" errors</span>
+
+<span class="cm"># Memory snapshot for deep debugging (PyTorch 2.1+)</span>
+torch.cuda.memory._record_memory_history(max_entries=<span class="nm">100000</span>)
+<span class="cm"># ... run training step ...</span>
+torch.cuda.memory._dump_snapshot(<span class="st">"snapshot.pkl"</span>)
+<span class="cm"># Visualize at pytorch.org/memory_viz to see per-tensor allocations</span></code></pre>
+</div>
+<h3>Activation Checkpointing</h3>
+<p>During a transformer forward pass, intermediate activations at each layer are held in HBM simultaneously for use in the backward pass. For large models and batch sizes, activations can consume more HBM than the model weights themselves. Activation checkpointing discards these intermediates during the forward pass and recomputes them from checkpointed boundary tensors during the backward pass.</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">gradient_checkpointing.py</span></div>
+<pre><code><span class="kw">from</span> torch.utils.checkpoint <span class="kw">import</span> checkpoint
+
+<span class="cm"># Without checkpointing: all layer activations in HBM simultaneously</span>
+<span class="cm"># Memory scales as O(num_layers × batch × seq_len × hidden)</span>
+<span class="kw">def</span> <span class="fn">forward_standard</span>(self, x):
+    <span class="kw">for</span> layer <span class="kw">in</span> self.layers:
+        x = <span class="fn">layer</span>(x)   <span class="cm"># activation stays in HBM until backward pass</span>
+    <span class="kw">return</span> x
+
+<span class="cm"># With checkpointing: activations freed, recomputed on demand</span>
+<span class="cm"># Memory scales as O(sqrt(num_layers) × batch × seq_len × hidden)</span>
+<span class="cm"># Cost: ~33% more FLOPs (each non-checkpointed segment recomputed once)</span>
+<span class="kw">def</span> <span class="fn">forward_checkpointed</span>(self, x):
+    <span class="kw">for</span> layer <span class="kw">in</span> self.layers:
+        x = <span class="fn">checkpoint</span>(layer, x, use_reentrant=<span class="nm">False</span>)
+    <span class="kw">return</span> x
+
+<span class="cm"># HuggingFace one-liner (works for all transformers-library models):</span>
+model.<span class="fn">gradient_checkpointing_enable</span>()
+<span class="cm"># Typical HBM savings: 60–70% of activation memory at 33% FLOPs overhead</span></code></pre>
+</div>
+<h3>ZeRO: Sharding HBM Across GPUs</h3>
+<p>DeepSpeed's ZeRO (Zero Redundancy Optimizer) progressively shards model state across GPUs, reducing per-GPU HBM requirements for large model training without reducing the effective model size:</p>
+<table>
+<tr><th>ZeRO Stage</th><th>What is Sharded</th><th>HBM Reduction (8 GPUs)</th><th>Communication Overhead</th></tr>
+<tr><td>Stage 0 (baseline)</td><td>Nothing — full replica per GPU</td><td>1×</td><td>None (standard DDP)</td></tr>
+<tr><td>Stage 1</td><td>Optimizer states only</td><td>~4× optimizer memory</td><td>Negligible</td></tr>
+<tr><td>Stage 2</td><td>Optimizer states + gradients</td><td>~8× combined</td><td>Low (one extra all-reduce)</td></tr>
+<tr><td>Stage 3</td><td>Weights + gradients + optimizer</td><td>~8× total</td><td>Significant (all-gather per layer)</td></tr>
+<tr><td>ZeRO-Offload</td><td>Optimizer states → CPU DRAM</td><td>Enables 10× larger models</td><td>PCIe bandwidth bottleneck</td></tr>
+</table>
+<div class="info-box">
+<div class="box-label">Choosing Between MIG, Time-Slicing, and ZeRO</div>
+<p><strong>MIG</strong>: Use when serving multiple isolated inference workloads on one GPU — cloud multi-tenancy, regulated environments requiring memory isolation, or mixed workload priorities. <strong>Time-slicing</strong>: Use for development and testing where HBM isolation is less critical and you need more concurrent users than MIG profiles allow. <strong>ZeRO Stage 3</strong>: Use for training models too large for a single GPU's HBM — the all-gather communication overhead is worthwhile when the alternative is simply not being able to fit the model. Never combine ZeRO Stage 3 with MIG — the communication overhead would dominate the narrow MIG HBM slices.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="phase-section" id="phase4">
+
+<div class="phase-content">
+<div class="phase-intro" style="border-color:#10b981">An HBM stack in a production AI cluster generates a continuous stream of health signals — temperature readings, error correction counts, throttling events, and power consumption data. The challenge is not collecting this data; modern accelerators expose hundreds of metrics per device. The challenge is building the observability infrastructure to turn raw telemetry into actionable signals that catch failures before they impact workloads.</div>
+<div class="lesson" id="p4l1">
+<div class="lesson-header"><span class="lesson-title">HBM Status Registers &amp; NVML</span> <span class="lesson-duration">(~4 hrs)</span></div>
+<p>Every HBM-equipped NVIDIA GPU exposes its memory health state through the NVIDIA Management Library (NVML) — a C API (and its Python wrapper <code>pynvml</code>) that provides structured access to hundreds of device metrics. These are the authoritative programmatic interfaces for HBM monitoring in running systems: read by every serious monitoring stack from DCGM to custom datacenter management software. Mastering NVML's data model and the meaning of each HBM metric is the foundation on which all fleet-scale observability is built.</p>
+<h3>NVML Data Model and Initialization</h3>
+<p>NVML organizes everything around device handles. A handle is an opaque reference to one physical GPU. All queries take a handle as their first argument. The library is thread-safe and re-entrant — multiple processes can query NVML simultaneously without coordination. The Python <code>pynvml</code> package wraps every C function with a 1:1 binding.</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">nvml_init.py</span></div>
+<pre><code><span class="kw">import</span> pynvml
+<span class="kw">from</span> pynvml <span class="kw">import</span> *
+
+<span class="fn">nvmlInit</span>()   <span class="cm"># Must be called once before any other NVML function</span>
+device_count = <span class="fn">nvmlDeviceGetCount</span>()
+
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(device_count):
+    handle = <span class="fn">nvmlDeviceGetHandleByIndex</span>(i)
+
+    <span class="cm"># Identification — use UUID as the stable primary key for fleet tracking</span>
+    <span class="cm"># (index can change after reboot; UUID does not)</span>
+    name   = <span class="fn">nvmlDeviceGetName</span>(handle)
+    uuid   = <span class="fn">nvmlDeviceGetUUID</span>(handle)
+    serial = <span class="fn">nvmlDeviceGetSerial</span>(handle)       <span class="cm"># PCB serial number</span>
+    board  = <span class="fn">nvmlDeviceGetBoardId</span>(handle)       <span class="cm"># Board ID (same for multi-GPU boards)</span>
+    bus    = <span class="fn">nvmlDeviceGetPciInfo</span>(handle)
+    <span class="fn">print</span>(f<span class="st">"[{i}] {name}"</span>)
+    <span class="fn">print</span>(f<span class="st">"    UUID:   {uuid}"</span>)
+    <span class="fn">print</span>(f<span class="st">"    Serial: {serial}"</span>)
+    <span class="fn">print</span>(f<span class="st">"    PCIe:   {bus.busId}"</span>)
+
+<span class="fn">nvmlShutdown</span>()  <span class="cm"># Good practice; cleans up internal state</span></code></pre>
+</div>
+<h3>HBM Memory Capacity and Utilization</h3>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">hbm_memory.py</span></div>
+<pre><code><span class="fn">nvmlInit</span>()
+handle = <span class="fn">nvmlDeviceGetHandleByIndex</span>(<span class="nm">0</span>)
+
+<span class="cm"># Absolute memory accounting (bytes)</span>
+mem = <span class="fn">nvmlDeviceGetMemoryInfo</span>(handle)
+<span class="fn">print</span>(f<span class="st">"HBM total:  {mem.total  / 2**30:.2f} GiB"</span>)
+<span class="fn">print</span>(f<span class="st">"HBM used:   {mem.used   / 2**30:.2f} GiB"</span>)
+<span class="fn">print</span>(f<span class="st">"HBM free:   {mem.free   / 2**30:.2f} GiB"</span>)
+
+<span class="cm"># Memory bandwidth utilization (% of time mem interface is active)</span>
+<span class="cm"># NOTE: this is NOT memory capacity utilization — it's bandwidth saturation</span>
+util = <span class="fn">nvmlDeviceGetUtilizationRates</span>(handle)
+<span class="fn">print</span>(f<span class="st">"Compute util:  {util.gpu}%     (% of time any SM is active)"</span>)
+<span class="fn">print</span>(f<span class="st">"Memory util:   {util.memory}%  (% of time HBM interface is active)"</span>)
+<span class="cm"># memory util near 100% = memory-bandwidth-bound workload (expected for LLM inference)</span>
+<span class="cm"># memory util &lt; 30% during AI = suspect pipeline stall or CPU bottleneck</span>
+
+<span class="cm"># BAR1 memory (CUDA mapped system memory, if any)</span>
+bar1 = <span class="fn">nvmlDeviceGetBAR1MemoryInfo</span>(handle)
+<span class="fn">print</span>(f<span class="st">"BAR1 total: {bar1.bar1Total / 2**30:.1f} GiB, used: {bar1.bar1Used / 2**30:.1f} GiB"</span>)</code></pre>
+</div>
+<h3>ECC Error Counters — The Central HBM Health Signal</h3>
+<p>ECC counters are the most important HBM health metrics. They distinguish between correctable errors (handled silently by ODECC, but each one indicates a cell that is degrading) and uncorrectable errors (multi-bit failures that ECC cannot fix, representing data loss or corruption). The volatile/aggregate distinction is equally important for interpreting what you see.</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">hbm_ecc.py</span></div>
+<pre><code><span class="kw">from</span> pynvml <span class="kw">import</span> *
+<span class="fn">nvmlInit</span>()
+handle = <span class="fn">nvmlDeviceGetHandleByIndex</span>(<span class="nm">0</span>)
+
+<span class="cm"># Verify ECC is enabled (required for error counting)</span>
+ecc = <span class="fn">nvmlDeviceGetEccMode</span>(handle)
+<span class="fn">print</span>(f<span class="st">"ECC enabled: current={ecc.current}, pending={ecc.pending}"</span>)
+<span class="cm"># pending != current means a mode change will take effect after next GPU reset</span>
+
+<span class="cm"># Memory locations we care about</span>
+locations = {
+    <span class="st">"HBM (device)"</span>: NVML_MEMORY_LOCATION_DEVICE_MEMORY,
+    <span class="st">"L2 cache"</span>:    NVML_MEMORY_LOCATION_L2_CACHE,
+    <span class="st">"L1/SRAM"</span>:     NVML_MEMORY_LOCATION_L1_CACHE,
+}
+
+<span class="kw">for</span> loc_name, loc <span class="kw">in</span> locations.items():
+    <span class="cm"># Volatile = since last driver load/GPU reset (most actionable)</span>
+    ce_vol = <span class="fn">nvmlDeviceGetMemoryErrorCounter</span>(handle,
+                NVML_MEMORY_ERROR_TYPE_CORRECTED, NVML_VOLATILE_ECC, loc)
+    ue_vol = <span class="fn">nvmlDeviceGetMemoryErrorCounter</span>(handle,
+                NVML_MEMORY_ERROR_TYPE_UNCORRECTED, NVML_VOLATILE_ECC, loc)
+    <span class="cm"># Aggregate = lifetime total (stored in non-volatile register on GPU)</span>
+    ce_agg = <span class="fn">nvmlDeviceGetMemoryErrorCounter</span>(handle,
+                NVML_MEMORY_ERROR_TYPE_CORRECTED, NVML_AGGREGATE_ECC, loc)
+    ue_agg = <span class="fn">nvmlDeviceGetMemoryErrorCounter</span>(handle,
+                NVML_MEMORY_ERROR_TYPE_UNCORRECTED, NVML_AGGREGATE_ECC, loc)
+    <span class="fn">print</span>(f<span class="st">"{loc_name}:"</span>)
+    <span class="fn">print</span>(f<span class="st">"  Correctable:   volatile={ce_vol:6d}  aggregate={ce_agg:8d}"</span>)
+    <span class="fn">print</span>(f<span class="st">"  Uncorrectable: volatile={ue_vol:6d}  aggregate={ue_agg:8d}"</span>)
+    <span class="kw">if</span> ue_vol &gt; <span class="nm">0</span>:
+        <span class="fn">print</span>(f<span class="st">"  ⚠ CRITICAL: uncorrectable errors present — schedule replacement"</span>)</code></pre>
+</div>
+<h3>Temperature and Throttle Monitoring</h3>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">hbm_thermal.py</span></div>
+<pre><code><span class="kw">from</span> pynvml <span class="kw">import</span> *
+<span class="fn">nvmlInit</span>()
+handle = <span class="fn">nvmlDeviceGetHandleByIndex</span>(<span class="nm">0</span>)
+
+<span class="cm"># GPU die temperature (sensor 0 = NVML_TEMPERATURE_GPU)</span>
+gpu_temp = <span class="fn">nvmlDeviceGetTemperature</span>(handle, NVML_TEMPERATURE_GPU)
+<span class="fn">print</span>(f<span class="st">"GPU die:    {gpu_temp}°C"</span>)
+
+<span class="cm"># HBM memory temperature (sensor index varies by GPU model)</span>
+<span class="cm"># H100: sensor 1 is HBM temperature; check device specs for other GPUs</span>
+<span class="kw">for</span> sensor_id <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">5</span>):
+    <span class="kw">try</span>:
+        t = <span class="fn">nvmlDeviceGetTemperature</span>(handle, sensor_id)
+        <span class="fn">print</span>(f<span class="st">"  Sensor {sensor_id}: {t}°C"</span>)
+    <span class="kw">except</span> NVMLError:
+        <span class="kw">pass</span>
+
+<span class="cm"># Throttle reasons — critical for diagnosing performance degradation</span>
+reasons = <span class="fn">nvmlDeviceGetCurrentClocksThrottleReasons</span>(handle)
+THROTTLE_FLAGS = {
+    nvmlClocksThrottleReasonGpuIdle:              <span class="st">"Idle"</span>,
+    nvmlClocksThrottleReasonApplicationsClocksSetting: <span class="st">"App clock setting"</span>,
+    nvmlClocksThrottleReasonSwPowerCap:           <span class="st">"SW power cap"</span>,
+    nvmlClocksThrottleReasonHwSlowdown:           <span class="st">"HW slowdown (generic)"</span>,
+    nvmlClocksThrottleReasonSwThermalSlowdown:    <span class="st">"⚠ SW thermal throttle"</span>,
+    nvmlClocksThrottleReasonHwThermalSlowdown:    <span class="st">"🔥 HW thermal throttle (urgent!)"</span>,
+    nvmlClocksThrottleReasonHwPowerBrakeSlowdown: <span class="st">"⚡ Power brake slowdown"</span>,
+}
+active = [desc <span class="kw">for</span> flag, desc <span class="kw">in</span> THROTTLE_FLAGS.items() <span class="kw">if</span> reasons &amp; flag]
+<span class="fn">print</span>(<span class="st">"Throttle reasons:"</span>, active <span class="kw">if</span> active <span class="kw">else</span> [<span class="st">"none"</span>])
+
+<span class="cm"># Retired pages — accumulation is the key long-term degradation signal</span>
+sbe_pages = <span class="fn">nvmlDeviceGetRetiredPages</span>(handle, NVML_PAGE_RETIREMENT_CAUSE_SINGLE_BIT_ECC)
+dbe_pages = <span class="fn">nvmlDeviceGetRetiredPages</span>(handle, NVML_PAGE_RETIREMENT_CAUSE_DOUBLE_BIT_ECC)
+<span class="fn">print</span>(f<span class="st">"Retired pages: SBE={len(sbe_pages)}, DBE={len(dbe_pages)}"</span>)
+
+<span class="cm"># Pending retirements (flagged but not yet activated — need GPU reset)</span>
+pending = <span class="fn">nvmlDeviceGetRetiredPagesPendingStatus</span>(handle)
+<span class="kw">if</span> pending == NVML_FEATURE_ENABLED:
+    <span class="fn">print</span>(<span class="st">"⚠ Pending retirements: GPU reset required to activate"</span>)</code></pre>
+</div>
+<h3>nvidia-smi HBM Reference</h3>
+<table>
+<tr><th>Command</th><th>Output</th><th>Primary Use</th></tr>
+<tr><td><code>nvidia-smi</code></td><td>Quick: memory, temp, power, utilization</td><td>Ad hoc health check</td></tr>
+<tr><td><code>nvidia-smi -q -d ECC</code></td><td>Full ECC report: all counters, retirement status, pending</td><td>Investigating error alerts</td></tr>
+<tr><td><code>nvidia-smi -q -d TEMPERATURE</code></td><td>All temperature sensors with thresholds</td><td>Thermal investigation</td></tr>
+<tr><td><code>nvidia-smi dmon -s mepucvt -d 1</code></td><td>1-second streaming: mem, ECC, power, util, clock, volatile, throttle</td><td>Real-time workload monitoring</td></tr>
+<tr><td><code>nvidia-smi --query-retired-pages=address,type,count --format=csv</code></td><td>Physical addresses of retired pages and cause</td><td>Assessing degradation severity</td></tr>
+<tr><td><code>nvidia-smi --query-gpu=...,ecc.errors.corrected.volatile.device_memory --format=csv</code></td><td>Scriptable CSV output of any metric combination</td><td>Custom monitoring scripts</td></tr>
+</table>
+<div class="info-box">
+<div class="box-label">Volatile vs Aggregate Counters — Operational Interpretation</div>
+<p><strong>Volatile</strong> counters reset on each driver load or explicit <code>nvidia-smi --gpu-reset</code>. They reflect errors since the last maintenance window and are the most actionable signal: a sudden spike in volatile CEs means a problem is developing right now. <strong>Aggregate</strong> counters persist across reboots in non-volatile GPU registers and build a lifetime health picture. A GPU with thousands of aggregate CEs but zero volatile CEs has a history of issues but is currently stable — worth monitoring closely, but not necessarily an immediate replacement candidate. Fleet management systems track both: volatile for alerts, aggregate for trend analysis and RMA decisions.</p>
+</div>
+</div>
+<div class="lesson" id="p4l2">
+<div class="lesson-header"><span class="lesson-title">Telemetry Pipelines &amp; DCGM</span> <span class="lesson-duration">(~4 hrs)</span></div>
+<p>Individual NVML polling works for a single GPU on a development machine, but a production cluster of thousands of accelerators requires infrastructure-grade telemetry collection. NVIDIA's Data Center GPU Manager (DCGM) provides exactly this: daemon-based polling, device group management, active health checks, built-in diagnostics, and direct integration with Prometheus and Grafana. Understanding DCGM's architecture, field ID system, and integration patterns is the difference between having GPU metrics and having GPU observability.</p>
+<h3>DCGM Architecture</h3>
+<p>DCGM runs as a systemd daemon (<code>nvidia-dcgm</code>) on each GPU host. It owns the NVML connection and polls all local GPUs at configurable rates, maintaining a ring buffer of time-series data. External systems query DCGM through a gRPC API. The <code>dcgm-exporter</code> sidecar translates DCGM metrics into Prometheus format. DCGM also runs active health checks — short synthetic workloads that exercise each GPU subsystem, including full HBM read/write stress tests.</p>
+<div class="diagram">
+DCGM observability architecture:
+
+  ┌─────────── GPU Host ───────────────────────────────┐
+  │                                                     │
+  │  GPU 0   GPU 1  ...  GPU 7                         │
+  │   │        │           │                           │
+  │   └────────┴─────┬─────┘  (NVML)                  │
+  │                  │                                 │
+  │           ┌──────▼──────┐                         │
+  │           │  nvidia-dcgm │  systemd daemon         │
+  │           │  (DCGM core) │  polls at 1–100Hz       │
+  │           │  ring buffer │  runs health checks     │
+  │           └──────┬───────┘                         │
+  │                  │  gRPC / REST                    │
+  │           ┌──────▼───────┐                         │
+  │           │ dcgm-exporter│  Prometheus /metrics    │
+  │           └──────┬───────┘  endpoint :9400         │
+  └──────────────────│──────────────────────────────────┘
+                     │
+              ┌──────▼──────┐
+              │  Prometheus  │  scrapes every 15s
+              └──────┬───────┘
+                     │
+              ┌──────▼──────┐         ┌──────────────┐
+              │   Grafana    │         │  Alertmanager │
+              │  dashboards  │         │  PagerDuty /  │
+              └─────────────┘         │  Slack alerts │
+                                      └──────────────┘
+</div>
+<h3>DCGM Setup and Key Commands</h3>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Bash</span><span class="code-filename">dcgm_setup.sh</span></div>
+<pre><code><span class="cm"># Install and start DCGM (Ubuntu)</span>
+apt-get install -y datacenter-gpu-manager
+systemctl enable --now nvidia-dcgm
+
+<span class="cm"># Verify all GPUs are discovered</span>
+dcgmi discovery -l
+
+<span class="cm"># Run the built-in diagnostic (level 3 = full HBM stress test, ~10 minutes)</span>
+<span class="cm"># Level 1: quick checks only; Level 2: moderate; Level 3: thorough memory test</span>
+dcgmi diag -r 3
+
+<span class="cm"># Stream HBM-relevant fields continuously (field IDs below)</span>
+dcgmi dmon -e 1004,1005,1006,1007,140,155,1009 -d 1000
+
+<span class="cm"># Watch ECC counters specifically across all GPUs</span>
+dcgmi dmon -e 1004,1005 -d 5000   <span class="cm"># every 5 seconds</span>
+
+<span class="cm"># Get a snapshot of all GPU health states</span>
+dcgmi health -g 0 -c</code></pre>
+</div>
+<h3>DCGM Field ID Reference for HBM</h3>
+<table>
+<tr><th>Field ID</th><th>Name</th><th>Description</th><th>Alert Threshold</th></tr>
+<tr><td>1004</td><td>ECC_SBE_VOL_DEV</td><td>Correctable (single-bit) errors, volatile, HBM</td><td>&gt;100/hour rate</td></tr>
+<tr><td>1005</td><td>ECC_DBE_VOL_DEV</td><td>Uncorrectable (double-bit) errors, volatile, HBM</td><td>&gt;0 (immediate)</td></tr>
+<tr><td>1006</td><td>RETIRED_SBE</td><td>Pages retired due to SBE accumulation</td><td>&gt;60 pages</td></tr>
+<tr><td>1007</td><td>RETIRED_DBE</td><td>Pages retired due to DBE</td><td>&gt;0 (immediate)</td></tr>
+<tr><td>1008</td><td>RETIRED_PENDING</td><td>Retirements pending GPU reset</td><td>&gt;0 (schedule reset)</td></tr>
+<tr><td>140</td><td>MEM_TEMP</td><td>HBM memory temperature (°C)</td><td>&gt;80°C</td></tr>
+<tr><td>155</td><td>MEM_UTIL</td><td>Memory bandwidth utilization (%)</td><td>Context-dependent</td></tr>
+<tr><td>1009</td><td>MEM_BW_UTIL</td><td>Memory bandwidth GB/s</td><td>Comparison baseline</td></tr>
+<tr><td>100</td><td>GPU_TEMP</td><td>GPU die temperature (°C)</td><td>&gt;85°C HW throttle</td></tr>
+<tr><td>203</td><td>POWER_USAGE</td><td>Instantaneous power draw (W)</td><td>&gt;TDP limit</td></tr>
+<tr><td>230</td><td>THROTTLE_REASONS</td><td>Bitmask of active throttle reasons</td><td>HW thermal flag</td></tr>
+</table>
+<h3>Prometheus + dcgm-exporter Integration</h3>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">YAML</span><span class="code-filename">prometheus.yml (scrape config)</span></div>
+<pre><code>global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: <span class="st">'dcgm-exporter'</span>
+    scrape_interval: <span class="st">15s</span>
+    static_configs:
+      - targets:
+          - <span class="st">'gpu-host-01:9400'</span>
+          - <span class="st">'gpu-host-02:9400'</span>
+          - <span class="st">'gpu-host-03:9400'</span>
+    metric_relabel_configs:
+      <span class="cm"># Keep only HBM-critical metrics to reduce cardinality</span>
+      - source_labels: [__name__]
+        regex: <span class="st">'DCGM_FI_DEV_(ECC|MEM|FB|RETIRED|THROTTLE|POWER|GPU_TEMP).*'</span>
+        action: keep
+    relabel_configs:
+      <span class="cm"># Add cluster label for multi-cluster Prometheus federation</span>
+      - target_label: cluster
+        replacement: <span class="st">'prod-ai-cluster-01'</span></code></pre>
+</div>
+<h3>Alerting Rules</h3>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">YAML</span><span class="code-filename">hbm_alerts.yml</span></div>
+<pre><code>groups:
+  - name: hbm_health
+    rules:
+
+    <span class="cm"># P0: uncorrectable error — requires immediate action</span>
+    - alert: HBMUncorrectableError
+      expr: DCGM_FI_DEV_ECC_DBE_VOL_DEV &gt; 0
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: <span class="st">"Uncorrectable HBM error on {{ $labels.instance }} GPU {{ $labels.gpu }}"</span>
+        description: <span class="st">"DBE count={{ $value }}. Drain workloads immediately. Schedule replacement."</span>
+
+    <span class="cm"># P1: accelerating correctable error rate — leading indicator of imminent failure</span>
+    - alert: HBMCorrectableErrorRateHigh
+      expr: rate(DCGM_FI_DEV_ECC_SBE_VOL_DEV[1h]) &gt; 50
+      for: 30m
+      labels:
+        severity: warning
+      annotations:
+        summary: <span class="st">"High HBM CE rate on {{ $labels.instance }}"</span>
+        description: <span class="st">"CE rate={{ $value | humanize }}/hr. Monitor for DBE escalation."</span>
+
+    <span class="cm"># P1: DBE-retired page — strong signal of degrading physical memory</span>
+    - alert: HBMDBERetiredPage
+      expr: DCGM_FI_DEV_RETIRED_DBE &gt; 0
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: <span class="st">"HBM DBE page retirement on {{ $labels.instance }}"</span>
+        description: <span class="st">"{{ $value }} page(s) retired due to uncorrectable errors. Plan replacement."</span>
+
+    <span class="cm"># P2: approaching thermal limit</span>
+    - alert: HBMTemperatureHigh
+      expr: DCGM_FI_DEV_MEM_TEMP &gt; 80
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: <span class="st">"HBM temperature {{ $value }}°C on {{ $labels.instance }} (limit 85°C)"</span>
+        description: <span class="st">"Check cooling. Consider reducing memory bandwidth utilization."</span>
+
+    <span class="cm"># P2: hardware thermal throttle active (performance impact + reliability risk)</span>
+    - alert: HBMHardwareThermalThrottle
+      expr: DCGM_FI_DEV_CLOCK_THROTTLE_REASONS &amp; 64 != 0
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: <span class="st">"HW thermal throttle active on {{ $labels.instance }}"</span>
+        description: <span class="st">"GPU is hardware-throttling due to thermal limits. Bandwidth is reduced."</span>
+
+    <span class="cm"># P3: pending retirements need a reset to activate</span>
+    - alert: HBMRetirementsPending
+      expr: DCGM_FI_DEV_RETIRED_PAGES_PENDING == 1
+      for: 24h
+      labels:
+        severity: info
+      annotations:
+        summary: <span class="st">"Pending HBM page retirements on {{ $labels.instance }}"</span>
+        description: <span class="st">"GPU reset required to activate page retirements. Schedule maintenance window."</span></code></pre>
+</div>
+<div class="tip-box">
+<div class="box-label">Grafana Dashboard Panels for HBM</div>
+<p>A well-designed HBM dashboard has four tiers. <strong>Fleet overview</strong>: a table of all GPUs with color-coded health (green/yellow/red) based on UE count, CE rate, and retired page count — the "at a glance" view for operators. <strong>Per-GPU timeseries</strong>: CE rate over 7 days, HBM temperature, bandwidth utilization, and throttle events as a stacked time series — shows trends and correlates events. <strong>Anomaly list</strong>: GPUs with any non-zero UEs, DBE-retired pages, or CE rates above threshold, sorted by severity. <strong>Thermal map</strong>: a rack-layout heatmap showing HBM temperature by physical rack position — reveals cooling hot spots from poor airflow or failed CDU circuits.</p>
+</div>
+</div>
+<div class="lesson" id="p4l3">
+<div class="lesson-header"><span class="lesson-title">Predictive Failure &amp; Fleet Management</span> <span class="lesson-duration">(~4 hrs)</span></div>
+<p>The most sophisticated HBM monitoring transcends reactive alerting — it uses historical telemetry patterns to predict failure before it causes data loss or workload interruption. This is predictive maintenance applied to silicon: building models of normal HBM behavior, detecting deviations early, and scheduling proactive replacement at planned maintenance windows rather than emergency responses to in-flight training run corruption.</p>
+<h3>The Failure Progression Model</h3>
+<p>HBM hard failures rarely appear suddenly. They develop through a characteristic progression that provides a predictable window for intervention if you know what signals to watch:</p>
+<div class="diagram">
+HBM failure progression timeline (typical hard failure):
+
+ CE rate  ─────────────────────────────────────────────────────────────────
+ (per hr)
+          │
+    1000  │                                          ┌─────── UE + system crash
+          │                                      ╭──╯
+     100  │                                  ╭───╯     ← exponential growth phase
+          │                              ╭───╯
+      10  │                    ─────╭────╯          ← rate begins rising
+          │ ──────────────────╯
+       1  │  (healthy baseline: 0–1 CE/day)
+          │
+       0  │══════════════════════════════════════════════════════════════════
+           Day 1                Day 30            Day 45        Day ~48
+
+Intervention zones:
+  Green  (days 1–30):  Normal operation, zero or rare CEs, nothing to do
+  Yellow (days 30–44): Rising CE rate, trending analysis triggers warning
+  Orange (day 44–47):  Accelerating CEs, proactive drain + replacement
+  Red    (day 48):     First UE, immediate emergency if not already replaced
+</div>
+<h3>Correctable Error Trend Analysis</h3>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">hbm_trend.py</span></div>
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> scipy <span class="kw">import</span> stats
+<span class="kw">from</span> dataclasses <span class="kw">import</span> dataclass
+<span class="kw">from</span> typing <span class="kw">import</span> Optional
+
+@dataclass
+<span class="kw">class</span> HBMHealthReport:
+    gpu_uuid: str
+    ce_rate_now: float          <span class="cm"># CEs per hour (current)</span>
+    ce_trend_slope: float       <span class="cm"># CEs per hour per day</span>
+    trend_r_squared: float      <span class="cm"># goodness of fit (0–1)</span>
+    degrading: bool
+    days_to_critical: float     <span class="cm"># extrapolated days until CE rate hits threshold</span>
+    recommendation: str
+
+<span class="kw">def</span> <span class="fn">analyze_hbm_health</span>(
+    gpu_uuid: str,
+    hourly_ce_counts: list[float],   <span class="cm"># list of CE counts, one per hour, oldest first</span>
+    critical_ce_rate: float = <span class="nm">500</span>,  <span class="cm"># CEs/hour threshold for "critical"</span>
+    trend_p_threshold: float = <span class="nm">0.05</span> <span class="cm"># statistical significance for trend detection</span>
+) -&gt; HBMHealthReport:
+    n = <span class="fn">len</span>(hourly_ce_counts)
+    x = np.<span class="fn">arange</span>(n) / <span class="nm">24</span>   <span class="cm"># convert hours to days</span>
+    y = np.<span class="fn">array</span>(hourly_ce_counts)
+
+    slope, intercept, r_value, p_value, se = stats.<span class="fn">linregress</span>(x, y)
+
+    degrading = (slope &gt; <span class="nm">0.1</span>) <span class="kw">and</span> (p_value &lt; trend_p_threshold)
+
+    <span class="kw">if</span> slope &gt; <span class="nm">0</span> <span class="kw">and</span> intercept &lt; critical_ce_rate:
+        days_to_critical = (critical_ce_rate - intercept) / slope
+    <span class="kw">elif</span> intercept &gt;= critical_ce_rate:
+        days_to_critical = <span class="nm">0.0</span>
+    <span class="kw">else</span>:
+        days_to_critical = float(<span class="st">'inf'</span>)
+
+    <span class="kw">if</span> days_to_critical &lt; <span class="nm">3</span>:
+        rec = <span class="st">"🔴 URGENT: drain workloads now, replace within 72 hours"</span>
+    <span class="kw">elif</span> days_to_critical &lt; <span class="nm">10</span>:
+        rec = <span class="st">"🟡 WARNING: schedule replacement within 1 week"</span>
+    <span class="kw">elif</span> degrading:
+        rec = <span class="st">"🟡 WATCH: trend is rising, monitor daily"</span>
+    <span class="kw">else</span>:
+        rec = <span class="st">"🟢 HEALTHY: no action needed"</span>
+
+    <span class="kw">return</span> <span class="fn">HBMHealthReport</span>(
+        gpu_uuid=gpu_uuid,
+        ce_rate_now=<span class="fn">float</span>(y[-<span class="nm">1</span>]),
+        ce_trend_slope=<span class="fn">float</span>(slope),
+        trend_r_squared=<span class="fn">float</span>(r_value**<span class="nm">2</span>),
+        degrading=degrading,
+        days_to_critical=days_to_critical,
+        recommendation=rec,
+    )</code></pre>
+</div>
+<h3>Failure Precursor Signal Reference</h3>
+<table>
+<tr><th>Signal</th><th>Healthy Baseline</th><th>Watch Threshold</th><th>Action Threshold</th><th>Typical Lead Time</th></tr>
+<tr><td>CE rate (volatile)</td><td>0–1/day</td><td>&gt;10/hour</td><td>&gt;100/hour</td><td>Days–weeks before UE</td></tr>
+<tr><td>CE trend slope</td><td>Flat (slope ≈ 0)</td><td>Positive and significant</td><td>Exponential growth</td><td>Weeks before UE</td></tr>
+<tr><td>DBE-retired pages</td><td>0</td><td>1 page</td><td>Any DBE retirement</td><td>Hours–days to next UE</td></tr>
+<tr><td>SBE-retired pages</td><td>0–5</td><td>&gt;20 pages</td><td>&gt;60 pages</td><td>Days–weeks</td></tr>
+<tr><td>HBM temperature delta</td><td>Stable to baseline</td><td>+3°C above 30-day avg</td><td>+8°C or &gt;80°C absolute</td><td>Variable — cooling issue</td></tr>
+<tr><td>Throttle frequency</td><td>&lt;0.1% of runtime</td><td>&gt;1% of runtime</td><td>&gt;5% sustained</td><td>Immediate perf impact</td></tr>
+</table>
+<h3>Automated Quarantine and Workload Drain</h3>
+<p>At hyperscaler scale, human response to GPU health events is too slow. Production clusters implement automated response playbooks triggered by monitoring events:</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">gpu_quarantine.py</span></div>
+<pre><code><span class="kw">import</span> subprocess, logging
+<span class="kw">from</span> kubernetes <span class="kw">import</span> client, config
+
+log = logging.<span class="fn">getLogger</span>(__name__)
+
+<span class="kw">def</span> <span class="fn">quarantine_gpu_node</span>(node_name: str, gpu_uuid: str, reason: str):
+    <span class="st">"""
+    Cordon the Kubernetes node hosting the failing GPU,
+    drain existing workloads, and label for replacement.
+    Called automatically by Alertmanager webhook on UE event.
+    """</span>
+    config.<span class="fn">load_incluster_config</span>()
+    v1 = client.<span class="fn">CoreV1Api</span>()
+
+    <span class="cm"># 1. Cordon the node (prevent new workload scheduling)</span>
+    body = {<span class="st">"spec"</span>: {<span class="st">"unschedulable"</span>: <span class="nm">True</span>}}
+    v1.patch_node(node_name, body)
+    log.<span class="fn">warning</span>(f<span class="st">"Cordoned {node_name}: {reason}"</span>)
+
+    <span class="cm"># 2. Evict running pods (drain)</span>
+    pods = v1.<span class="fn">list_namespaced_pod</span>(<span class="st">"default"</span>,
+        field_selector=f<span class="st">"spec.nodeName={node_name}"</span>)
+    <span class="kw">for</span> pod <span class="kw">in</span> pods.items:
+        <span class="kw">try</span>:
+            v1.<span class="fn">delete_namespaced_pod</span>(pod.metadata.name, pod.metadata.namespace,
+                body=client.<span class="fn">V1DeleteOptions</span>(grace_period_seconds=<span class="nm">30</span>))
+            log.<span class="fn">info</span>(f<span class="st">"Evicted pod {pod.metadata.name}"</span>)
+        <span class="kw">except</span> Exception <span class="kw">as</span> e:
+            log.<span class="fn">error</span>(f<span class="st">"Failed to evict {pod.metadata.name}: {e}"</span>)
+
+    <span class="cm"># 3. Label node for hardware replacement tracking</span>
+    labels = {
+        <span class="st">"gpu-health"</span>: <span class="st">"failed"</span>,
+        <span class="st">"failed-gpu-uuid"</span>: gpu_uuid.<span class="fn">replace</span>(<span class="st">":"</span>, <span class="st">"-"</span>),
+        <span class="st">"failure-reason"</span>: reason,
+    }
+    v1.<span class="fn">patch_node</span>(node_name, {<span class="st">"metadata"</span>: {<span class="st">"labels"</span>: labels}})
+    log.<span class="fn">warning</span>(f<span class="st">"Node {node_name} labeled for replacement: GPU {gpu_uuid}"</span>)</code></pre>
+</div>
+<h3>Training Checkpoint Frequency Adaptation</h3>
+<p>Large training runs — which can last weeks — should adapt their checkpoint frequency based on the health of the GPU fleet they're running on. A healthy fleet might checkpoint every 30 minutes. A fleet with multiple GPUs showing rising CE rates should checkpoint every 5 minutes, reducing the "blast radius" when a GPU eventually fails mid-run.</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">adaptive_checkpoint.py</span></div>
+<pre><code><span class="kw">import</span> pynvml, time, torch
+
+<span class="kw">def</span> <span class="fn">get_fleet_health_score</span>() -&gt; float:
+    <span class="st">"""Returns 0.0 (critical) to 1.0 (healthy) based on HBM error state."""</span>
+    pynvml.<span class="fn">nvmlInit</span>()
+    total_ue = total_ce_rate = <span class="nm">0</span>
+    n = pynvml.<span class="fn">nvmlDeviceGetCount</span>()
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(n):
+        h = pynvml.<span class="fn">nvmlDeviceGetHandleByIndex</span>(i)
+        ue = pynvml.<span class="fn">nvmlDeviceGetMemoryErrorCounter</span>(h,
+            pynvml.NVML_MEMORY_ERROR_TYPE_UNCORRECTED,
+            pynvml.NVML_VOLATILE_ECC,
+            pynvml.NVML_MEMORY_LOCATION_DEVICE_MEMORY)
+        ce = pynvml.<span class="fn">nvmlDeviceGetMemoryErrorCounter</span>(h,
+            pynvml.NVML_MEMORY_ERROR_TYPE_CORRECTED,
+            pynvml.NVML_VOLATILE_ECC,
+            pynvml.NVML_MEMORY_LOCATION_DEVICE_MEMORY)
+        total_ue += ue
+        total_ce_rate += ce
+    pynvml.<span class="fn">nvmlShutdown</span>()
+    <span class="kw">if</span> total_ue &gt; <span class="nm">0</span>: <span class="kw">return</span> <span class="nm">0.0</span>       <span class="cm"># any UE → critical</span>
+    <span class="kw">if</span> total_ce_rate &gt; <span class="nm">1000</span>: <span class="kw">return</span> <span class="nm">0.3</span>  <span class="cm"># high CE → degraded</span>
+    <span class="kw">if</span> total_ce_rate &gt; <span class="nm">100</span>: <span class="kw">return</span> <span class="nm">0.7</span>   <span class="cm"># elevated CE → watch</span>
+    <span class="kw">return</span> <span class="nm">1.0</span>                            <span class="cm"># healthy</span>
+
+<span class="kw">def</span> <span class="fn">checkpoint_interval_seconds</span>(health: float) -&gt; int:
+    <span class="kw">if</span>   health == <span class="nm">0.0</span>: <span class="kw">return</span> <span class="nm">120</span>    <span class="cm"># critical: every 2 min</span>
+    <span class="kw">elif</span> health &lt;= <span class="nm">0.3</span>: <span class="kw">return</span> <span class="nm">300</span>    <span class="cm"># degraded: every 5 min</span>
+    <span class="kw">elif</span> health &lt;= <span class="nm">0.7</span>: <span class="kw">return</span> <span class="nm">900</span>    <span class="cm"># watch:    every 15 min</span>
+    <span class="kw">else</span>:               <span class="kw">return</span> <span class="nm">1800</span>   <span class="cm"># healthy:  every 30 min</span></code></pre>
+</div>
+<h3>Fleet-Scale Practices at Hyperscalers</h3>
+<p>Published reliability engineering from Google, Meta, and Microsoft describes a mature operational picture for HBM at scale:</p>
+<ul>
+<li><strong>Automated quarantine SLA</strong>: Any GPU with a UE event is automatically cordoned, drained, and quarantined within 2–5 minutes — before the job scheduler can assign new work to it. Human operators are notified but not in the critical path.</li>
+<li><strong>Proactive swap scheduling</strong>: GPUs with rising CE rates or SBE-retired pages are added to the next scheduled maintenance window's replacement list, typically 1–2 weeks out. This prevents the emergency response overhead of an unplanned failure during a critical training run.</li>
+<li><strong>Training job resilience</strong>: Large training frameworks (Megatron-LM, DeepSpeed) implement fault-tolerant training with automatic checkpoint-restart. When a GPU fails, the job reloads the most recent checkpoint on a healthy node and continues — losing at most the time since the last checkpoint rather than the entire run.</li>
+<li><strong>RAS event logging pipeline</strong>: HBM error events feed into the cluster's Reliability, Availability, and Serviceability (RAS) event bus alongside CPU MCE errors, PCIe link degradation, NVLink fault events, and BMC sensor alarms. Operators have a single unified event stream rather than siloed GPU, CPU, and network monitoring dashboards.</li>
+<li><strong>Repair vs replace economics</strong>: At large scale, GPU boards with single-stack HBM failures are economically worth repairing (NVIDIA depot service). Boards with multiple-stack failures or GPU die damage are scrapped. The triage decision — repair or replace — is made by automated RMA tooling that queries the aggregate error history and retired page count before a technician even opens a ticket.</li>
+</ul>
+<div class="info-box">
+<div class="box-label">Open Source HBM Monitoring Stack</div>
+<p><strong>dcgm-exporter</strong> (NVIDIA, Apache 2.0): Kubernetes-native DCGM→Prometheus bridge. Deploy as a DaemonSet. <strong>gpu-operator</strong> (NVIDIA): automates DCGM, dcgm-exporter, and driver deployment on Kubernetes clusters. <strong>AMD ROCm SMI</strong>: equivalent tooling for MI300X HBM monitoring — exposes ECC counters, temperature, bandwidth, and page retirement via <code>rocm-smi --showmeminfo</code> and the <code>rsmi</code> Python bindings. <strong>OpenTelemetry GPU receiver</strong>: emerging standard for vendor-neutral GPU telemetry in OTel pipelines — watch this space for cross-vendor HBM observability in 2025–2026.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="glossary-annex">
+<div class="glossary-header">
+<div class="glossary-tag">// annex.glossary</div>
+<h2>Technical Glossary</h2>
+<p>Definitions for all acronyms and technical terms used throughout this roadmap. Click any underlined term in the lessons to jump here. Use the search to filter.</p>
+</div>
+<div class="glossary-grid" id="glossary-grid">
+<div class="glossary-entry" data-term="anneal" id="gloss-anneal">
+<div class="glossary-entry-term">Anneal</div>
+<div class="glossary-entry-body"><p><strong>Annealing</strong> in semiconductor fabrication is a controlled heating process that allows atoms in a material to rearrange into a lower-energy, more stable configuration — similar in principle to the metallurgical annealing of metals.</p>
+<p><strong>Post-plate TSV anneal (~200°C, 30–60 min):</strong> Electroplated copper has a fine-grained, high-defect microstructure with resistivity ~2.2 µΩ·cm. The anneal causes grain growth — small grains merge into larger ones — reducing defect density and resistivity to ~1.7 µΩ·cm (closer to bulk copper). More importantly, the recrystallized microstructure has dramatically better electromigration resistance because grain boundary diffusion (the primary EM mechanism) is reduced by 10–100× compared to fine-grained electroplated copper.</p>
+<p><strong>Dopant activation anneal (after ion implantation):</strong> Source/drain dopant atoms implanted into silicon need high-temperature annealing (900–1000°C, milliseconds via flash or laser anneal) to electrically activate — move from interstitial positions to substitutional sites where they contribute carriers.</p></div>
+</div>
+<div class="glossary-entry" data-term="arf immersion lithography" id="gloss-arf">
+<div class="glossary-entry-term">ArF immersion lithography</div>
+<div class="glossary-entry-body"><p><strong>ArF Immersion Lithography</strong> uses an argon fluoride (ArF) excimer laser at 193 nm wavelength to pattern photoresist on wafers. The "immersion" refers to filling the gap between the final lens and the wafer with ultra-pure water (refractive index ~1.44), which effectively shortens the wavelength to ~134 nm and enables smaller feature sizes.</p>
+<p>The process: a mask (reticle) containing the circuit pattern is illuminated by the ArF laser. The lens system projects a demagnified image (typically 4× reduction) onto photoresist coating the wafer surface. The resist is then developed, leaving the pattern for subsequent etch or deposition steps.</p>
+<p>For HBM TSV formation, ArF immersion is used to pattern the hard mask that defines TSV locations with ±5 nm overlay accuracy. In BEOL RDL layers at 0.4–2 µm pitch, ArF immersion is the workhorse tool.</p>
+<p>For features below ~40 nm, multiple patterning (SADP, SAQP) or EUV lithography (13.5 nm wavelength) is required. ArF immersion remains cost-effective for the feature sizes used in HBM interposer fabrication.</p></div>
+</div>
+<div class="glossary-entry" data-term="arithmetic intensity" id="gloss-arithmetic_intensity">
+<div class="glossary-entry-term">Arithmetic intensity</div>
+<div class="glossary-entry-body"><p><strong>Arithmetic intensity</strong> (also called operational intensity) is the ratio of floating-point operations (FLOPs) performed to bytes of memory traffic generated: AI = FLOPs / Bytes.</p>
+<p>Every hardware platform has a peak compute throughput (FLOPs/sec) and a peak memory bandwidth (Bytes/sec). Their ratio is the platform's "ridge point" arithmetic intensity. Workloads with AI below the ridge point are memory-bandwidth-limited (adding more compute cores doesn't help — you're waiting for memory); workloads above the ridge point are compute-limited.</p>
+<p>The H100 ridge point: 989 TFLOPS / 3.35 TB/s ≈ 295 FLOP/byte. LLM inference at batch=1 has AI ~1–5 FLOP/byte — 60× below the ridge, meaning &gt;98% of the H100's compute is idle during LLM generation. This is why HBM bandwidth improvements directly improve LLM inference speed, and why quantization (reducing bytes/parameter) is so impactful.</p></div>
+</div>
+<div class="glossary-entry" data-term="beol" id="gloss-beol">
+<div class="glossary-entry-term">BEOL</div>
+<div class="glossary-entry-body"><p><strong>Back End of Line (BEOL)</strong> is the second major phase of IC fabrication, covering the deposition and patterning of all metal interconnect layers that wire together the transistors and other active devices created during FEOL.</p>
+<p>BEOL layers consist of alternating conductive layers (copper or tungsten) and insulating dielectric layers (SiO₂ or low-k materials). Modern logic ICs may have 12–18 BEOL metal layers. Each layer is patterned using lithography and etched or polished (CMP) to form the desired wiring pattern.</p>
+<p>The BEOL process for a layer: deposit dielectric → pattern vias/trenches by lithography + etch → deposit barrier metal (TaN) + copper seed → electroplate copper → CMP to planarize. This is called the damascene process.</p></div>
+</div>
+<div class="glossary-entry" data-term="bga" id="gloss-bga">
+<div class="glossary-entry-term">BGA</div>
+<div class="glossary-entry-body"><p><strong>Ball Grid Array (BGA)</strong> is an IC package format where the external electrical connections are an array of solder balls on the bottom surface of the package substrate, rather than leads on the edges. BGA packages are attached to PCBs by placing them solder-ball-down onto matching PCB pads and running through a reflow oven.</p>
+<p>In the HBM package hierarchy, BGA solder balls (~600–760 µm diameter at package level) are the final, largest-pitch connection — at the bottom of the CoWoS package substrate — that attaches the entire assembled package (GPU die + HBM stacks + interposer) to the server board. The bump pitch and ball diameter at this level are large enough for standard SMT PCB assembly processes.</p>
+<p>The interconnect hierarchy from die to board spans six orders of magnitude in pitch: TSV (~5 µm pitch) → microbump (~55 µm) → C4 bump (~100 µm) → package substrate RDL (~150 µm) → BGA ball (~1 mm on server boards for SXM-format GPUs).</p></div>
+</div>
+<div class="glossary-entry" data-term="bist" id="gloss-bist">
+<div class="glossary-entry-term">BIST</div>
+<div class="glossary-entry-body"><p><strong>Built-In Self-Test (BIST)</strong> is dedicated test circuitry integrated directly onto the DRAM die that can execute memory test algorithms (March algorithms, retention tests, etc.) at full operating frequency without requiring external tester access to every data pin.</p>
+<p>Without BIST, testing 8 Gbit of DRAM cells through external probe needles would take hours per die — economically catastrophic. BIST engines run internally at the full ~4 Gbps interface rate, completing the same test in minutes. The external tester only needs to initiate the test, monitor pass/fail signals, and capture failing addresses from the on-chip fail buffer.</p>
+<p>HBM BIST also includes: TSV continuity loopback tests, inter-die connectivity checks via boundary scan, and data retention tests with programmable pause intervals. Post-repair BIST re-runs the full test suite to verify all redundancy repairs are effective.</p></div>
+</div>
+<div class="glossary-entry" data-term="bosch process" id="gloss-bosch_process">
+<div class="glossary-entry-term">Bosch process</div>
+<div class="glossary-entry-body"><p>See <strong>DRIE</strong> — the Bosch process is the dominant DRIE technique used for TSV fabrication. It was developed by Robert Bosch GmbH and patented in the early 1990s.</p>
+<p>The key insight of the Bosch process is using the inherent directionality of ion bombardment to selectively remove the passivation polymer from the trench bottom (where ions arrive perpendicularly) while leaving sidewall polymer intact (where ions arrive at glancing incidence). This enables etch rates of 2–4 µm/min while maintaining sidewall angles of 88–90° — essentially vertical.</p>
+<p>The characteristic "scalloping" (periodic ripples ~100–200 nm amplitude on TSV sidewalls) is a diagnostic signature of the Bosch process — each scallop corresponds to one etch/passivation cycle. A brief post-etch isotropic etch can smooth the scallops before liner deposition to improve conformality.</p></div>
+</div>
+<div class="glossary-entry" data-term="boundary scan" id="gloss-boundary_scan">
+<div class="glossary-entry-term">Boundary scan</div>
+<div class="glossary-entry-body"><p><strong>Boundary scan</strong> (standardized as IEEE 1149.1, commonly called JTAG) is a digital test technique that adds a chain of shift register cells at every I/O pin of an IC. During test mode, these cells can be loaded with test data (shift in from TDI) and the captured results shifted out (to TDO) — effectively creating a serial test bus around the chip's periphery.</p>
+<p>In HBM post-assembly test, boundary scan is the primary method for testing inter-die connectivity when the die surfaces are sealed under underfill. By driving known logic values at each output boundary scan cell and capturing the values at each input cell, microbump opens and shorts can be detected without physically accessing the buried die surfaces.</p>
+<p>The HBM logic die's JTAG chain wraps every signal at every inter-die interface. A complete inter-die connectivity test can verify thousands of microbump connections in seconds. Boundary scan can also be used to initialize DRAM training registers and read post-training calibration results during system bring-up.</p></div>
+</div>
+<div class="glossary-entry" data-term="c4 bump" id="gloss-c4_bump">
+<div class="glossary-entry-term">C4 bump</div>
+<div class="glossary-entry-body"><p><strong>C4 (Controlled Collapse Chip Connection)</strong> bumps are the solder bumps used to flip-chip attach a die or interposer to the next level of packaging (typically an organic package substrate). They are larger (60–100 µm diameter, ~150 µm pitch) than microbumps and use a eutectic or near-eutectic tin-silver-copper solder alloy rather than the tin-silver cap on copper pillar used for microbumps.</p>
+<p>The "controlled collapse" name refers to the self-alignment property: during reflow, surface tension of the molten solder pulls the die into alignment with the substrate pads, correcting small placement errors. This makes C4 attachment tolerant of placement accuracies of ±20–50 µm — far less demanding than the sub-micron overlay required for microbump TCB.</p>
+<p>In the HBM CoWoS package hierarchy: microbumps (~55 µm pitch) connect dies to the silicon interposer; C4 bumps (~150 µm pitch) connect the interposer to the organic package substrate; large BGA balls (~1 mm pitch) connect the package to the server PCB.</p></div>
+</div>
+<div class="glossary-entry" data-term="cmp" id="gloss-cmp">
+<div class="glossary-entry-term">CMP</div>
+<div class="glossary-entry-body"><p><strong>Chemical Mechanical Planarization (CMP)</strong> is a wafer polishing process that uses a combination of chemical etching and mechanical abrasion to remove material and create an extremely flat surface. It is used at multiple stages in HBM fabrication.</p>
+<p>The wafer is pressed face-down against a rotating polishing pad while a slurry of abrasive particles (typically silica or alumina) and chemical etchants is dispensed. The chemistry softens the surface material while the abrasive mechanically removes the softened layer, achieving sub-nanometer surface roughness.</p>
+<p>In HBM manufacturing, CMP is used to: (1) remove copper overburden after TSV electroplating, (2) planarize each BEOL metal layer, (3) thin dies from 750 µm to 50 µm (backside CMP/grinding), and (4) prepare die surfaces for hybrid bonding to &lt;0.3 nm Ra roughness.</p>
+<p><strong>Key metrics:</strong> Dishing (copper surface below oxide — target &lt;30 nm), Erosion (oxide surface drop — target &lt;10 nm), Non-uniformity (thickness variation across wafer — target &lt;1%).</p></div>
+</div>
+<div class="glossary-entry" data-term="cowos" id="gloss-cowos">
+<div class="glossary-entry-term">CoWoS</div>
+<div class="glossary-entry-body"><p><strong>CoWoS (Chip on Wafer on Substrate)</strong> is TSMC's flagship advanced packaging platform for co-integrating heterogeneous dies — specifically GPU/AI ASIC dies and HBM memory stacks — on a silicon interposer.</p>
+<p><strong>Integration flow:</strong> The GPU die and HBM stacks are flip-chip bonded face-down onto a silicon interposer wafer using fine-pitch C4 or µ-bumps. The interposer provides high-density RDL routing (0.4–2 µm pitch) between all dies. The assembled interposer is then diced and attached to an organic package substrate via coarser C4 bumps. The package substrate connects to the PCB via BGA solder balls.</p>
+<p><strong>Variants:</strong> CoWoS-S uses a full silicon interposer (highest density, used in H100/A100). CoWoS-R uses a resin-based RDL interposer (lower cost, coarser pitch). CoWoS-L integrates active bridge chiplets into the interposer.</p>
+<p>The H100 SXM5 interposer is ~800 mm² — larger than most processor dies — requiring reticle stitching (joining multiple lithography exposures) to pattern the full area.</p></div>
+</div>
+<div class="glossary-entry" data-term="cte mismatch" id="gloss-cte">
+<div class="glossary-entry-term">CTE mismatch</div>
+<div class="glossary-entry-body"><p><strong>Coefficient of Thermal Expansion (CTE)</strong> quantifies how much a material expands per degree of temperature increase (units: ppm/°C or µm/m·°C).</p>
+<p><strong>CTE mismatch</strong> in HBM arises because copper (CTE = 17 ppm/°C) expands ~6.5× more than silicon (CTE = 2.6 ppm/°C) for the same temperature change. As the device heats up during operation or test, TSV copper tries to expand much more than the surrounding silicon — but is constrained by it. This creates compressive stress in the silicon radially around each TSV and tensile stress along the TSV axis.</p>
+<p><strong>Consequences:</strong> (1) The piezoelectric effect shifts transistor threshold voltages within ~8–15 µm of each TSV (keep-out zone requirement). (2) Repeated thermal cycling fatigues the TSV-liner interface and microbump joints. (3) At extreme temperatures, delamination of the dielectric liner can occur. (4) Warpage of the die stack as a whole due to CTE mismatch between the silicon interposer and the organic package substrate.</p></div>
+</div>
+<div class="glossary-entry" data-term="damascene process" id="gloss-damascene">
+<div class="glossary-entry-term">Damascene process</div>
+<div class="glossary-entry-body"><p>The <strong>damascene process</strong> (named after the inlaid metalwork style from Damascus) is the standard method for forming copper interconnects in modern IC fabrication. Instead of depositing a metal layer and etching it (which is difficult for copper), trenches and vias are first etched into a dielectric, then filled with metal, then planarized by CMP.</p>
+<p><strong>Single damascene:</strong> Etch trenches → barrier deposition (TaN) → Cu seed (PVD) → Cu electroplate → CMP. Creates metal lines or vias but not both in one step.</p>
+<p><strong>Dual damascene:</strong> Etch both vias and trenches in the same dielectric layer → barrier + seed → electroplate → CMP. Both the metal line and the via below it are formed in one fill/CMP cycle, reducing process steps.</p>
+<p>In HBM fabrication, dual damascene is used for all BEOL metal layers in the logic die and for the RDL wiring layers in the silicon interposer. The same process applied at larger dimensions (2–10 µm rather than sub-100 nm) gives the interposer its dense routing capability.</p></div>
+</div>
+<div class="glossary-entry" data-term="dcgm" id="gloss-dcgm">
+<div class="glossary-entry-term">DCGM</div>
+<div class="glossary-entry-body"><p><strong>Data Center GPU Manager (DCGM)</strong> is NVIDIA's infrastructure-grade GPU monitoring daemon for production datacenter deployments. It runs as a systemd service on each GPU host, polls all local GPUs via NVML at configurable intervals, maintains time-series ring buffers, runs active health diagnostics, and exposes data via gRPC/REST API.</p>
+<p><code>dcgm-exporter</code> translates DCGM metrics into Prometheus format, enabling integration with standard monitoring stacks (Grafana, Alertmanager, etc.). In Kubernetes environments, dcgm-exporter is deployed as a DaemonSet.</p>
+<p>Key capabilities beyond basic NVML: group-based device management, configurable health check policies, built-in diagnostics (<code>dcgmi diag -r 3</code> runs a full HBM stress test), field ID-based metric subscription, and integration with the NVIDIA GPU Operator for automated cluster deployment.</p>
+<p>Critical HBM field IDs: 1004 (SBE volatile), 1005 (DBE volatile), 1006 (SBE retired pages), 1007 (DBE retired pages), 140 (HBM temperature), 1009 (memory bandwidth utilization).</p></div>
+</div>
+<div class="glossary-entry" data-term="dlc" id="gloss-dlc">
+<div class="glossary-entry-term">DLC</div>
+<div class="glossary-entry-body"><p><strong>Direct Liquid Cooling (DLC)</strong> places metal cold plates with internal water channels directly on top of the GPU package heat spreader, transferring heat from the GPU/HBM to a chilled water loop rather than relying on forced air. DLC removes 70–80% of server heat with far greater efficiency than air cooling.</p>
+<p><strong>Why it matters for HBM:</strong> HBM3 has an 85°C junction temperature limit. In an air-cooled server, HBM junction temperature may reach 70–80°C under sustained full-bandwidth workloads, leaving only a 5–15°C margin before thermal throttling. DLC with 20°C inlet water typically keeps HBM Tj below 55°C — a 30°C margin — enabling sustained maximum bandwidth without throttling.</p>
+<p><strong>Infrastructure requirements:</strong> DLC requires chilled water supply piping to each rack, Coolant Distribution Units (CDUs) per rack or row, leak detection sensors, and server designs with external water connections. New datacenter deployments for AI clusters are designed DLC-first; retrofitting existing air-cooled facilities to DLC requires significant facility modification.</p>
+<p><strong>Density enabled:</strong> Air cooling tops out at ~30 kW/rack. DLC enables 80–120 kW/rack (cold plate) or 200+ kW/rack (immersion). The NVIDIA NVL72 rack at ~120 kW is only deployable with DLC.</p></div>
+</div>
+<div class="glossary-entry" data-term="drie" id="gloss-drie">
+<div class="glossary-entry-term">DRIE</div>
+<div class="glossary-entry-body"><p><strong>Deep Reactive Ion Etching (DRIE)</strong> is a plasma-based silicon etching process capable of creating high-aspect-ratio structures with nearly vertical sidewalls. It is the primary method for etching TSV holes through silicon dies.</p>
+<p>The dominant DRIE technique is the <strong>Bosch process</strong> (named after Robert Bosch GmbH, who patented it): the process alternates rapidly between two steps in the same chamber:</p>
+<ol>
+<li><strong>Etch step (~10 sec):</strong> SF₆ plasma isotropically etches silicon from all exposed surfaces, removing ~4 µm per cycle.</li>
+<li><strong>Passivation step (~8 sec):</strong> C₄F₈ plasma deposits a thin fluorocarbon polymer film on all surfaces including sidewalls.</li>
+</ol>
+<p>In the next etch step, directional ion bombardment from the plasma preferentially removes the polymer from the bottom of the trench (but not the sidewalls), allowing the etch to proceed downward while sidewalls remain protected. The result: nearly vertical sidewalls with periodic "scallops" (~100–200 nm amplitude) from each etch/passivation cycle.</p>
+<p>For HBM TSVs: target depth ~50 µm, diameter ~5 µm, aspect ratio ~10:1, etch rate ~2–4 µm/min.</p></div>
+</div>
+<div class="glossary-entry" data-term="ecc" id="gloss-ecc">
+<div class="glossary-entry-term">ECC</div>
+<div class="glossary-entry-body"><p><strong>Error Correcting Code (ECC)</strong> is a hardware mechanism that adds redundant check bits to stored data, enabling detection and correction of bit errors that occur during storage or transmission.</p>
+<p>HBM implements <strong>On-Die ECC (ODECC)</strong>: each 128-bit data burst is protected by 8 check bits computed using a Hamming code variant, stored in dedicated ECC cells not visible to the host. On every read, the ECC logic recomputes the syndrome and either: (a) passes data unchanged (no error), (b) flips the identified bit and passes corrected data (single-bit error — SECDED), or (c) flags an uncorrectable double-bit error (DBE) and passes corrupted data with an error signal.</p>
+<p>ODECC runs entirely within the HBM stack with no latency penalty to the memory controller. Error events are logged in status registers readable via NVML/DCGM. A rising correctable error (CE) rate is the primary early-warning signal for impending HBM hard failure.</p>
+<p><strong>Error types:</strong> Correctable Error (CE / SBE — single-bit error) vs Uncorrectable Error (UE / DBE — double-bit error, data loss). Volatile counters reset on driver reload; aggregate counters persist across reboots.</p></div>
+</div>
+<div class="glossary-entry" data-term="electromigration" id="gloss-electromigration">
+<div class="glossary-entry-term">Electromigration</div>
+<div class="glossary-entry-body"><p><strong>Electromigration (EM)</strong> is the gradual displacement of metal atoms in a conductor under the influence of high current density. When electrons flow through a metal, momentum transfer from electrons to metal atoms causes them to slowly migrate in the direction of electron flow (cathode to anode).</p>
+<p>Over time, electromigration creates voids (depletion regions that become opens) at the cathode end and hillocks (accumulation regions that can cause shorts) at the anode end. The rate follows an Arrhenius equation — doubling current density increases EM rate by ~4×; increasing temperature by 10°C increases rate by ~2×.</p>
+<p>In HBM, electromigration is a concern in: TSV copper fills (high current density at narrow cross-section), microbump joints (the Cu₃Sn/Cu₆Sn₅ intermetallic layer is more EM-susceptible than bulk copper), and BEOL interconnects. Reliability qualification includes HTOL (1000h at 85°C, 1.2× Vnom) specifically to accelerate and screen for EM failures. Post-plating copper anneal at ~200°C recrystallizes the grain structure, significantly improving EM lifetime.</p></div>
+</div>
+<div class="glossary-entry" data-term="feol" id="gloss-feol">
+<div class="glossary-entry-term">FEOL</div>
+<div class="glossary-entry-body"><p><strong>Front End of Line (FEOL)</strong> is the first phase of semiconductor wafer fabrication, covering all process steps that create the active devices — transistors, capacitors, and diodes — directly in or on the silicon substrate.</p>
+<p>FEOL includes: well implants, shallow trench isolation (STI), gate oxide growth, gate polysilicon deposition and patterning, source/drain implants, silicidation, and contact formation. For DRAM, FEOL also includes the storage capacitor formation (either deep trench or stacked).</p>
+<p>FEOL ends when all active devices are complete but before any metal wiring layers are added. The boundary between FEOL and BEOL is the first metal layer (Metal 1). In via-middle TSV integration, TSVs are formed after FEOL transistors are complete but before BEOL metal layers are deposited.</p></div>
+</div>
+<div class="glossary-entry" data-term="fit rate" id="gloss-fit">
+<div class="glossary-entry-term">FIT rate</div>
+<div class="glossary-entry-body"><p><strong>FIT (Failures In Time)</strong> is the standard unit for semiconductor reliability: 1 FIT = 1 failure per 10⁹ device-hours of operation. A device with 10 FIT will (statistically) have one failure for every 10⁸ device-hours, or equivalently, a field population of 10,000 units would expect ~1 failure per 10,000 hours.</p>
+<p>JEDEC JESD79-5 specifies the maximum acceptable FIT rate for HBM DRAM: &lt;10 FIT per Gbit of memory capacity. For an 8 Gbit die, this means &lt;80 FIT per die. Across a 6-stack H100 with 6 × 9 dies = 54 total dies, the aggregate FIT budget is ~4300 FIT — meaning statistically one failure per ~230,000 operating hours in a single H100, or equivalently, a population of 230,000 H100s would expect ~1 HBM failure per hour collectively.</p>
+<p>FIT rates are derived from HTOL data using the acceleration factor calculation: field_FIT = test_failures / (sample_size × test_hours × acceleration_factor).</p></div>
+</div>
+<div class="glossary-entry" data-term="hast" id="gloss-hast">
+<div class="glossary-entry-term">HAST</div>
+<div class="glossary-entry-body"><p><strong>Highly Accelerated Stress Test (HAST)</strong> is an accelerated reliability test that combines elevated temperature (typically 130°C), high humidity (85% relative humidity), and electrical bias to accelerate moisture-induced failure mechanisms in packaged semiconductor devices.</p>
+<p>HAST targets: electrochemical corrosion of metal interconnects (copper, aluminum) when moisture penetrates the package, delamination of die attach materials and underfill under hygroscopic stress, conductive anodic filament (CAF) growth between adjacent conductors in the package substrate, and flux residue activation causing dendritic shorts.</p>
+<p>For HBM, HAST qualification typically runs 96–264 hours at 130°C/85% RH with 1.2× Vnom bias. Acceleration factor vs normal operating environment: ~200×. The test verifies that the package sealing, underfill, and mold compound provide adequate moisture barrier for the product's intended lifetime (typically 10–15 years for datacenter components).</p></div>
+</div>
+<div class="glossary-entry" data-term="htol" id="gloss-htol">
+<div class="glossary-entry-term">HTOL</div>
+<div class="glossary-entry-body"><p><strong>High Temperature Operating Life (HTOL)</strong> is a standardized accelerated reliability test defined in JEDEC JESD47. Devices are operated at elevated temperature (typically 85–125°C junction temperature) and elevated voltage (typically 1.1–1.2× nominal) while running a functional test pattern, for 1000 hours continuously.</p>
+<p>The elevated temperature and voltage accelerates failure mechanisms according to the Arrhenius equation: failure rate ∝ exp(-Ea/kT), where Ea is the activation energy for the dominant failure mechanism. At 125°C vs 55°C operating temperature, many oxide degradation mechanisms are accelerated by 5–20×, meaning 1000h HTOL can represent 5000–20000 hours of normal use.</p>
+<p>HTOL screens for: gate oxide wear-out (time-dependent dielectric breakdown, TDDB), electromigration in TSV and BEOL metal, hot carrier injection, negative bias temperature instability (NBTI), and threshold voltage drift. JEDEC JESD79-5 specifies minimum sample sizes (45 lots) and acceptable failure rates (&lt;10 FIT per Gbit) for DRAM qualification.</p></div>
+</div>
+<div class="glossary-entry" data-term="intermetallic compound" id="gloss-intermetallic">
+<div class="glossary-entry-term">Intermetallic compound</div>
+<div class="glossary-entry-body"><p><strong>Intermetallic compounds (IMCs)</strong> are solid-state chemical compounds formed between two metals at their interface when heated. In HBM microbump bonding, the SnAg solder cap reacts with the copper pillar surfaces to form copper-tin intermetallics: Cu₆Sn₅ (η-phase) forms first at the solder/copper interface, followed by Cu₃Sn (ε-phase) closer to the copper.</p>
+<p>These intermetallics are the actual electrical and mechanical joint — harder, higher-melting, and more electrically resistive than the original solder. Their formation is beneficial (creates a reliable bond) but must be controlled: too thin an IMC layer means insufficient metallurgical reaction; too thick means the joint becomes brittle (IMCs are inherently brittle compared to metallic solder).</p>
+<p>Under thermal cycling, IMC layers continue to grow slowly, consuming the solder and eventually making the joint brittle enough to crack. This is a primary long-term reliability concern for solder-based microbumps — one motivation for transitioning to hybrid bonding (Cu-Cu direct bond, no IMC) in HBM4.</p></div>
+</div>
+<div class="glossary-entry" data-term="jtag" id="gloss-jtag">
+<div class="glossary-entry-term">JTAG</div>
+<div class="glossary-entry-body"><p><strong>JTAG (Joint Test Action Group)</strong> refers to the IEEE 1149.1 standard for boundary scan testing. In HBM, the logic base die implements a JTAG boundary scan chain that wraps every signal at each inter-die interface.</p>
+<p>After the dies are stacked, physical probe access to internal die surfaces is impossible — they're sealed under underfill. JTAG provides a way to test inter-die connectivity without physical access: the test controller serially shifts test vectors into the boundary scan chain, drives known logic values at every output, and captures the received values at every input. An open or short microbump manifests as a mismatch between driven and captured values at the corresponding boundary scan cell.</p>
+<p>The JTAG interface uses 4–5 signals: TDI (Test Data In), TDO (Test Data Out), TCK (Test Clock), TMS (Test Mode Select), and optional TRST (Test Reset). It operates at much lower frequency than the HBM data interface but can achieve high fault coverage for stuck-at and continuity failures.</p></div>
+</div>
+<div class="glossary-entry" data-term="kgd" id="gloss-kgd">
+<div class="glossary-entry-term">KGD</div>
+<div class="glossary-entry-body"><p><strong>Known-Good Die (KGD)</strong> refers to an individual semiconductor die that has passed comprehensive testing — including burn-in and full functional qualification — before being incorporated into a multi-die stack or chiplet assembly.</p>
+<p>KGD qualification is economically critical for stacked-die architectures. If a bad die is stacked, the entire assembly (worth much more than a single die) is scrapped. The KGD process for HBM includes: wafer-level probe testing (March algorithms, TSV continuity, speed binning), accelerated burn-in at elevated temperature and voltage (125°C, 1.2× Vnom, 48–168 hours), post-burn-in re-test, and redundancy repair mapping.</p>
+<p>The economic driver: with 8 dies per stack, each 1% improvement in per-die yield translates to a ~8% improvement in stack yield. A die qualification process that achieves 99% yield per die enables ~92% stack yield vs ~66% for 95% per-die yield — a dramatic difference in production economics.</p></div>
+</div>
+<div class="glossary-entry" data-term="kv cache" id="gloss-kv_cache">
+<div class="glossary-entry-term">KV cache</div>
+<div class="glossary-entry-body"><p>The <strong>KV cache (Key-Value cache)</strong> stores the key and value tensors computed during the attention mechanism for all previously generated tokens, so they don't need to be recomputed for each new token. During autoregressive LLM generation, only the new token's query needs to be computed fresh; the keys and values for all prior tokens are read from the KV cache.</p>
+<p><strong>HBM impact:</strong> For a 70B model with 80 attention layers, 8 KV heads, and head dimension 128, the KV cache per token is ~160 KB (in FP16). For a 4096-token context: ~640 MB. For a 128K context: ~20 GB. For many simultaneous users with long contexts, the KV cache can consume more HBM than the model weights themselves.</p>
+<p><strong>Why it matters for HBM bandwidth:</strong> Every token generation must stream the entire KV cache through the attention computation. At 3.35 TB/s HBM bandwidth, a 20 GB KV cache adds ~6 ms latency per token — in addition to the ~42 ms for loading model weights. KV cache compression and quantization (storing keys/values in INT8 or INT4) is an active research area specifically motivated by reducing HBM pressure from long contexts.</p></div>
+</div>
+<div class="glossary-entry" data-term="llm" id="gloss-llm">
+<div class="glossary-entry-term">LLM</div>
+<div class="glossary-entry-body"><p><strong>Large Language Model (LLM)</strong> is a type of neural network — typically a transformer architecture — trained on massive text datasets with parameter counts ranging from billions to trillions. Examples: GPT-4, Llama 3, Claude, Gemini.</p>
+<p>LLMs are critically relevant to HBM because inference (generating text) is almost entirely memory-bandwidth-bound rather than compute-bound. During autoregressive generation (producing one token at a time), the model loads every parameter from HBM for each token generated. For a 70B parameter model in FP16, that's 140 GB of memory reads per token — at 3.35 TB/s HBM bandwidth, this sets a hard ceiling of ~24 tokens/second per GPU regardless of compute speed.</p>
+<p>This arithmetic intensity characteristic — very few FLOPs per byte loaded — is why HBM bandwidth improvements directly translate to LLM inference throughput improvements, and why the "memory wall" is the central engineering challenge for LLM deployment at scale.</p></div>
+</div>
+<div class="glossary-entry" data-term="march algorithm" id="gloss-march">
+<div class="glossary-entry-term">March algorithm</div>
+<div class="glossary-entry-body"><p><strong>March algorithms</strong> are a family of DRAM test patterns that systematically write and read every memory cell in sequential address order (both ascending ↑ and descending ↓) with different data patterns to detect specific fault types.</p>
+<p>Each March element is written as: direction(operations). For example, ↑(w0, r0, w1) means: for each address in ascending order, write 0, then read and verify 0, then write 1.</p>
+<p><strong>Common algorithms and what they detect:</strong></p>
+<ul>
+<li><strong>MATS+</strong> (4N operations): Stuck-At Faults (SAF), Transition Faults (TF). Very fast.</li>
+<li><strong>March X</strong> (6N): SAF, TF, Address Faults (AF). Good speed/coverage trade-off.</li>
+<li><strong>March C-</strong> (10N): SAF, TF, some Coupling Faults (CF). Industry standard for production.</li>
+<li><strong>March SS</strong> (22N): SAF, TF, CF, Data Retention Faults (DRF), Incorrect Read Faults (IRF). Used for qualification sampling.</li>
+</ul>
+<p>N = total number of cells. An 8 Gbit HBM die has ~8 × 10⁹ cells. At 4 Gbps BIST speed, March C- (10N operations) completes in ~20 seconds per die.</p></div>
+</div>
+<div class="glossary-entry" data-term="memory-bandwidth-bound" id="gloss-throughput_bound">
+<div class="glossary-entry-term">Memory-bandwidth-bound</div>
+<div class="glossary-entry-body"><p>A <strong>memory-bandwidth-bound</strong> workload is one where the bottleneck is the rate at which data can be transferred from HBM to the compute units — not the speed of the compute units themselves. Adding faster compute (more CUDA cores, higher clock speed) does not improve performance because the cores are already sitting idle waiting for data from HBM.</p>
+<p>For a workload to be memory-bandwidth-bound, its arithmetic intensity must be below the hardware's ridge point (FLOPs / bytes = peak compute / peak bandwidth). For the H100: ridge point ≈ 295 FLOP/byte. LLM inference at small batch sizes has arithmetic intensity ~1–10 FLOP/byte — well below the ridge point.</p>
+<p>Optimization strategies for memory-bandwidth-bound workloads focus on reducing bytes transferred: operator fusion (Flash Attention eliminates intermediate HBM reads/writes by keeping the attention computation in SRAM), quantization (fewer bytes per weight), speculative decoding (batches multiple tokens per decode step, improving arithmetic intensity), and increasing batch size (more FLOPs per HBM byte loaded).</p></div>
+</div>
+<div class="glossary-entry" data-term="mig" id="gloss-mig">
+<div class="glossary-entry-term">MIG</div>
+<div class="glossary-entry-body"><p><strong>Multi-Instance GPU (MIG)</strong> is a hardware partitioning technology introduced on the NVIDIA A100 and refined on the H100. It divides a single physical GPU into up to 7 independent GPU Instances (GIs), each with its own hardware-isolated slice of: HBM memory, L2 cache, compute SMs, memory controllers, and DMA engines.</p>
+<p>Partition boundaries are enforced in the memory address translation hardware — no software bug or malicious process in one MIG instance can read another instance's HBM pages. Each GI appears to the OS as a separate GPU device (via SR-IOV), with its own CUDA context and device file.</p>
+<p><strong>H100 MIG profiles:</strong> 1g.10gb (10 GB, 14 SMs), 2g.20gb (20 GB, 28 SMs), 3g.40gb (40 GB, 42 SMs), 4g.40gb (40 GB, 56 SMs), 7g.80gb (full GPU, 132 SMs).</p>
+<p><strong>Use case:</strong> Cloud GPU multi-tenancy (multiple users on one GPU with full isolation), mixed inference workloads of different sizes, and environments requiring memory isolation for compliance reasons.</p></div>
+</div>
+<div class="glossary-entry" data-term="nvlink" id="gloss-nvlink">
+<div class="glossary-entry-term">NVLink</div>
+<div class="glossary-entry-body"><p><strong>NVLink</strong> is NVIDIA's proprietary high-bandwidth interconnect between GPUs within a server node, providing dramatically higher bandwidth than PCIe for multi-GPU collective communication. NVLink 4.0 (H100) provides 900 GB/s total bidirectional bandwidth per GPU — vs ~64 GB/s for PCIe 5.0 x16.</p>
+<p><strong>NVSwitch</strong> is a dedicated switching chip that provides full all-to-all NVLink connectivity within a node. In the DGX H100, 4 NVSwitch chips connect 8 GPUs, giving every GPU 900 GB/s bidirectional bandwidth to every other GPU simultaneously — a non-blocking all-to-all fabric.</p>
+<p>For HBM, NVLink is critical for distributed model inference and training that exceeds single-GPU HBM capacity. Tensor parallelism across 8 GPUs aggregates 8 × 80 GB = 640 GB of HBM while maintaining 900 GB/s cross-GPU bandwidth for gradient all-reduces and activation exchanges — a meaningful fraction of each GPU's 3.35 TB/s local HBM bandwidth.</p>
+<p>Once computation crosses the node boundary to InfiniBand, bandwidth drops to ~50 GB/s — an 18× cliff that makes keeping workloads within a single NVLink domain critically important for performance.</p></div>
+</div>
+<div class="glossary-entry" data-term="nvml" id="gloss-nvml">
+<div class="glossary-entry-term">NVML</div>
+<div class="glossary-entry-body"><p><strong>NVIDIA Management Library (NVML)</strong> is a C API (with Python wrapper <code>pynvml</code>) that provides programmatic access to GPU device information, health metrics, and management functions. It is the foundation of all GPU monitoring software.</p>
+<p>Key HBM-relevant NVML queries: <code>nvmlDeviceGetMemoryInfo()</code> — HBM capacity, used, and free bytes; <code>nvmlDeviceGetMemoryErrorCounter()</code> — correctable and uncorrectable ECC error counts per memory location (HBM, L1, L2) with volatile and aggregate variants; <code>nvmlDeviceGetTemperature()</code> — GPU die and HBM memory temperatures; <code>nvmlDeviceGetCurrentClocksThrottleReasons()</code> — bitmask of active throttle reasons (thermal, power, etc.); <code>nvmlDeviceGetRetiredPages()</code> — physical addresses of pages retired due to ECC errors.</p>
+<p>NVML is the underlying data source for <code>nvidia-smi</code>, DCGM, and all third-party GPU monitoring tools. All queries are thread-safe and can be made from multiple processes simultaneously.</p></div>
+</div>
+<div class="glossary-entry" data-term="page retirement" id="gloss-page_retirement">
+<div class="glossary-entry-term">Page retirement</div>
+<div class="glossary-entry-body"><p><strong>Page retirement</strong> is the GPU driver mechanism that permanently removes a physical HBM memory page from the usable address space after it accumulates errors beyond the ECC correction capability. The page is marked bad in the driver's page allocator, and future memory allocations never return that physical address.</p>
+<p><strong>Retirement triggers:</strong> Any double-bit uncorrectable error (DBE) retires the affected page immediately. Single-bit correctable errors (SBE) on the same physical page accumulate; NVIDIA's policy retires a page after ~100 SBEs on one page over the device lifetime.</p>
+<p><strong>Pending vs active:</strong> Retirements are flagged as "pending" until the next GPU reset, when they become "active." A device with pending retirements continues to use the bad pages until reset. Monitoring for pending retirements is important — check with <code>nvidia-smi --query-retired-pages=type,count --format=csv</code>.</p>
+<p><strong>Operational implication:</strong> A GPU with any DBE-retired pages should be scheduled for proactive replacement. Multiple retired pages indicate accelerating HBM degradation. The driver continues to function with reduced effective HBM capacity until the retirement count becomes operationally significant.</p></div>
+</div>
+<div class="glossary-entry" data-term="pdn" id="gloss-pdn">
+<div class="glossary-entry-term">PDN</div>
+<div class="glossary-entry-body"><p><strong>Power Delivery Network (PDN)</strong> is the complete electrical infrastructure — from voltage regulator module (VRM) through PCB traces, package substrate, silicon interposer, and on-die power grid — that delivers stable supply voltage to the HBM circuits under all operating conditions.</p>
+<p>The PDN challenge for HBM is managing transient voltage droop: rapid changes in memory access patterns cause step changes in current demand (ΔI/Δt) that create voltage transients (ΔV = L × ΔI/Δt) through the PDN's parasitic inductance. HBM requires voltage within ±3% (±33 mV at 1.1V Vdd). Exceeding this causes sense amplifier setup time violations and data errors.</p>
+<p>A properly designed PDN uses decoupling capacitors at every level — on-die (~100–200 nF, filters GHz-range transients), interposer-mounted MLCCs (~nF, filters 10–100 MHz), package substrate bulk caps (~µF, filters MHz), and VRM output caps (~100 µF, filters kHz) — to maintain voltage stability across 9 decades of frequency.</p></div>
+</div>
+<div class="glossary-entry" data-term="pecvd" id="gloss-pecvd">
+<div class="glossary-entry-term">PECVD</div>
+<div class="glossary-entry-body"><p><strong>Plasma Enhanced Chemical Vapor Deposition (PECVD)</strong> deposits thin films by introducing precursor gases into a plasma-excited chamber. The plasma provides energy to drive chemical reactions at lower temperatures (200–400°C) than conventional CVD (~600–800°C), making it compatible with temperature-sensitive structures already on the wafer.</p>
+<p>For HBM TSV fabrication, PECVD deposits the SiO₂ or SiN dielectric liner on TSV sidewalls after DRIE etching. The liner (~100–200 nm thick) electrically isolates the copper fill from the silicon substrate. PECVD achieves better conformality (coverage of high-aspect-ratio features) than thermal oxidation for deep TSVs because the reactive species are generated by plasma rather than relying on diffusion of oxygen to the silicon surface.</p>
+<p>Common PECVD precursors: TEOS + O₂ for SiO₂; SiH₄ + NH₃ + N₂ for SiN.</p></div>
+</div>
+<div class="glossary-entry" data-term="photoresist / hard mask" id="gloss-photoresist">
+<div class="glossary-entry-term">Photoresist / Hard mask</div>
+<div class="glossary-entry-body"><p><strong>Photoresist</strong> is a light-sensitive polymer coated onto the wafer surface before each lithography step. UV exposure through the reticle (mask) chemically alters the resist in exposed areas. Development then removes either the exposed regions (positive-tone resist) or the unexposed regions (negative-tone resist), leaving a patterned polymer layer that acts as an etch mask for the subsequent process step.</p>
+<p><strong>Hard mask</strong> (SiO₂, SiN, TiN) is used instead of photoresist when the etch step is too aggressive for a thin polymer mask to withstand — for example, the DRIE etch of deep TSV holes. A SiO₂ or SiN hard mask layer is first deposited, then patterned using a photoresist etch step, and the hard mask remains to protect the silicon during the deep etch. Hard masks provide better etch selectivity (silicon etches much faster than SiO₂ or SiN in the DRIE chemistry).</p>
+<p>For HBM TSV formation, a SiO₂ or SiN hard mask patterned by 193 nm ArF immersion lithography defines the TSV locations with ±5 nm overlay accuracy before the DRIE etch step.</p></div>
+</div>
+<div class="glossary-entry" data-term="probe card" id="gloss-probe_card">
+<div class="glossary-entry-term">Probe card</div>
+<div class="glossary-entry-body"><p>A <strong>probe card</strong> is the precision mechanical and electrical interface between the wafer probe station and the device under test. It consists of a PCB with hundreds to thousands of fine probe tips (tungsten needles or MEMS cantilevers) positioned to contact the corresponding bond pads on the die surface simultaneously, allowing parallel testing of all I/Os without sequential probing.</p>
+<p>For HBM KGD testing, the probe card must contact both the front-side bond pads (standard data/address/command interface) and the TSV reveal pads on the die backside (for TSV-specific electrical tests), requiring specialized double-sided probe setups or temporary bonding to carrier wafers.</p>
+<p>Modern probe cards for DRAM testing use MEMS (Micro-Electro-Mechanical Systems) probe tips for finer pitch and better planarity than traditional tungsten needle cards. Probe card maintenance (tip cleaning, planarity calibration) is a significant cost center in high-volume wafer probe operations.</p></div>
+</div>
+<div class="glossary-entry" data-term="pue" id="gloss-pue">
+<div class="glossary-entry-term">PUE</div>
+<div class="glossary-entry-body"><p><strong>Power Usage Effectiveness (PUE)</strong> is the industry-standard metric for data center energy efficiency, defined as: PUE = Total facility power / IT equipment power. A PUE of 1.0 would mean all power goes directly to compute; real data centers have PUE &gt; 1.0 because of cooling, lighting, UPS losses, etc.</p>
+<p><strong>Typical PUE by cooling type:</strong> Air-cooled legacy data centers: 1.4–1.8. Modern air-cooled facilities: 1.2–1.4. Direct liquid cooling (DLC): 1.1–1.2. Immersion cooling: 1.02–1.06.</p>
+<p><strong>HBM relevance:</strong> For a 10 kW DGX H100 server at PUE 1.5 (air cooling), the facility draws 15 kW from the grid to deliver 10 kW to the servers. At PUE 1.05 (immersion), the same 10 kW requires only 10.5 kW from the grid. For a 100,000-GPU cluster consuming 800 MW of IT power, the difference between PUE 1.5 and 1.05 is 360 MW of additional electricity — equivalent to a medium-sized power plant running continuously just to pay for cooling inefficiency.</p></div>
+</div>
+<div class="glossary-entry" data-term="pvd" id="gloss-pvd">
+<div class="glossary-entry-term">PVD</div>
+<div class="glossary-entry-body"><p><strong>Physical Vapor Deposition (PVD)</strong>, most commonly implemented as sputtering, deposits thin metal films by bombarding a target material with ions, ejecting atoms that travel through vacuum and deposit on the wafer.</p>
+<p>In HBM TSV fabrication, PVD deposits the barrier/seed stack inside each TSV: a ~10 nm TaN diffusion barrier (prevents copper from migrating into silicon) followed by a ~100 nm Cu seed layer that enables subsequent electroplating. The challenge is achieving adequate coverage at the bottom of a 5 µm × 50 µm via — aspect ratio severely limits conventional PVD step coverage.</p>
+<p><strong>Ionized PVD (iPVD)</strong> addresses this by adding an RF coil in the chamber that ionizes the metal vapor. Directional electric fields then accelerate these metal ions toward the wafer with a vertical trajectory, improving bottom coverage in deep features from ~5% (conventional PVD) to ~30–50% (iPVD).</p></div>
+</div>
+<div class="glossary-entry" data-term="quantization" id="gloss-quantization">
+<div class="glossary-entry-term">Quantization</div>
+<div class="glossary-entry-body"><p><strong>Quantization</strong> in the context of LLM inference reduces the numerical precision of model weights and/or activations from the full-precision formats used during training (FP32, BF16, FP16) to lower-precision integer formats (INT8, INT4) or even lower (FP8, FP4).</p>
+<p><strong>HBM impact:</strong> Reducing from FP16 (2 bytes/weight) to INT8 (1 byte/weight) halves the HBM footprint and doubles the effective bandwidth for loading weights. INT4 reduces footprint to 0.5 bytes/weight — a 4× improvement. For a 70B model: FP16 requires 140 GB (2× H200 minimum), INT4 requires ~35 GB (fits on one H100 80G).</p>
+<p><strong>Common methods:</strong> GPTQ (post-training quantization with group-wise scaling), AWQ (activation-aware weight quantization), GGUF (llama.cpp format supporting mixed precision), bitsandbytes (NF4 format for QLoRA). Each balances compression ratio against accuracy degradation differently.</p>
+<p><strong>Tradeoff:</strong> Lower precision saves HBM but introduces quantization error that degrades model output quality. INT8 is typically near-lossless; INT4 has measurable but often acceptable quality degradation for many tasks; INT2 is generally too lossy for production.</p></div>
+</div>
+<div class="glossary-entry" data-term="rdl" id="gloss-rdl">
+<div class="glossary-entry-term">RDL</div>
+<div class="glossary-entry-body"><p><strong>Redistribution Layer (RDL)</strong> is a thin-film metal wiring layer — typically copper — patterned on the surface of a die, wafer, or interposer to reroute electrical connections from their as-fabricated locations to new positions compatible with the packaging or assembly requirement.</p>
+<p>In HBM's silicon interposer, RDL layers are the dense wiring that routes the 1024-bit HBM data bus from the fine-pitch TSV/microbump array under the HBM stack to the coarser-pitch connections at the GPU die and package substrate. The front-side interposer RDL is fabricated at 0.4–2 µm pitch (using the same damascene copper process as IC BEOL); the back-side RDL fans out to the coarser (~10–20 µm pitch) C4 bump footprint toward the package substrate.</p>
+<p>RDL technology also appears on fan-out wafer-level packages (FOWLP) where dies are embedded in a molding compound and RDL provides the interconnect — TSMC's InFO technology (used in iPhone A-series chips) is a prominent example.</p></div>
+</div>
+<div class="glossary-entry" data-term="refresh cycle" id="gloss-refresh">
+<div class="glossary-entry-term">Refresh cycle</div>
+<div class="glossary-entry-body"><p>DRAM cells store data as charge on a capacitor, but charge leaks away through the access transistor's sub-threshold current and through the capacitor dielectric. If not periodically restored, stored data is lost. The <strong>refresh cycle</strong> is the periodic read-and-rewrite of every cell to restore its charge before it drops below the sense amplifier's discrimination threshold.</p>
+<p><strong>Standard refresh interval:</strong> 64 ms at room temperature (JEDEC JESD79). This means every cell must be refreshed at least once every 64 ms — for an 8 Gbit HBM die with, say, 64K rows, one row must be refreshed approximately every 1 µs.</p>
+<p><strong>Temperature dependence:</strong> Leakage current approximately doubles every 10°C. At 85°C (HBM junction temperature limit), leakage is ~10× the 25°C rate, requiring proportionally more frequent refresh. This is a key reason why HBM thermal management is critical — excessive junction temperature degrades refresh margin and increases error rates before causing hard failures. Elevated-temperature retention testing during KGD qualification specifically screens for cells with insufficient refresh margin.</p></div>
+</div>
+<div class="glossary-entry" data-term="roofline model" id="gloss-roofline">
+<div class="glossary-entry-term">Roofline model</div>
+<div class="glossary-entry-body"><p>The <strong>Roofline model</strong> is a visual performance model introduced by Williams et al. (2009) that bounds achievable performance based on a platform's two key hardware limits: peak compute (the "compute roof") and peak memory bandwidth × arithmetic intensity (the "memory roof").</p>
+<p>Plotting attainable FLOP/s vs arithmetic intensity (log-log scale) produces a characteristic roof shape: for low-AI workloads, performance is bounded by memory bandwidth (a sloped line); for high-AI workloads, performance is bounded by compute (a flat ceiling). The intersection is the ridge point.</p>
+<p>For AI/ML workloads, the Roofline model is the first tool to apply when asking "why is my GPU utilization low?" — a workload with AI below the ridge point will never saturate the compute units regardless of optimization, because the bottleneck is data delivery from HBM, not arithmetic throughput.</p></div>
+</div>
+<div class="glossary-entry" data-term="sam" id="gloss-sam">
+<div class="glossary-entry-term">SAM</div>
+<div class="glossary-entry-body"><p><strong>Scanning Acoustic Microscopy (SAM)</strong> is a non-destructive inspection technique that uses focused ultrasound (50–200 MHz) to image internal structures of packaged semiconductor devices. It is the primary method for detecting underfill voids, delaminations, and cracked microbumps in assembled HBM stacks without opening or cross-sectioning the package.</p>
+<p>The ultrasound beam reflects at material interfaces in proportion to the acoustic impedance mismatch. Air-filled voids (impedance mismatch → 100% reflection) appear as bright spots in the image. Solid-solid interfaces produce weaker reflections. By time-gating the received echoes, reflections from specific depths can be isolated and imaged.</p>
+<p><strong>Scan modes:</strong> C-scan (plan view at a selected depth — used for production screening, automated void detection) and B-scan (cross-sectional view along a line — used for failure analysis to determine void depth and extent).</p>
+<p><strong>Production use:</strong> Automated C-scan with image analysis flags assemblies with underfill void area &gt;0.5% for rejection. 100% inspection on premium HBM products; sampling on high-volume products.</p></div>
+</div>
+<div class="glossary-entry" data-term="sense amplifier" id="gloss-sense_amplifier">
+<div class="glossary-entry-term">Sense amplifier</div>
+<div class="glossary-entry-body"><p>A <strong>sense amplifier</strong> (or sense amp) is a differential amplifier circuit connected at the end of each DRAM bitline. When a DRAM cell is read, opening the access transistor shares the cell's stored charge with the much larger capacitance of the bitline — the resulting voltage change is only ~100–200 mV (much less than the full Vdd swing). The sense amplifier detects this tiny differential signal and amplifies it to full logic levels (0V or Vdd).</p>
+<p>Sense amplifiers are one of the most area-dense circuits in DRAM — there is one sense amplifier for every bitline column (typically one per 256–512 cells in the column direction). Their sensitivity determines the minimum acceptable signal, which in turn sets the minimum capacitance the storage capacitor must provide. As DRAM scales to smaller nodes and cell capacitance shrinks, sense amplifier design becomes increasingly difficult.</p>
+<p>In HBM reliability, sense amplifier setup time violations are a key failure mode when supply voltage droops below Vddmin during rapid memory access patterns — the sense amp fails to correctly resolve the stored value, producing a data error.</p></div>
+</div>
+<div class="glossary-entry" data-term="slt" id="gloss-slt">
+<div class="glossary-entry-term">SLT</div>
+<div class="glossary-entry-body"><p><strong>System-Level Test (SLT)</strong> is the final qualification gate for datacenter GPU accelerators, run on the complete assembled system (GPU + HBM + package + PCB + server board) using real or near-real AI workloads at operating temperature and frequency.</p>
+<p>SLT catches failure modes that component-level test cannot detect: power integrity failures that only manifest under the simultaneous current demands of a full GPU + 6 HBM stacks running at maximum bandwidth; thermal throttling behavior that only emerges at steady-state thermal equilibrium after minutes of operation; application-specific error patterns from neural network layer access patterns (large GEMMs, attention softmax) that stress HBM differently than synthetic test; NVLink/PCIe co-stress effects where simultaneous interconnect traffic causes power supply interactions that degrade HBM margin.</p>
+<p>NVIDIA runs SLT on every shipped datacenter accelerator. Approximately 0.5–1% of units that pass component-level test fail SLT. At 100,000 H100s/quarter production volume, SLT must be parallelized across thousands of test boards simultaneously.</p></div>
+</div>
+<div class="glossary-entry" data-term="sr-iov" id="gloss-sr_iov">
+<div class="glossary-entry-term">SR-IOV</div>
+<div class="glossary-entry-body"><p><strong>SR-IOV (Single Root I/O Virtualization)</strong> is a PCIe specification that allows a single physical device to present multiple independent virtual device instances to the operating system, each with its own PCIe function and hardware resources.</p>
+<p>In NVIDIA MIG, SR-IOV enables each GPU Instance (GI) to appear as a separate GPU device to the OS, hypervisor, or container runtime — with its own /dev/nvidia device file, CUDA context, and PCIe bus address. Without SR-IOV, the hypervisor would need to software-multiplex access to a single PCIe function, introducing overhead and complexity.</p>
+<p>SR-IOV is what makes MIG instances suitable for true cloud multi-tenancy: each tenant's VM or container sees a legitimate PCIe GPU device with its own hardware-isolated HBM slice, without any software layer that could be bypassed to access another tenant's memory.</p></div>
+</div>
+<div class="glossary-entry" data-term="tcb" id="gloss-tcb">
+<div class="glossary-entry-term">TCB</div>
+<div class="glossary-entry-body"><p><strong>Thermal Compression Bonding (TCB)</strong> is the primary die-attach process used to stack DRAM dies onto the logic die in HBM assembly. A bond head picks each die by vacuum, uses infrared alignment marks to achieve sub-micron overlay, then presses the die onto the stack while applying controlled heat.</p>
+<p><strong>Process sequence:</strong> (1) Die pickup and pre-alignment to &lt;1 µm overlay accuracy. (2) Lower die to contact at controlled velocity. (3) Ramp temperature to 250–280°C — above SnAg solder liquidus (~221°C). (4) Apply bonding force (1–5 N/mm²) for 1–5 seconds; molten solder wets the landing pad and forms Cu₃Sn/Cu₆Sn₅ intermetallic compounds. (5) Cool under force until solder solidifies below ~150°C. (6) Release.</p>
+<p>Total cycle time: 5–15 seconds per die. Throughput on a multi-head bonder: 1,000–3,000 die bonds per hour. TCB is being superseded by hybrid bonding (Cu-Cu direct bonding) for HBM4 and beyond, which allows &lt;10 µm pitch vs ~40–55 µm for TCB.</p></div>
+</div>
+<div class="glossary-entry" data-term="tsv" id="gloss-tsv">
+<div class="glossary-entry-term">TSV</div>
+<div class="glossary-entry-body"><p><strong>Through-Silicon Via (TSV)</strong> is a vertical electrical connection that passes completely through a silicon die from its front surface (active side) to its back surface. TSVs are the enabling technology of HBM — without them, the 1024-bit wide bus connecting DRAM dies to the logic die cannot exist.</p>
+<p>A TSV consists of: (1) a cylindrical hole etched through silicon by DRIE, (2) a dielectric liner (SiO₂ or SiN) deposited on the sidewalls to isolate the copper from silicon, (3) a TaN diffusion barrier + Cu seed layer deposited by PVD, and (4) copper fill deposited by bottom-up electroplating, topped by CMP planarization.</p>
+<p><strong>HBM TSV dimensions (HBM3):</strong> ~5 µm diameter, ~50 µm deep (after thinning), ~40–55 µm pitch. Resistance: ~4–5 Ω per via. Capacitance: ~50–80 fF per via.</p>
+<p><strong>Key reliability concern:</strong> Copper (CTE = 17 ppm/°C) and silicon (CTE = 2.6 ppm/°C) expand at very different rates. Thermal cycling stresses the TSV-silicon interface and shifts nearby transistor threshold voltages within a "keep-out zone" of ~8–15 µm radius around each TSV.</p></div>
+</div>
+<div class="glossary-entry" data-term="underfill" id="gloss-underfill">
+<div class="glossary-entry-term">Underfill</div>
+<div class="glossary-entry-body"><p><strong>Underfill</strong> is an epoxy-based polymer material that fills the gap between two bonded die surfaces, mechanically coupling the dies and protecting the microbump joints from moisture, contamination, and mechanical stress.</p>
+<p><strong>Capillary Underfill (CUF):</strong> A liquid underfill dispensed at the edge of the die after bonding; drawn under the die by capillary action. Contains silica filler particles (1–5 µm) that match the CTE of silicon, reducing thermal stress on the joints. Requires a separate dispense + cure step at ~150°C. Limited to microbump pitches &gt;40 µm where filler particles can flow freely.</p>
+<p><strong>Non-Conductive Film (NCF):</strong> A solid film laminated to the die surface before bonding. When the die is pressed under heat during TCB, the NCF flows, encapsulates all bumps, and cures simultaneously with the bond formation. Compatible with sub-40 µm pitch where CUF filler particles would clog. Used in HBM3E and beyond.</p>
+<p>Underfill voids (air pockets in the cured epoxy) are a primary reliability failure mode detected by Scanning Acoustic Microscopy (SAM). Void area specification: typically &lt;0.5% of the total underfill area.</p></div>
+</div>
+<div class="glossary-entry" data-term="zero" id="gloss-zero">
+<div class="glossary-entry-term">ZeRO</div>
+<div class="glossary-entry-body"><p><strong>ZeRO (Zero Redundancy Optimizer)</strong> is a memory optimization strategy from Microsoft's DeepSpeed framework that eliminates memory redundancy in distributed training by sharding model state (optimizer states, gradients, and/or parameters) across all GPUs rather than replicating it on every GPU.</p>
+<p><strong>Standard distributed training (DDP):</strong> Every GPU holds a complete copy of all model states — weights, gradients, and optimizer states. For a 70B parameter model with Adam optimizer: ~70B × 16 bytes (weights in BF16 + FP32 master + Adam m/v states) ≈ 1.1 TB per GPU. With 8 GPUs, 8× 1.1 TB = 8.8 TB total, but 7.7 TB is redundant.</p>
+<p><strong>ZeRO Stage 3:</strong> Shards weights + gradients + optimizer states across all N GPUs. Each GPU holds only 1/N of each. An all-gather communication call reconstructs each layer's parameters on-demand before computing. HBM requirement per GPU drops by ~N×. For 8 GPUs: 1.1 TB / 8 = ~137 GB per GPU — now fits on 2× H200 (141 GB each) instead of requiring 8+ GPUs.</p>
+<p><strong>ZeRO-Offload:</strong> Moves optimizer states and gradients to CPU DRAM, further reducing GPU HBM usage at the cost of PCIe bandwidth becoming the training speed bottleneck.</p></div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body>
+</html>

@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Systems — Hands-On Labs</title>
+<style>
+@page { size: 8.5in 11in; margin-top:0.75in; margin-bottom:0.85in; margin-left:1.0in; margin-right:0.625in; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,'Times New Roman',serif;font-size:11pt;line-height:1.65;color:#111;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@media screen{body{background:#d8d4cc;padding:2rem 1rem}.page-wrap{max-width:8.5in;margin:0 auto;background:#fff;box-shadow:0 4px 40px rgba(0,0,0,.3);padding:0.75in 0.625in 0.85in 1.0in}}
+@media print{.page-wrap{padding:0;margin:0}}
+h1{font-family:Georgia,serif;font-size:26pt;font-weight:bold;color:#0f1e35;line-height:1.1;margin-bottom:.5rem;page-break-after:avoid}
+h2{font-family:Georgia,serif;font-size:15pt;font-weight:bold;color:#0f1e35;margin:1.7rem 0 .55rem;line-height:1.2;page-break-after:avoid}
+h3{font-family:Georgia,serif;font-size:12pt;font-weight:bold;font-style:italic;color:#1a2e4a;margin:1.35rem 0 .4rem;page-break-after:avoid}
+h4{font-size:10pt;font-weight:bold;color:#333;margin:1.1rem 0 .3rem;text-transform:uppercase;letter-spacing:.06em;page-break-after:avoid}
+p{margin-bottom:.75rem;text-align:justify;hyphens:auto;orphans:3;widows:3}
+p:last-child{margin-bottom:0}
+strong{font-weight:bold}em{font-style:italic}
+ul,ol{padding-left:1.35rem;margin-bottom:.75rem}li{margin-bottom:.3rem}
+a{color:#1a2e4a;text-decoration:none}
+code{font-family:'Courier New',monospace;font-size:9pt;background:#f2f2ef;padding:0 3px;border-radius:2px}
+.code-block,pre{font-family:'Courier New',monospace;font-size:8pt;line-height:1.5;background:#f2f2ef;border:.5pt solid #ccc;border-left:3pt solid #1a5fa8;padding:.6rem .8rem;margin:.9rem 0;white-space:pre-wrap;word-break:break-all;page-break-inside:avoid}
+.code-block pre{background:none;border:none;padding:0;margin:0}
+.code-header{font-family:'Courier New',monospace;font-size:7.5pt;color:#555;background:#e6e6e2;padding:3px 9px;margin:-.6rem -.8rem .5rem;border-bottom:.5pt solid #ccc}
+.code-lang{font-weight:bold;color:#1a5fa8}.code-fname{color:#777;margin-left:.5rem}
+.kw{color:#8b0000}.fn{color:#00008b}.cm{color:#777;font-style:italic}.st{color:#2e4a1a}.nm{color:#00008b}.cls{color:#5b21b6}
+.formula,.formula-box,.diagram{font-family:'Courier New',monospace;font-size:8pt;line-height:1.55;background:#f8f7f2;border:.5pt solid #ccc;border-left:3pt solid #b45309;padding:.6rem .8rem;margin:.9rem 0;white-space:pre-wrap;page-break-inside:avoid}
+table{width:100%;border-collapse:collapse;margin:.9rem 0;font-size:9pt;page-break-inside:avoid}
+th{background:#0f1e35;color:#fff;padding:6px 9px;text-align:left;font-size:8.5pt}
+td{padding:6px 9px;border-bottom:.5pt solid #ccc;vertical-align:top}
+tr:nth-child(even) td{background:#f8f8f6}
+.info-box{background:#f0f6ff;border-left:3pt solid #1a5fa8;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.warn-box{background:#fffaf0;border-left:3pt solid #b45309;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.case-box{background:#f5f0ff;border-left:3pt solid #5b21b6;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.focus-box,.future,.future-box{background:#fffaf0;border-left:3pt solid #b45309;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.green-box{background:#f0fff4;border-left:3pt solid #1a7a3a;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.box-label{font-size:7.5pt;letter-spacing:.14em;text-transform:uppercase;font-weight:bold;margin-bottom:.4rem}
+.info-box .box-label{color:#1a5fa8}.warn-box .box-label{color:#b45309}.case-box .box-label{color:#5b21b6}
+.focus-box .box-label,.future h4,.future-box h4{color:#b45309;font-family:Georgia;font-style:italic;font-size:10.5pt;font-weight:bold;text-transform:none;letter-spacing:0;margin-bottom:.4rem;display:block}
+.pq,.pull-quote{border-left:3pt solid #0f1e35;padding:.65rem 1rem;margin:1.1rem 0;background:#f8f7f4;page-break-inside:avoid}
+.pq p,.pull-quote p{font-style:italic;font-size:11pt;color:#1a2e4a;text-align:left;margin:0}
+.pq cite,.pull-quote cite{display:block;font-size:8.5pt;color:#888;margin-top:.35rem;font-style:normal}
+.phase-intro{font-style:italic;color:#333;padding:.65rem .85rem;background:#f8f8f4;border-left:2pt solid #0f1e35;margin-bottom:1rem}
+.part-header{padding:1in 0 .5in .3in;border-left:6pt solid #0f1e35;margin-bottom:1.5rem}
+.part-num{font-size:8.5pt;letter-spacing:.2em;text-transform:uppercase;color:#888;margin-bottom:.6rem}
+.part-header h2{font-size:24pt;color:#0f1e35;margin:0 0 .8rem;border:none;padding:0}
+.part-desc{font-size:11pt;font-style:italic;color:#555;line-height:1.6;max-width:5in}
+.part-stats{margin-top:1.2rem;font-size:9pt;color:#888}
+.chapter{page-break-before:always}
+.lab-section{page-break-before:always}
+.lesson-header{margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:.5pt solid #ccc;page-break-after:avoid}
+.lesson-header .lesson-title{font-family:Georgia,serif;font-size:13pt;font-weight:bold;color:#0f1e35}
+.lesson-header .lesson-duration{font-size:9pt;color:#888}
+.lab-header{margin-bottom:1.2rem;padding-bottom:.65rem;border-bottom:2pt solid #0f1e35;page-break-after:avoid}
+.lab-title{font-family:Georgia,serif;font-size:15pt;font-weight:bold;color:#0f1e35}
+.lab-number{font-size:7.5pt;letter-spacing:.15em;text-transform:uppercase;color:#888;margin-bottom:.25rem}
+.lab-meta{font-size:9pt;color:#666;margin-top:.3rem}
+.module-refs{font-size:9pt;color:#555;margin-bottom:.9rem;padding:.4rem .7rem;background:#f2f2ef;border-left:2pt solid #1a5fa8}
+.module-pill{color:#1a5fa8;margin-right:.5rem;font-size:9pt}
+.refs-label{font-weight:bold;color:#555;margin-right:.3rem}
+ol.lab-steps{padding-left:1.2rem}
+li.lab-step{margin-bottom:.7rem;page-break-inside:avoid}
+li.lab-step h4{font-style:normal;margin-bottom:.15rem}
+.timeline{margin:.9rem 0}
+.tl-item{display:flex;gap:.65rem;padding:.4rem 0;border-bottom:.5pt dotted #ddd;page-break-inside:avoid}
+.tl-year{font-weight:bold;color:#0f1e35;font-size:9pt;min-width:40pt;flex-shrink:0}
+.tl-title{font-weight:bold;font-size:10pt;margin-bottom:2px}
+.tl-desc{font-size:9.5pt;color:#444;line-height:1.5}
+.tl-item.major .tl-year{color:#b45309}
+.tl-content{flex:1}
+.stack{margin:.9rem 0}
+.stack-layer{padding:6px 9px;margin-bottom:3px;background:#f2f2ef;border:.5pt solid #ccc;display:flex;justify-content:space-between;page-break-inside:avoid}
+.stack-name{font-weight:bold;font-size:9pt}.stack-desc{font-size:8.5pt;color:#555}
+.pathway{margin:.9rem 0}
+.pathway-step{display:flex;gap:.65rem;padding:.4rem 0;border-bottom:.5pt dotted #ddd;page-break-inside:avoid}
+.pathway-icon{font-weight:bold;color:#0f1e35;min-width:22pt;flex-shrink:0;font-size:9.5pt}
+.pathway-title{font-weight:bold;font-size:10pt;margin-bottom:2px}
+.pathway-desc{font-size:9.5pt;color:#444;line-height:1.5}
+.pathway-content{flex:1}
+.glossary-section{page-break-before:always}
+.glossary-section h2{font-size:17pt;margin-bottom:1.3rem;padding-bottom:.4rem;border-bottom:1pt solid #ccc}
+dl.glossary-list{column-count:2;column-gap:.3in}
+dl.glossary-list dt{font-weight:bold;font-size:9.5pt;color:#0f1e35;margin-top:.8rem;break-after:avoid}
+dl.glossary-list dd{font-size:9pt;color:#333;margin-left:0;line-height:1.55;margin-bottom:.2rem}
+nav,.sidebar,[id*="sidebar"],.hero,.labs-hero,.chapter-nav,.ch-nav,.progress-bar-wrap,
+.phase-header,.phase-badge,.phase-number,.ch-num,.ch-label,.hero-eyebrow,.hero-stats,
+.hero-meta,.hero-tag,.labs-overview,.labs-grid,.lab-card,.lab-filters,.filter-btn,
+.ch-pill,.lab-badge,.lab-header-badge,.gloss-search-wrap,#gs,#glossary-search,
+.term-tooltip,.term-tip,.nav-phase,.nav-lesson,.nav-phase-header,
+.phase-toggle,.nav-chevron,.labs-overview-title{display:none!important}
+.phase-section,.phase-content{background:none!important;border:none!important}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+<div class="part-header">
+  <div class="part-num">Part4</div>
+  <h2>Hands-On Labs</h2>
+  <p class="part-desc">Eight labs: local LLM, VM, AWS, Oracle Cloud, Synology NAS, CUDA kernels, QLoRA fine-tuning, benchmarking.</p>
+  <p class="part-stats">8 labs · ~5,000 words</p>
+</div>
+<main id="main">
+<!-- ══ HERO ══════════════════════════════════ -->
+<!-- ══ FILTER TABS ═══════════════════════════ -->
+<!-- ══ OVERVIEW GRID ════════════════════════ -->
+
+<!-- ══ INDIVIDUAL LABS ══════════════════════ -->
+<div class="lab-section" id="lab-01">
+<div class="lab-header">
+
+<div class="lab-header-text">
+<div class="lab-number" style="color:#0ea5e9">Lab 01</div>
+<div class="lab-title">Run an LLM Locally with Ollama + Open WebUI</div>
+<div class="lab-meta">
+<span>⏱ ~45 min</span>
+<span style="color:#10b981">Beginner</span>
+<span>💰 Free</span>
+<span>🖥️ macOS · Windows · Linux</span>
+</div>
+</div>
+</div>
+<div class="lab-body">
+<div class="module-refs">
+<span class="refs-label">Covers:</span>
+<a class="module-pill" href="mastering_ai_curriculum.html#m6_inference_optimization">M6 · Inference Optimization</a><a class="module-pill" href="mastering_ai_curriculum.html#m6_quantization">M6 · Quantization</a><a class="module-pill" href="mastering_ai_curriculum.html#m6_model_serving">M6 · Model Serving</a>
+</div>
+<div class="module-refs">
+<span style="font-size:12px;color:var(--text3);margin-right:4px;">Covers:</span>
+<a class="module-pill" href="module6.html#optimization">M6 · Inference Optimization</a>
+<a class="module-pill" href="module6.html#quantization">M6 · Quantization</a>
+<a class="module-pill" href="module6.html#serving">M6 · Model Serving</a>
+</div>
+<div class="info-box">
+<div class="box-label">What You'll Build</div>
+<p>A fully self-hosted LLM accessible via a ChatGPT-like web UI on your local network, plus an OpenAI-compatible REST API you can call from any application.</p>
+</div>
+<h4 class="section-label">Prerequisites</h4>
+<ul class="checklist">
+<li>8+ GB RAM (16 GB recommended for 7B models)</li>
+<li>~10 GB free disk space</li>
+<li>Internet connection for initial model download</li>
+<li>No GPU required (CPU inference works, just slower)</li>
+</ul>
+<h4 class="section-label">Model Recommendations by Hardware</h4>
+<table>
+<thead><tr><th>Your RAM</th><th>Recommended Model</th><th>Size (INT4)</th><th>Est. Speed (CPU)</th></tr></thead>
+<tbody>
+<tr><td>8 GB</td><td>llama3.2:1b-instruct-q4_K_M</td><td>~0.8 GB</td><td>15–30 tok/s</td></tr>
+<tr><td>16 GB</td><td>llama3.2:3b-instruct-q4_K_M</td><td>~2.0 GB</td><td>8–15 tok/s</td></tr>
+<tr><td>32 GB</td><td>llama3.1:8b-instruct-q4_K_M</td><td>~4.7 GB</td><td>4–8 tok/s</td></tr>
+<tr><td>GPU 8 GB VRAM</td><td>llama3.1:8b-instruct-q4_K_M</td><td>~4.7 GB</td><td>30–60 tok/s</td></tr>
+<tr><td>GPU 16–24 GB VRAM</td><td>llama3.3:70b-instruct-q2_K</td><td>~26 GB</td><td>10–25 tok/s</td></tr>
+</tbody>
+</table>
+<h4 class="section-label">Step-by-Step Instructions</h4>
+<ol class="lab-steps">
+<li class="lab-step">
+<h4>Install Ollama</h4>
+<p><strong>macOS / Linux:</strong> Run <code>curl -fsSL https://ollama.com/install.sh | sh</code> in your terminal. Ollama will install as a background service that auto-starts on login.</p>
+<p><strong>Windows:</strong> Download the installer from <code>ollama.com</code> and run it. Ollama runs as a system tray app.</p>
+<p>Verify: <code>ollama --version</code> should print something like <code>ollama version 0.5.x</code></p>
+</li>
+<li class="lab-step">
+<h4>Pull your first model</h4>
+<p>Run: <code>ollama pull llama3.2:3b-instruct-q4_K_M</code></p>
+<p>Ollama downloads the quantized model weights (~2 GB). Progress is shown in the terminal. Ollama stores models in <code>~/.ollama/models</code> (Linux/Mac) or <code>%USERPROFILE%\.ollama</code> (Windows).</p>
+</li>
+<li class="lab-step">
+<h4>Run a quick chat test in the terminal</h4>
+<p><code>ollama run llama3.2:3b-instruct-q4_K_M</code></p>
+<p>This opens an interactive chat session. Try a few prompts. Type <code>/bye</code> to exit. Note the tokens/second rate printed at the end of each response.</p>
+</li>
+<li class="lab-step">
+<h4>Deploy Open WebUI with Docker</h4>
+<p>Make sure Docker Desktop is installed, then run:</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span></div>
+<pre>
+docker run -d \
+  --name open-webui \
+  --network=host \
+  -v open-webui:/app/backend/data \
+  -e OLLAMA_BASE_URL=http://127.0.0.1:11434 \
+  --restart always \
+  ghcr.io/open-webui/open-webui:main</pre>
+</div>
+<p>On Windows/macOS (Docker Desktop without host networking): use <code>http://host.docker.internal:11434</code> for the URL and add <code>-p 3000:8080</code> instead of <code>--network=host</code>.</p>
+</li>
+<li class="lab-step">
+<h4>Open the web interface</h4>
+<p>Navigate to <code>http://localhost:3000</code> (or <code>http://localhost:8080</code> if you changed the port). Create an admin account on first launch. You should see a ChatGPT-style interface with your Llama model available in the model dropdown.</p>
+</li>
+<li class="lab-step">
+<h4>Test the OpenAI-compatible REST API</h4>
+<p>Ollama exposes an OpenAI-compatible API on port 11434. Test it with curl:</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span></div>
+<pre>
+curl http://localhost:11434/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "llama3.2:3b-instruct-q4_K_M",
+    "messages": [
+      {"role": "user", "content": "Explain transformers in 2 sentences."}
+    ],
+    "stream": false
+  }'</pre>
+</div>
+<p>Or use it from Python with the OpenAI SDK: <code>pip install openai</code>, then set <code>base_url="http://localhost:11434/v1"</code> and <code>api_key="ollama"</code>.</p>
+</li>
+<li class="lab-step">
+<h4>Pull additional models and compare</h4>
+<p>Pull 2–3 different models: <code>ollama pull mistral:7b-instruct-q4_K_M</code>, <code>ollama pull gemma2:2b</code>, <code>ollama pull phi3:mini</code>. In Open WebUI, start a conversation and switch models mid-thread to compare response quality and speed. Note the tokens/sec difference between model sizes.</p>
+</li>
+<li class="lab-step">
+<h4>Measure and record baseline performance</h4>
+<p>For each model you've pulled, run this Python script to measure tokens/second and note the results — you'll use these numbers in Lab 08 (Benchmarking).</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">benchmark_ollama.py</span></div>
+<pre>
+<span class="kw">import</span> time, requests, json
+
+MODEL   = <span class="st">"llama3.2:3b-instruct-q4_K_M"</span>
+PROMPT  = <span class="st">"Explain the transformer architecture in detail."</span>
+
+start = time.time()
+resp = requests.post(
+    <span class="st">"http://localhost:11434/api/generate"</span>,
+    json={<span class="st">"model"</span>: MODEL, <span class="st">"prompt"</span>: PROMPT, <span class="st">"stream"</span>: <span class="kw">False</span>}
+)
+elapsed = time.time() - start
+
+data = resp.json()
+tokens = data.get(<span class="st">"eval_count"</span>, <span class="nm">0</span>)
+tps    = tokens / elapsed
+
+<span class="kw">print</span>(<span class="st">f"Model:      {MODEL}"</span>)
+<span class="kw">print</span>(<span class="st">f"Tokens:     {tokens}"</span>)
+<span class="kw">print</span>(<span class="st">f"Time:       {elapsed:.1f}s"</span>)
+<span class="kw">print</span>(<span class="st">f"Throughput: {tps:.1f} tok/s"</span>)
+              </pre>
+</div>
+</li>
+</ol>
+<h4 class="section-label">What You've Accomplished</h4>
+<ul class="checklist">
+<li>A running local LLM with no API costs or privacy concerns</li>
+<li>A web-based chat UI accessible from any device on your LAN</li>
+<li>An OpenAI-compatible API endpoint for application development</li>
+<li>Baseline performance numbers for Lab 08 benchmarking</li>
+</ul>
+<div class="tip-box">
+<div class="box-label">Going Further</div>
+<p>Try <code>ollama pull nomic-embed-text</code> for an embedding model, then build a simple RAG pipeline with LangChain or LlamaIndex that lets you chat with your own documents using your local model.</p>
+</div>
+</div>
+</div>
+<div class="lab-section" id="lab-02">
+<div class="lab-header">
+
+<div class="lab-header-text">
+<div class="lab-number" style="color:#f59e0b">Lab 02</div>
+<div class="lab-title">Run an LLM Inside a Virtual Machine</div>
+<div class="lab-meta">
+<span>⏱ ~1.5 hrs</span>
+<span style="color:#10b981">Beginner</span>
+<span>💰 Free</span>
+<span>🖥️ VirtualBox · VMware · Ubuntu</span>
+</div>
+</div>
+</div>
+<div class="lab-body">
+<div class="module-refs">
+<span class="refs-label">Covers:</span>
+<a class="module-pill" href="mastering_ai_curriculum.html#m6_model_serving">M6 · Model Serving</a><a class="module-pill" href="mastering_ai_curriculum.html#m6_mlops">M6 · MLOps</a>
+</div>
+<div class="module-refs">
+<span style="font-size:12px;color:var(--text3);margin-right:4px;">Covers:</span>
+<a class="module-pill" href="module6.html#serving">M6 · Model Serving</a>
+<a class="module-pill" href="module6.html#mlops">M6 · MLOps</a>
+</div>
+<div class="warn-box">
+<div class="box-label">GPU Passthrough Note</div>
+<p>VirtualBox does not support GPU passthrough for CUDA. For GPU-accelerated inference inside a VM, use VMware Workstation Pro (Windows/Linux) or configure KVM with VFIO on Linux. This lab runs CPU-only Ollama inside the VM, which works fine for learning.</p>
+</div>
+<h4 class="section-label">VM Setup</h4>
+<ol class="lab-steps">
+<li class="lab-step">
+<h4>Download VirtualBox and Ubuntu Server</h4>
+<p>Download VirtualBox from <code>virtualbox.org</code>. Download Ubuntu Server 24.04 LTS ISO from <code>ubuntu.com/download/server</code>. Ubuntu Server is preferred over Desktop for this lab — it's lighter and mirrors real cloud servers.</p>
+</li>
+<li class="lab-step">
+<h4>Create the VM</h4>
+<p>In VirtualBox Manager, click New. Settings: Name = <code>ai-lab</code>, Type = Linux, Version = Ubuntu 24.04 LTS (64-bit). RAM: allocate at least <strong>8 GB</strong> (12–16 GB if you have it). CPUs: at least 4. Disk: 50 GB dynamically allocated VDI.</p>
+<p>In Settings → Network: set Adapter 1 to <strong>Bridged Adapter</strong> (not NAT). This gives the VM its own IP on your LAN, making it accessible from other devices.</p>
+</li>
+<li class="lab-step">
+<h4>Install Ubuntu Server</h4>
+<p>Boot from the ISO, follow the installer. Choose "Ubuntu Server (minimized)" profile. Set a memorable username/password. Enable OpenSSH Server when prompted — this lets you SSH in from your host instead of using the VirtualBox console.</p>
+</li>
+<li class="lab-step">
+<h4>SSH into the VM from your host</h4>
+<p>After the VM boots, find its IP: <code>ip a | grep inet</code> inside the VM. Then from your host terminal: <code>ssh youruser@VM_IP_ADDRESS</code>. From here, all remaining commands run in this SSH session.</p>
+</li>
+<li class="lab-step">
+<h4>Update the system and install Ollama</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span><span class="code-filename">inside the VM</span></div>
+<pre>
+sudo apt update &amp;&amp; sudo apt upgrade -y
+curl -fsSL https://ollama.com/install.sh | sh
+sudo systemctl enable --now ollama
+ollama pull llama3.2:3b-instruct-q4_K_M</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Expose Ollama on the network interface</h4>
+<p>By default, Ollama only listens on <code>127.0.0.1</code>. To accept connections from your host machine, edit the systemd service:</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span></div>
+<pre>
+sudo systemctl edit ollama
+
+# Add these lines in the editor that opens:
+[Service]
+Environment="OLLAMA_HOST=0.0.0.0"
+
+sudo systemctl daemon-reload
+sudo systemctl restart ollama</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Install Docker and Open WebUI in the VM</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span></div>
+<pre>
+# Install Docker
+curl -fsSL https://get.docker.com | sh
+sudo usermod -aG docker $USER
+newgrp docker
+
+# Run Open WebUI
+docker run -d \
+  --name open-webui \
+  -p 3000:8080 \
+  -e OLLAMA_BASE_URL=http://172.17.0.1:11434 \
+  -v open-webui:/app/backend/data \
+  --restart always \
+  ghcr.io/open-webui/open-webui:main</pre>
+</div>
+<p>Open <code>http://VM_IP:3000</code> in your browser on the host machine.</p>
+</li>
+<li class="lab-step">
+<h4>Create a VM snapshot</h4>
+<p>In VirtualBox, with the VM running, go to Machine → Take Snapshot. Name it "Clean Ollama Install". This is your restore point — if you break something during later experiments, you can revert here instantly. This is your first taste of immutable infrastructure.</p>
+</li>
+</ol>
+<div class="tip-box">
+<div class="box-label">Headless VM Management</div>
+<p>You can start/stop the VM without a GUI: <code>VBoxManage startvm ai-lab --type headless</code> and <code>VBoxManage controlvm ai-lab poweroff</code>. Add these as shell aliases for convenience.</p>
+</div>
+</div>
+</div>
+<div class="lab-section" id="lab-03">
+<div class="lab-header">
+
+<div class="lab-header-text">
+<div class="lab-number" style="color:#fb923c">Lab 03</div>
+<div class="lab-title">Deploy on AWS Free Tier (EC2)</div>
+<div class="lab-meta">
+<span>⏱ ~2 hrs</span>
+<span style="color:#f59e0b">Intermediate</span>
+<span>💰 ~$0 free tier</span>
+<span>🖥️ AWS EC2</span>
+</div>
+</div>
+</div>
+<div class="lab-body">
+<div class="module-refs">
+<span class="refs-label">Covers:</span>
+<a class="module-pill" href="mastering_ai_curriculum.html#m6_serving">M6 · Serving</a><a class="module-pill" href="mastering_ai_curriculum.html#m6_mlops">M6 · MLOps</a><a class="module-pill" href="mastering_ai_curriculum.html#m6_monitoring">M6 · Monitoring</a>
+</div>
+<div class="module-refs">
+<span style="font-size:12px;color:var(--text3);margin-right:4px;">Covers:</span>
+<a class="module-pill" href="module6.html#serving">M6 · Serving</a>
+<a class="module-pill" href="module6.html#mlops">M6 · MLOps</a>
+<a class="module-pill" href="module6.html#monitoring">M6 · Monitoring</a>
+</div>
+<div class="warn-box"><div class="box-label">Cost Warning</div><strong>Cost Warning:</strong> AWS Free Tier gives 750 hours/month of t2.micro (1 vCPU, 1 GB RAM) or t3.micro for the first 12 months. A t2.micro is too small for most LLMs — use it for the API/proxy layer only, or upgrade to t3.medium (~$0.04/hr) and terminate when done. Always set a <strong>billing alert</strong> before proceeding.</div>
+</div>
+<h4 class="section-label">Recommended Instance Sizes</h4>
+<div class="grid-3">
+<div class="card">
+<div class="card-icon">🆓</div>
+<h5>t2.micro</h5>
+<p>1 vCPU, 1 GB RAM. Free 12 months. API proxy only — too small for Ollama.</p>
+</div>
+<div class="card">
+<div class="card-icon">🧮</div>
+<h5>t3.medium</h5>
+<p>2 vCPU, 4 GB RAM. ~$0.04/hr. Handles 1B models only.</p>
+</div>
+<div class="card">
+<div class="card-icon">🚀</div>
+<h5>t3.xlarge</h5>
+<p>4 vCPU, 16 GB RAM. ~$0.17/hr. Runs 3B–7B INT4 models.</p>
+</div>
+<div class="card">
+<div class="card-icon">⚡</div>
+<h5>g4dn.xlarge</h5>
+<p>4 vCPU, 16 GB RAM, T4 GPU (16 GB VRAM). ~$0.53/hr. Fast 7B inference.</p>
+</div>
+</div>
+<ol class="lab-steps">
+<li class="lab-step">
+<h4>Create an AWS account and set billing alerts</h4>
+<p>Sign up at <code>aws.amazon.com</code>. Immediately go to Billing → Budgets → Create Budget. Set a Zero Spend Budget — AWS will email you the moment any charge occurs. This is non-optional.</p>
+</li>
+<li class="lab-step">
+<h4>Launch an EC2 instance</h4>
+<p>Go to EC2 → Launch Instance. Choose <strong>Ubuntu Server 24.04 LTS</strong>. Select your instance type (t3.xlarge recommended for actual LLM inference). Create a new key pair (RSA, .pem format) and download it — you can't recover this later.</p>
+<p>In the network settings, allow: SSH (port 22, your IP only), HTTP (port 80, anywhere), HTTPS (port 443, anywhere), and custom TCP 11434 from your IP only (for direct Ollama access during testing).</p>
+</li>
+<li class="lab-step">
+<h4>Connect via SSH</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span></div>
+<pre>
+chmod 400 ~/Downloads/your-key.pem
+ssh -i ~/Downloads/your-key.pem ubuntu@YOUR_EC2_PUBLIC_IP</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Install Ollama and pull a model</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span></div>
+<pre>
+# Update and install Ollama
+sudo apt update &amp;&amp; sudo apt install -y curl
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Expose on all interfaces
+sudo mkdir -p /etc/systemd/system/ollama.service.d
+echo -e "[Service]\nEnvironment=OLLAMA_HOST=127.0.0.1" \
+  | sudo tee /etc/systemd/system/ollama.service.d/override.conf
+sudo systemctl daemon-reload &amp;&amp; sudo systemctl restart ollama
+
+# Pull a model (choose based on your instance RAM)
+ollama pull llama3.2:3b-instruct-q4_K_M</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Install and configure Nginx as a reverse proxy</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">nginx</span><span class="code-filename">/etc/nginx/sites-available/ollama</span></div>
+<pre>
+sudo apt install -y nginx apache2-utils
+
+# Generate a password file for basic auth
+sudo htpasswd -c /etc/nginx/.htpasswd yourusername
+
+# Create the nginx config
+sudo tee /etc/nginx/sites-available/ollama &lt;&lt;'EOF'
+server {
+    listen 80;
+    server_name YOUR_EC2_PUBLIC_IP;
+
+    location / {
+        auth_basic "LLM API";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+
+        proxy_pass http://127.0.0.1:11434;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_read_timeout 300s;
+        proxy_send_timeout 300s;
+        client_max_body_size 10M;
+    }
+}
+EOF
+
+sudo ln -s /etc/nginx/sites-available/ollama /etc/nginx/sites-enabled/
+sudo nginx -t &amp;&amp; sudo systemctl reload nginx</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Test from your local machine</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span></div>
+<pre>
+# From your local machine:
+curl http://YOUR_EC2_IP/api/generate \
+  -u "yourusername:yourpassword" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"llama3.2:3b-instruct-q4_K_M","prompt":"Hello!","stream":false}'</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>STOP your instance when done</h4>
+<p>In the EC2 console, select your instance → Instance State → <strong>Stop</strong> (not terminate — stopped instances don't incur compute charges, only minimal EBS storage charges). Set a calendar reminder to terminate it if you won't return within a week.</p>
+</li>
+</ol>
+<div class="info-box">
+<div class="box-label">AWS Free Tier Reality Check</div>
+<p>The free tier t2.micro (1 GB RAM) cannot meaningfully run any current LLM — it can host the nginx proxy but not Ollama itself. For actual LLM inference, you need at least a t3.medium (~$0.04/hr). Run it for 4 hours, terminate it, and you've spent $0.16 total. That's an excellent learning-to-cost ratio.</p>
+</div>
+</div>
+<div class="lab-section" id="lab-04">
+<div class="lab-header">
+
+<div class="lab-header-text">
+<div class="lab-number" style="color:#10b981">Lab 04</div>
+<div class="lab-title">Oracle Cloud Always-Free ARM VM (Best Free Option)</div>
+<div class="lab-meta">
+<span>⏱ ~2 hrs</span>
+<span style="color:#f59e0b">Intermediate</span>
+<span>💰 $0 forever</span>
+<span>🖥️ Oracle Cloud ARM</span>
+</div>
+</div>
+</div>
+<div class="lab-body">
+<div class="module-refs">
+<span class="refs-label">Covers:</span>
+<a class="module-pill" href="mastering_ai_curriculum.html#m6_serving">M6 · Serving</a><a class="module-pill" href="mastering_ai_curriculum.html#m6_mlops">M6 · MLOps</a>
+</div>
+<div class="module-refs">
+<span style="font-size:12px;color:var(--text3);margin-right:4px;">Covers:</span>
+<a class="module-pill" href="module6.html#serving">M6 · Serving</a>
+<a class="module-pill" href="module6.html#mlops">M6 · MLOps</a>
+</div>
+<div class="info-box">
+<div class="box-label">Why Oracle Over AWS for Free Inference</div>
+<p>AWS free tier gives you 1 GB RAM for 12 months. Oracle gives you 24 GB RAM forever. For a self-hosted LLM API that doesn't cost anything to run indefinitely, Oracle is the clear winner. The catch: Oracle's A1 ARM machines sometimes have availability issues — if "Out of Capacity" appears, try a different region or try again the next day.</p>
+</div>
+<h4 class="section-label">Oracle Always-Free Allocation</h4>
+<table>
+<thead><tr><th>Resource</th><th>Always-Free Amount</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Ampere A1 (ARM) vCPUs</td><td>4 cores total</td><td>Can split across multiple VMs</td></tr>
+<tr><td>Ampere A1 RAM</td><td>24 GB total</td><td>Can split across multiple VMs</td></tr>
+<tr><td>Block Storage</td><td>200 GB</td><td>For VM boot disks</td></tr>
+<tr><td>Outbound Data Transfer</td><td>10 TB/month</td><td>More than enough for a personal API</td></tr>
+<tr><td>Object Storage</td><td>20 GB</td><td>For model weight backups</td></tr>
+</tbody>
+</table>
+<ol class="lab-steps">
+<li class="lab-step">
+<h4>Create an Oracle Cloud account</h4>
+<p>Sign up at <code>cloud.oracle.com</code>. You'll need a credit card for identity verification, but it will not be charged for Always-Free resources. Choose a Home Region close to you — this cannot be changed later.</p>
+</li>
+<li class="lab-step">
+<h4>Create the VM Instance</h4>
+<p>Go to Compute → Instances → Create Instance. Name: <code>llm-server</code>. In the Image and Shape section, click Edit → Change Shape → select <strong>Ampere</strong> → <strong>VM.Standard.A1.Flex</strong>. Set OCPUs: <strong>4</strong>, Memory: <strong>24 GB</strong> (uses your full free allocation).</p>
+<p>In the boot volume section, set size to <strong>100 GB</strong> (within the 200 GB free allocation). Upload or paste your SSH public key (<code>cat ~/.ssh/id_rsa.pub</code>).</p>
+</li>
+<li class="lab-step">
+<h4>Configure the firewall (Security List)</h4>
+<p>Oracle blocks all inbound traffic by default at two layers: the Security List (VCN firewall) AND the OS firewall (iptables/ufw). You need to open both.</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span><span class="code-filename">inside the VM</span></div>
+<pre>
+# In Oracle console: VCN → Security Lists → Ingress Rules
+# Add: Source=0.0.0.0/0, Protocol=TCP, Port=80
+# Add: Source=YOUR_IP/32, Protocol=TCP, Port=3000
+# Add: Source=YOUR_IP/32, Protocol=TCP, Port=11434
+
+# In the VM itself — open the OS firewall:
+sudo firewall-cmd --permanent --zone=public --add-port=80/tcp
+sudo firewall-cmd --permanent --zone=public --add-port=3000/tcp
+sudo firewall-cmd --reload</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Install Ollama (ARM build)</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span></div>
+<pre>
+ssh -i ~/.ssh/id_rsa opc@YOUR_ORACLE_PUBLIC_IP
+
+sudo dnf update -y  # Oracle Linux uses dnf, not apt
+curl -fsSL https://ollama.com/install.sh | sh
+sudo systemctl enable --now ollama
+
+# Configure to listen on all interfaces
+sudo mkdir -p /etc/systemd/system/ollama.service.d
+echo -e "[Service]\nEnvironment=OLLAMA_HOST=0.0.0.0" \
+  | sudo tee /etc/systemd/system/ollama.service.d/override.conf
+sudo systemctl daemon-reload &amp;&amp; sudo systemctl restart ollama
+
+# Pull a 7B model — 24 GB RAM can handle it!
+ollama pull llama3.1:8b-instruct-q4_K_M   # ~4.7 GB download
+# Optionally pull a larger model:
+# ollama pull llama3.1:8b-instruct-q5_K_M  # ~5.7 GB, better quality</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Install Docker and Open WebUI</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span></div>
+<pre>
+# Oracle Linux uses podman by default, but Docker works too:
+sudo dnf install -y docker
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+newgrp docker
+
+docker run -d \
+  --name open-webui \
+  -p 3000:8080 \
+  -e OLLAMA_BASE_URL=http://host.docker.internal:11434 \
+  --add-host=host.docker.internal:host-gateway \
+  -v open-webui:/app/backend/data \
+  --restart always \
+  ghcr.io/open-webui/open-webui:main</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Create a systemd service for auto-restart</h4>
+<p>Since this is a free-forever server, you want it to survive reboots automatically. Docker's <code>--restart always</code> handles Open WebUI. Ollama's systemd service already handles Ollama. Test the full restart: <code>sudo reboot</code>, wait 60 seconds, then confirm everything is running: <code>ollama list</code> and <code>docker ps</code>.</p>
+</li>
+<li class="lab-step">
+<h4>Measure ARM vs x86 performance</h4>
+<p>Run the benchmark script from Lab 01 against this Oracle ARM instance. Compare tokens/sec to your local machine and to the AWS EC2 instance from Lab 03. ARM CPUs tend to have better performance-per-watt and are often faster than equivalent x86 clock speeds for LLM inference due to memory bandwidth differences.</p>
+</li>
+</ol>
+<div class="tip-box">
+<div class="box-label">Point Your Domain at This Server</div>
+<p>Oracle Cloud's free tier includes a static public IP. Register a free subdomain (e.g., with DuckDNS or Cloudflare's free tier) pointing to your Oracle IP, then add a free Let's Encrypt SSL cert with <code>sudo certbot --nginx</code>. You'll have a proper <code>https://ai.yourdomain.com</code> endpoint at zero recurring cost.</p>
+</div>
+</div>
+</div>
+<div class="lab-section" id="lab-05">
+<div class="lab-header">
+
+<div class="lab-header-text">
+<div class="lab-number" style="color:#a78bfa">Lab 05</div>
+<div class="lab-title">Self-Hosted LLM on Your Synology NAS</div>
+<div class="lab-meta">
+<span>⏱ ~1.5 hrs</span>
+<span style="color:#f59e0b">Intermediate</span>
+<span>💰 Free</span>
+<span>🖥️ Synology DSM 7.x</span>
+</div>
+</div>
+</div>
+<div class="lab-body">
+<div class="module-refs">
+<span class="refs-label">Covers:</span>
+<a class="module-pill" href="mastering_ai_curriculum.html#m6_serving">M6 · Serving</a><a class="module-pill" href="mastering_ai_curriculum.html#m6_mlops">M6 · MLOps</a>
+</div>
+<div class="module-refs">
+<span style="font-size:12px;color:var(--text3);margin-right:4px;">Covers:</span>
+<a class="module-pill" href="module6.html#serving">M6 · Serving</a>
+<a class="module-pill" href="module6.html#mlops">M6 · MLOps</a>
+</div>
+<div class="warn-box">
+<div class="box-label">Performance Expectations</div>
+<p>Synology NAS CPUs (Intel Celeron/Atom, AMD Ryzen, or ARM) are not designed for LLM inference. A typical NAS CPU will generate <strong>1–6 tokens/second</strong> for a 3B INT4 model. This is slow for chatting but fine for background automation tasks, home assistant integrations, or document processing pipelines that don't need real-time speed.</p>
+</div>
+<h4 class="section-label">Recommended Models by NAS CPU</h4>
+<table>
+<thead><tr><th>NAS CPU Family</th><th>RAM</th><th>Max Model</th><th>Expected Speed</th></tr></thead>
+<tbody>
+<tr><td>Intel Celeron J-series (DS220+, DS720+)</td><td>2–6 GB</td><td>1B INT4</td><td>1–3 tok/s</td></tr>
+<tr><td>Intel Celeron J4125 (DS920+)</td><td>8 GB (upgraded)</td><td>3B INT4</td><td>2–5 tok/s</td></tr>
+<tr><td>AMD Ryzen R1600 (DS1621+)</td><td>32 GB</td><td>7B INT4</td><td>3–7 tok/s</td></tr>
+<tr><td>Intel Core i3 (RS1221+)</td><td>32 GB</td><td>7B INT4</td><td>4–8 tok/s</td></tr>
+</tbody>
+</table>
+<ol class="lab-steps">
+<li class="lab-step">
+<h4>Install Container Manager from Package Center</h4>
+<p>In DSM, open Package Center, search for <strong>Container Manager</strong> and install it. This is Synology's Docker management UI. It replaces the older "Docker" package on DSM 7.2+.</p>
+</li>
+<li class="lab-step">
+<h4>Create a shared folder for model storage</h4>
+<p>In File Station or Control Panel → Shared Folder, create a new folder named <code>llm-models</code>. This is where Ollama will store its downloaded model files. We use a persistent shared folder so models survive container restarts and rebuilds.</p>
+</li>
+<li class="lab-step">
+<h4>Deploy Ollama via Container Manager</h4>
+<p>In Container Manager, go to <strong>Project</strong> → Create. Name it <code>ollama</code>. Use the YAML editor and paste this compose file:</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">docker-compose.yml</span></div>
+<pre>
+version: "3.8"
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - /volume1/llm-models:/root/.ollama
+    environment:
+      - OLLAMA_NUM_PARALLEL=1       # NAS CPUs are single-threaded per request
+      - OLLAMA_MAX_LOADED_MODELS=1  # Only keep one model in RAM at a time
+    # Increase memory limit if your NAS has RAM to spare:
+    mem_limit: 8g
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    restart: unless-stopped
+    ports:
+      - "3000:8080"
+    volumes:
+      - open-webui-data:/app/backend/data
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    depends_on:
+      - ollama
+
+volumes:
+  open-webui-data:</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Pull a model via the Container Manager terminal</h4>
+<p>In Container Manager, click on the <code>ollama</code> container → Details → Terminal. Click "Create" to open a shell inside the container, then run:</p>
+<p><code>ollama pull llama3.2:1b-instruct-q4_K_M</code></p>
+<p>Watch the download progress. The model file saves to your <code>llm-models</code> shared folder.</p>
+</li>
+<li class="lab-step">
+<h4>Access Open WebUI from your LAN</h4>
+<p>Open <code>http://NAS_IP:3000</code> from any device on your home network. Create your admin account. You should see the Open WebUI chat interface with your model available.</p>
+<p>Add it to your phone: in Safari/Chrome on your phone, navigate to the URL, then use "Add to Home Screen" for a native-app-like experience.</p>
+</li>
+<li class="lab-step">
+<h4>Set up Synology's reverse proxy for clean URLs (optional)</h4>
+<p>In DSM → Control Panel → Login Portal → Advanced → Reverse Proxy, add a rule: source = <code>http://ai.local</code> (or any hostname), destination = <code>http://localhost:3000</code>. Combined with a local DNS entry on your router pointing <code>ai.local</code> to your NAS IP, you can access your AI assistant at a memorable address from any LAN device.</p>
+</li>
+<li class="lab-step">
+<h4>Automate with the REST API from other NAS services</h4>
+<p>Other Docker containers on your NAS can reach Ollama at <code>http://ollama:11434</code> (Docker internal network). This opens up automations: Synology Task Scheduler running Python scripts that summarize files, Node-RED flows that generate responses, or Home Assistant integrations via the official Ollama component.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="lab-section" id="lab-06">
+<div class="lab-header">
+
+<div class="lab-header-text">
+<div class="lab-number" style="color:#f59e0b">Lab 06</div>
+<div class="lab-title">Write Your First CUDA Kernels</div>
+<div class="lab-meta">
+<span>⏱ 3–4 hrs</span>
+<span style="color:#f87171">Advanced</span>
+<span>💰 Free (Colab)</span>
+<span>🖥️ NVIDIA GPU or Google Colab</span>
+</div>
+</div>
+</div>
+<div class="lab-body">
+<div class="module-refs">
+<span class="refs-label">Covers:</span>
+<a class="module-pill" href="mastering_ai_curriculum.html#m2_cuda_programming_model">M2 · CUDA Programming Model</a><a class="module-pill" href="mastering_ai_curriculum.html#m2_memory_hierarchy">M2 · Memory Hierarchy</a><a class="module-pill" href="mastering_ai_curriculum.html#m2_profiling">M2 · Profiling</a>
+</div>
+<div class="module-refs">
+<span style="font-size:12px;color:var(--text3);margin-right:4px;">Covers:</span>
+<a class="module-pill" href="module2.html">M2 · CUDA Programming Model</a>
+<a class="module-pill" href="module2.html#memory">M2 · Memory Hierarchy</a>
+<a class="module-pill" href="module2.html#profiling">M2 · Profiling</a>
+</div>
+<div class="info-box">
+<div class="box-label">No GPU? Use Google Colab</div>
+<p>Google Colab free tier provides a T4 GPU (16 GB VRAM) for several hours per session. Create a new notebook, go to Runtime → Change Runtime Type → T4 GPU. You can run all CUDA exercises there, including Nsight-style profiling using <code>nvprof</code> or PyTorch's <code>torch.profiler</code>.</p>
+</div>
+<ol class="lab-steps">
+<li class="lab-step">
+<h4>Set up your environment</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span></div>
+<pre>
+# Verify CUDA installation
+nvcc --version
+nvidia-smi
+
+# Install CUDA Toolkit if needed (Ubuntu)
+sudo apt install -y nvidia-cuda-toolkit
+
+# For Colab, CUDA is pre-installed — just verify:
+!nvcc --version
+!nvidia-smi</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Exercise 1 — Vector Addition Kernel</h4>
+<p>The "Hello World" of CUDA. Write, compile, and run a kernel that adds two float arrays element-wise on the GPU.</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">C</span><span class="code-filename">vecadd.cu</span></div>
+<pre>
+<span class="cm">// vecadd.cu — compile with: nvcc -O2 -o vecadd vecadd.cu</span>
+<span class="kw">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="kw">#include</span> <span class="st">&lt;cuda_runtime.h&gt;</span>
+
+<span class="kw">#define</span> <span class="tp">CHECK</span>(call) { \
+    cudaError_t err = call; \
+    if (err != cudaSuccess) { \
+        printf("CUDA error: %s at line %d\n", cudaGetErrorString(err), __LINE__); \
+        exit(1); \
+    } \
+}
+
+<span class="cm">// ── YOUR TASK: implement this kernel ─────────────────────────</span>
+__global__ <span class="kw">void</span> <span class="fn">vecAdd</span>(<span class="kw">float</span>* A, <span class="kw">float</span>* B, <span class="kw">float</span>* C, <span class="kw">int</span> N) {
+    <span class="cm">// TODO: compute global thread index
+    // TODO: bounds check
+    // TODO: C[i] = A[i] + B[i]</span>
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">const int</span> N = <span class="nm">1 &lt;&lt; 24</span>;  <span class="cm">// 16M elements</span>
+    size_t bytes = N * <span class="kw">sizeof</span>(<span class="kw">float</span>);
+
+    <span class="cm">// Host allocation + initialization</span>
+    <span class="kw">float</span> *h_A = (<span class="kw">float</span>*)malloc(bytes);
+    <span class="kw">float</span> *h_B = (<span class="kw">float</span>*)malloc(bytes);
+    <span class="kw">float</span> *h_C = (<span class="kw">float</span>*)malloc(bytes);
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; N; i++) { h_A[i] = <span class="nm">1.0f</span>; h_B[i] = <span class="nm">2.0f</span>; }
+
+    <span class="cm">// Device allocation</span>
+    <span class="kw">float</span> *d_A, *d_B, *d_C;
+    CHECK(cudaMalloc(&amp;d_A, bytes));
+    CHECK(cudaMalloc(&amp;d_B, bytes));
+    CHECK(cudaMalloc(&amp;d_C, bytes));
+
+    <span class="cm">// Copy to device</span>
+    CHECK(cudaMemcpy(d_A, h_A, bytes, cudaMemcpyHostToDevice));
+    CHECK(cudaMemcpy(d_B, h_B, bytes, cudaMemcpyHostToDevice));
+
+    <span class="cm">// Launch kernel</span>
+    <span class="kw">int</span> threadsPerBlock = <span class="nm">256</span>;
+    <span class="kw">int</span> blocksPerGrid = (N + threadsPerBlock - <span class="nm">1</span>) / threadsPerBlock;
+    vecAdd&lt;&lt;&lt;blocksPerGrid, threadsPerBlock&gt;&gt;&gt;(d_A, d_B, d_C, N);
+    CHECK(cudaGetLastError());
+    CHECK(cudaDeviceSynchronize());
+
+    <span class="cm">// Copy result back and verify</span>
+    CHECK(cudaMemcpy(h_C, d_C, bytes, cudaMemcpyDeviceToHost));
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; N; i++) {
+        <span class="kw">if</span> (h_C[i] != <span class="nm">3.0f</span>) { printf(<span class="st">"FAIL at %d\n"</span>, i); <span class="kw">return</span> <span class="nm">1</span>; }
+    }
+    printf(<span class="st">"PASS: All elements correct\n"</span>);
+
+    cudaFree(d_A); cudaFree(d_B); cudaFree(d_C);
+    free(h_A); free(h_B); free(h_C);
+    <span class="kw">return</span> <span class="nm">0</span>;
+}</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Exercise 2 — Tiled Matrix Multiplication</h4>
+<p>Implement matrix multiplication using shared memory tiling to reduce global memory bandwidth. Compare performance against a naive (no-shared-memory) version. The speedup demonstrates why shared memory is one of the most important CUDA optimization techniques.</p>
+<p>Key steps: define a tile size (e.g., 16×16), load a tile of A and B into <code>__shared__</code> arrays, synchronize threads with <code>__syncthreads()</code>, compute partial dot products, repeat for all tiles, write the result.</p>
+</li>
+<li class="lab-step">
+<h4>Exercise 3 — Profile with Nsight / nvprof</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span></div>
+<pre>
+# Profile with nvprof (older GPUs / Colab):
+nvprof ./vecadd 2&gt;&amp;1 | grep -E "GPU|Mem|%"
+
+# Profile with nsys (Ampere+ GPUs):
+nsys profile --stats=true ./vecadd
+
+# In Python / PyTorch, use torch.profiler:
+import torch
+from torch.profiler import profile, ProfilerActivity
+
+with profile(activities=[ProfilerActivity.CUDA]) as prof:
+    # your operation here
+    result = torch.matmul(a, b)
+print(prof.key_averages().table(sort_by="cuda_time_total", row_limit=10))</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Exercise 4 — Fused Softmax Kernel</h4>
+<p>Implement a numerically stable softmax kernel in one pass (the online softmax trick): compute max and sum in a single sweep through the data using warp-level reductions. This is the same pattern used in Flash Attention. Compare against PyTorch's <code>F.softmax</code> using torch.profiler to see how your implementation compares to the highly optimized library version.</p>
+</li>
+</ol>
+<div class="tip-box">
+<div class="box-label">Moving to Triton</div>
+<p>Once you've written raw CUDA, try implementing the same kernels in <strong>OpenAI Triton</strong> (<code>pip install triton</code>). Triton abstracts the threading model but gives you explicit control over memory access patterns. The same softmax you wrote in 100 lines of CUDA can be written in 30 lines of Triton with comparable performance.</p>
+</div>
+</div>
+</div>
+<div class="lab-section" id="lab-07">
+<div class="lab-header">
+
+<div class="lab-header-text">
+<div class="lab-number" style="color:#a78bfa">Lab 07</div>
+<div class="lab-title">Fine-Tune Llama 3.2 with QLoRA</div>
+<div class="lab-meta">
+<span>⏱ 2–3 hrs</span>
+<span style="color:#f59e0b">Intermediate</span>
+<span>💰 Free on Colab</span>
+<span>🖥️ Google Colab T4</span>
+</div>
+</div>
+</div>
+<div class="lab-body">
+<div class="module-refs">
+<span class="refs-label">Covers:</span>
+<a class="module-pill" href="mastering_ai_curriculum.html#m5_supervised_fine-tuning">M5 · Supervised Fine-Tuning</a><a class="module-pill" href="mastering_ai_curriculum.html#m5_lora">M5 · LoRA</a><a class="module-pill" href="mastering_ai_curriculum.html#m5_training_stability">M5 · Training Stability</a>
+</div>
+<div class="module-refs">
+<span style="font-size:12px;color:var(--text3);margin-right:4px;">Covers:</span>
+<a class="module-pill" href="module5.html#sft">M5 · Supervised Fine-Tuning</a>
+<a class="module-pill" href="module5.html#sft">M5 · LoRA</a>
+<a class="module-pill" href="module5.html#tricks">M5 · Training Stability</a>
+</div>
+<ol class="lab-steps">
+<li class="lab-step">
+<h4>Set up Colab and install libraries</h4>
+<p>Create a new Colab notebook, enable T4 GPU (Runtime → Change runtime type → T4 GPU). Then install:</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span></div>
+<pre>
+!pip install -q transformers peft trl datasets bitsandbytes accelerate
+!pip install -q huggingface_hub wandb  # optional but recommended
+
+import torch
+print(f"CUDA: {torch.cuda.is_available()}")
+print(f"GPU: {torch.cuda.get_device_name(0)}")
+print(f"VRAM: {torch.cuda.get_device_properties(0).total_memory/1e9:.1f} GB")</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Choose your fine-tuning domain and build a dataset</h4>
+<p>Pick a specific domain: cooking recipes, Python code review, medical Q&amp;A, cybersecurity explanations, or any area you know well. Create 200–500 instruction-response pairs in JSON format:</p>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">create_dataset.py</span></div>
+<pre>
+<span class="kw">from</span> datasets <span class="kw">import</span> Dataset
+<span class="kw">import</span> json
+
+<span class="cm"># Your training data — replace with your domain</span>
+data = [
+    {
+        <span class="st">"instruction"</span>: <span class="st">"Explain what a buffer overflow vulnerability is."</span>,
+        <span class="st">"response"</span>: <span class="st">"""A buffer overflow occurs when a program writes more data to a buffer than it can hold, overwriting adjacent memory. This can corrupt program state, crash the application, or allow an attacker to inject and execute arbitrary code by overwriting the return address on the stack..."""</span>
+    },
+    <span class="cm"># ... add 200-500 more examples</span>
+]
+
+<span class="kw">def</span> <span class="fn">format_instruction</span>(example):
+    <span class="st">"""Format using the Llama 3.2 chat template."""</span>
+    <span class="kw">return</span> {
+        <span class="st">"text"</span>: <span class="st">f"&lt;|begin_of_text|&gt;&lt;|start_header_id|&gt;user&lt;|end_header_id|&gt;\n{example['instruction']}&lt;|eot_id|&gt;&lt;|start_header_id|&gt;assistant&lt;|end_header_id|&gt;\n{example['response']}&lt;|eot_id|&gt;"</span>
+    }
+
+dataset = Dataset.from_list(data)
+dataset = dataset.map(format_instruction)
+train_dataset, eval_dataset = dataset.train_test_split(test_size=<span class="nm">0.1</span>).values()
+print(<span class="st">f"Train: {len(train_dataset)} | Eval: {len(eval_dataset)}"</span>)</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Load the base model in 4-bit (QLoRA)</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">load_model.py</span></div>
+<pre>
+<span class="kw">from</span> transformers <span class="kw">import</span> AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+<span class="kw">from</span> peft <span class="kw">import</span> LoraConfig, get_peft_model, prepare_model_for_kbit_training
+
+MODEL_ID = <span class="st">"meta-llama/Llama-3.2-3B-Instruct"</span>
+
+<span class="cm"># 4-bit quantization config</span>
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=<span class="kw">True</span>,
+    bnb_4bit_use_double_quant=<span class="kw">True</span>,
+    bnb_4bit_quant_type=<span class="st">"nf4"</span>,         <span class="cm"># NF4: better than int4 for weights</span>
+    bnb_4bit_compute_dtype=torch.bfloat16,
+)
+
+model = AutoModelForCausalLM.from_pretrained(
+    MODEL_ID,
+    quantization_config=bnb_config,
+    device_map=<span class="st">"auto"</span>,
+    token=<span class="st">"YOUR_HF_TOKEN"</span>,  <span class="cm"># needed for Llama gated models</span>
+)
+tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, token=<span class="st">"YOUR_HF_TOKEN"</span>)
+tokenizer.pad_token = tokenizer.eos_token
+tokenizer.padding_side = <span class="st">"right"</span>
+
+model = prepare_model_for_kbit_training(model)
+
+<span class="cm"># LoRA configuration</span>
+lora_config = LoraConfig(
+    r=<span class="nm">16</span>,                    <span class="cm"># LoRA rank</span>
+    lora_alpha=<span class="nm">32</span>,           <span class="cm"># scaling factor</span>
+    target_modules=[<span class="st">"q_proj"</span>, <span class="st">"k_proj"</span>, <span class="st">"v_proj"</span>, <span class="st">"o_proj"</span>,
+                    <span class="st">"gate_proj"</span>, <span class="st">"up_proj"</span>, <span class="st">"down_proj"</span>],
+    lora_dropout=<span class="nm">0.05</span>,
+    bias=<span class="st">"none"</span>,
+    task_type=<span class="st">"CAUSAL_LM"</span>,
+)
+model = get_peft_model(model, lora_config)
+model.print_trainable_parameters()
+<span class="cm"># Expected: Trainable params: ~24M (0.79%) out of ~3B total</span></pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Train with SFTTrainer</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">train.py</span></div>
+<pre>
+<span class="kw">from</span> trl <span class="kw">import</span> SFTTrainer, SFTConfig
+
+training_args = SFTConfig(
+    output_dir=<span class="st">"./llama-finetuned"</span>,
+    num_train_epochs=<span class="nm">3</span>,
+    per_device_train_batch_size=<span class="nm">2</span>,    <span class="cm"># small batch for T4 16GB</span>
+    gradient_accumulation_steps=<span class="nm">4</span>,    <span class="cm"># effective batch = 8</span>
+    learning_rate=<span class="nm">2e-4</span>,
+    warmup_ratio=<span class="nm">0.03</span>,
+    lr_scheduler_type=<span class="st">"cosine"</span>,
+    bf16=<span class="kw">True</span>,                          <span class="cm"># use BF16 on T4 (Turing supports it)</span>
+    logging_steps=<span class="nm">10</span>,
+    save_strategy=<span class="st">"epoch"</span>,
+    evaluation_strategy=<span class="st">"epoch"</span>,
+    load_best_model_at_end=<span class="kw">True</span>,
+    max_seq_length=<span class="nm">2048</span>,
+    report_to=<span class="st">"wandb"</span>,                <span class="cm"># or "none" if not using W&amp;B</span>
+)
+
+trainer = SFTTrainer(
+    model=model,
+    tokenizer=tokenizer,
+    args=training_args,
+    train_dataset=train_dataset,
+    eval_dataset=eval_dataset,
+    dataset_text_field=<span class="st">"text"</span>,
+)
+
+trainer.train()</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Evaluate: base model vs fine-tuned</h4>
+<p>Generate 10 responses from both the base Llama 3.2 and your fine-tuned version for the same prompts from your domain. Create a side-by-side comparison table. Did the fine-tuned model improve on your target behavior? Did it regress on anything unrelated?</p>
+</li>
+<li class="lab-step">
+<h4>Merge LoRA weights and save</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">merge_and_save.py</span></div>
+<pre>
+<span class="kw">from</span> peft <span class="kw">import</span> PeftModel
+
+<span class="cm"># Reload base model in fp16 (not quantized) for merging</span>
+base_model = AutoModelForCausalLM.from_pretrained(
+    MODEL_ID, torch_dtype=torch.float16, device_map=<span class="st">"auto"</span>, token=<span class="st">"YOUR_HF_TOKEN"</span>
+)
+peft_model = PeftModel.from_pretrained(base_model, <span class="st">"./llama-finetuned/checkpoint-best"</span>)
+
+<span class="cm"># Merge LoRA weights into base model</span>
+merged_model = peft_model.merge_and_unload()
+
+<span class="cm"># Save the full merged model</span>
+merged_model.save_pretrained(<span class="st">"./llama-merged"</span>)
+tokenizer.save_pretrained(<span class="st">"./llama-merged"</span>)
+
+<span class="cm"># Upload to HuggingFace Hub (optional):
+# merged_model.push_to_hub("yourusername/llama-3.2-3b-your-domain")</span>
+
+<span class="cm"># Compare sizes:
+# LoRA adapters only:  ~48 MB
+# Full merged model:   ~6 GB (fp16) or ~3 GB (converted to int4)</span></pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="lab-section" id="lab-08">
+<div class="lab-header">
+
+<div class="lab-header-text">
+<div class="lab-number" style="color:#f472b6">Lab 08</div>
+<div class="lab-title">Benchmark &amp; Profile LLMs Systematically</div>
+<div class="lab-meta">
+<span>⏱ ~2 hrs</span>
+<span style="color:#f59e0b">Intermediate</span>
+<span>💰 Free</span>
+<span>🖥️ Any GPU / CPU / Cloud VM</span>
+</div>
+</div>
+</div>
+<div class="lab-body">
+<div class="module-refs">
+<span class="refs-label">Covers:</span>
+<a class="module-pill" href="mastering_ai_curriculum.html#m6_inference_optimization">M6 · Inference Optimization</a><a class="module-pill" href="mastering_ai_curriculum.html#m6_quantization">M6 · Quantization</a><a class="module-pill" href="mastering_ai_curriculum.html#m6_monitoring">M6 · Monitoring</a>
+</div>
+<div class="module-refs">
+<span style="font-size:12px;color:var(--text3);margin-right:4px;">Covers:</span>
+<a class="module-pill" href="module6.html#optimization">M6 · Inference Optimization</a>
+<a class="module-pill" href="module6.html#quantization">M6 · Quantization</a>
+<a class="module-pill" href="module6.html#monitoring">M6 · Monitoring</a>
+</div>
+<ol class="lab-steps">
+<li class="lab-step">
+<h4>Install benchmarking tools</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span></div>
+<pre>
+pip install vllm transformers accelerate bitsandbytes
+pip install lm-eval  # HuggingFace LM Evaluation Harness
+pip install psutil gputil  # system monitoring</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Build a performance benchmarking harness</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">Python</span><span class="code-filename">benchmark.py</span></div>
+<pre>
+<span class="kw">import</span> time, statistics, torch, psutil, json
+<span class="kw">from</span> transformers <span class="kw">import</span> AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+
+<span class="kw">def</span> <span class="fn">benchmark_model</span>(model_id, quant_config=<span class="kw">None</span>, n_runs=<span class="nm">20</span>, max_new_tokens=<span class="nm">200</span>):
+    <span class="st">"""Measure TTFT, generation throughput, and peak memory."""</span>
+    
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id,
+        quantization_config=quant_config,
+        device_map=<span class="st">"auto"</span>,
+        torch_dtype=torch.float16 <span class="kw">if</span> quant_config <span class="kw">is None else</span> <span class="kw">None</span>,
+    )
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+    
+    test_prompt = <span class="st">"Explain the attention mechanism in transformers in detail."</span>
+    inputs = tokenizer(test_prompt, return_tensors=<span class="st">"pt"</span>).to(<span class="st">"cuda"</span>)
+    
+    <span class="cm"># Warmup</span>
+    <span class="kw">with</span> torch.no_grad():
+        model.generate(**inputs, max_new_tokens=<span class="nm">50</span>)
+    torch.cuda.synchronize()
+    torch.cuda.reset_peak_memory_stats()
+    
+    ttft_list, tps_list = [], []
+    
+    <span class="kw">for</span> _ <span class="kw">in</span> range(n_runs):
+        start = time.perf_counter()
+        first_token_time = <span class="kw">None</span>
+        
+        <span class="kw">with</span> torch.no_grad():
+            output = model.generate(
+                **inputs,
+                max_new_tokens=max_new_tokens,
+                do_sample=<span class="kw">False</span>,
+            )
+        torch.cuda.synchronize()
+        end = time.perf_counter()
+        
+        n_tokens = output.shape[-<span class="nm">1</span>] - inputs.input_ids.shape[-<span class="nm">1</span>]
+        total_time = end - start
+        
+        ttft_list.append(total_time / n_tokens)  <span class="cm"># approx TTFT = time/first_token</span>
+        tps_list.append(n_tokens / total_time)
+    
+    peak_mem_gb = torch.cuda.max_memory_allocated() / <span class="nm">1e9</span>
+    
+    <span class="kw">return</span> {
+        <span class="st">"model"</span>:      model_id,
+        <span class="st">"quant"</span>:      <span class="st">"fp16"</span> <span class="kw">if</span> quant_config <span class="kw">is None else</span> <span class="st">"int8/int4"</span>,
+        <span class="st">"tps_median"</span>: round(statistics.median(tps_list), <span class="nm">1</span>),
+        <span class="st">"tps_p95"</span>:    round(statistics.quantiles(tps_list, n=<span class="nm">20</span>)[<span class="nm">0</span>], <span class="nm">1</span>),
+        <span class="st">"peak_mem_gb"</span>:round(peak_mem_gb, <span class="nm">2</span>),
+    }
+
+<span class="cm"># Run benchmarks across formats:</span>
+results = []
+
+<span class="cm"># FP16 baseline</span>
+results.append(benchmark_model(<span class="st">"meta-llama/Llama-3.2-3B-Instruct"</span>))
+
+<span class="cm"># INT8</span>
+results.append(benchmark_model(
+    <span class="st">"meta-llama/Llama-3.2-3B-Instruct"</span>,
+    BitsAndBytesConfig(load_in_8bit=<span class="kw">True</span>)
+))
+
+<span class="cm"># INT4 (NF4)
+results.append(benchmark_model(
+    "meta-llama/Llama-3.2-3B-Instruct",
+    BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4")
+))
+
+# Print results table
+print(f"{'Model':&lt;40} {'Quant':&lt;8} {'TPS (p50)':&lt;12} {'TPS (p5)':&lt;12} {'Peak VRAM'}")
+print("-" * 85)
+for r in results:
+    print(f"{r['model']:&lt;40} {r['quant']:&lt;8} {r['tps_median']:&lt;12} {r['tps_p95']:&lt;12} {r['peak_mem_gb']:.2f} GB")</span></pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Run quality benchmarks with lm-evaluation-harness</h4>
+<div class="code-block">
+<div class="code-header"><span class="code-lang">bash</span></div>
+<pre>
+# ARC (reasoning), HellaSwag (commonsense), MMLU (knowledge), TruthfulQA
+lm_eval --model hf \
+  --model_args pretrained=meta-llama/Llama-3.2-3B-Instruct,dtype=float16 \
+  --tasks arc_easy,hellaswag,mmlu \
+  --num_fewshot 0 \
+  --batch_size 4 \
+  --output_path ./results_fp16
+
+# Repeat with int4 quantization:
+lm_eval --model hf \
+  --model_args "pretrained=meta-llama/Llama-3.2-3B-Instruct,dtype=float16,load_in_4bit=True" \
+  --tasks arc_easy,hellaswag,mmlu \
+  --num_fewshot 0 \
+  --batch_size 4 \
+  --output_path ./results_int4</pre>
+</div>
+</li>
+<li class="lab-step">
+<h4>Build a results comparison table</h4>
+<p>Collect all your numbers and build a table with these columns: Model, Format, VRAM, TPS (p50), ARC, HellaSwag, MMLU. Calculate the quality/memory tradeoff score: <code>(MMLU + ARC + HellaSwag) / 3 / peak_vram_gb</code>. Which model/format gives the best quality per gigabyte? This is the practical metric that drives real deployment decisions.</p>
+</li>
+<li class="lab-step">
+<h4>Profile your fine-tuned model (from Lab 07)</h4>
+<p>Run the same benchmark suite on your Lab 07 fine-tuned model. Did fine-tuning change throughput or memory usage? (It shouldn't — LoRA merged back into the base model is identical in architecture to the original.) Did quality improve on your target domain tasks? Create a custom eval set of 50 prompts from your fine-tuning domain and score the base vs fine-tuned model manually or with an LLM judge.</p>
+</li>
+</ol>
+<div class="tip-box">
+<div class="box-label">Key Takeaway</div>
+<p>After this lab you'll have a concrete, personal dataset of LLM performance numbers on your own hardware — far more useful than reading benchmarks that used different GPUs, different prompts, and different batch sizes. Hardware characteristics, quantization format, and model architecture all interact in ways that only hands-on measurement reveals.</p>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body>
+</html>

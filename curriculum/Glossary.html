@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>AI Systems — Master Glossary</title>
+<style>
+@page { size: 8.5in 11in; margin-top:0.75in; margin-bottom:0.85in; margin-left:1.0in; margin-right:0.625in; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,'Times New Roman',serif;font-size:11pt;line-height:1.65;color:#111;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@media screen{body{background:#d8d4cc;padding:2rem 1rem}.page-wrap{max-width:8.5in;margin:0 auto;background:#fff;box-shadow:0 4px 40px rgba(0,0,0,.3);padding:0.75in 0.625in 0.85in 1.0in}}
+@media print{.page-wrap{padding:0;margin:0}}
+h1{font-family:Georgia,serif;font-size:26pt;font-weight:bold;color:#0f1e35;line-height:1.1;margin-bottom:.5rem;page-break-after:avoid}
+h2{font-family:Georgia,serif;font-size:15pt;font-weight:bold;color:#0f1e35;margin:1.7rem 0 .55rem;line-height:1.2;page-break-after:avoid}
+h3{font-family:Georgia,serif;font-size:12pt;font-weight:bold;font-style:italic;color:#1a2e4a;margin:1.35rem 0 .4rem;page-break-after:avoid}
+h4{font-size:10pt;font-weight:bold;color:#333;margin:1.1rem 0 .3rem;text-transform:uppercase;letter-spacing:.06em;page-break-after:avoid}
+p{margin-bottom:.75rem;text-align:justify;hyphens:auto;orphans:3;widows:3}
+p:last-child{margin-bottom:0}
+strong{font-weight:bold}em{font-style:italic}
+ul,ol{padding-left:1.35rem;margin-bottom:.75rem}li{margin-bottom:.3rem}
+a{color:#1a2e4a;text-decoration:none}
+code{font-family:'Courier New',monospace;font-size:9pt;background:#f2f2ef;padding:0 3px;border-radius:2px}
+.code-block,pre{font-family:'Courier New',monospace;font-size:8pt;line-height:1.5;background:#f2f2ef;border:.5pt solid #ccc;border-left:3pt solid #1a5fa8;padding:.6rem .8rem;margin:.9rem 0;white-space:pre-wrap;word-break:break-all;page-break-inside:avoid}
+.code-block pre{background:none;border:none;padding:0;margin:0}
+.code-header{font-family:'Courier New',monospace;font-size:7.5pt;color:#555;background:#e6e6e2;padding:3px 9px;margin:-.6rem -.8rem .5rem;border-bottom:.5pt solid #ccc}
+.code-lang{font-weight:bold;color:#1a5fa8}.code-fname{color:#777;margin-left:.5rem}
+.kw{color:#8b0000}.fn{color:#00008b}.cm{color:#777;font-style:italic}.st{color:#2e4a1a}.nm{color:#00008b}.cls{color:#5b21b6}
+.formula,.formula-box,.diagram{font-family:'Courier New',monospace;font-size:8pt;line-height:1.55;background:#f8f7f2;border:.5pt solid #ccc;border-left:3pt solid #b45309;padding:.6rem .8rem;margin:.9rem 0;white-space:pre-wrap;page-break-inside:avoid}
+table{width:100%;border-collapse:collapse;margin:.9rem 0;font-size:9pt;page-break-inside:avoid}
+th{background:#0f1e35;color:#fff;padding:6px 9px;text-align:left;font-size:8.5pt}
+td{padding:6px 9px;border-bottom:.5pt solid #ccc;vertical-align:top}
+tr:nth-child(even) td{background:#f8f8f6}
+.info-box{background:#f0f6ff;border-left:3pt solid #1a5fa8;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.warn-box{background:#fffaf0;border-left:3pt solid #b45309;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.case-box{background:#f5f0ff;border-left:3pt solid #5b21b6;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.focus-box,.future,.future-box{background:#fffaf0;border-left:3pt solid #b45309;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.green-box{background:#f0fff4;border-left:3pt solid #1a7a3a;padding:.65rem .85rem;margin:.9rem 0;page-break-inside:avoid}
+.box-label{font-size:7.5pt;letter-spacing:.14em;text-transform:uppercase;font-weight:bold;margin-bottom:.4rem}
+.info-box .box-label{color:#1a5fa8}.warn-box .box-label{color:#b45309}.case-box .box-label{color:#5b21b6}
+.focus-box .box-label,.future h4,.future-box h4{color:#b45309;font-family:Georgia;font-style:italic;font-size:10.5pt;font-weight:bold;text-transform:none;letter-spacing:0;margin-bottom:.4rem;display:block}
+.pq,.pull-quote{border-left:3pt solid #0f1e35;padding:.65rem 1rem;margin:1.1rem 0;background:#f8f7f4;page-break-inside:avoid}
+.pq p,.pull-quote p{font-style:italic;font-size:11pt;color:#1a2e4a;text-align:left;margin:0}
+.pq cite,.pull-quote cite{display:block;font-size:8.5pt;color:#888;margin-top:.35rem;font-style:normal}
+.phase-intro{font-style:italic;color:#333;padding:.65rem .85rem;background:#f8f8f4;border-left:2pt solid #0f1e35;margin-bottom:1rem}
+.part-header{padding:1in 0 .5in .3in;border-left:6pt solid #0f1e35;margin-bottom:1.5rem}
+.part-num{font-size:8.5pt;letter-spacing:.2em;text-transform:uppercase;color:#888;margin-bottom:.6rem}
+.part-header h2{font-size:24pt;color:#0f1e35;margin:0 0 .8rem;border:none;padding:0}
+.part-desc{font-size:11pt;font-style:italic;color:#555;line-height:1.6;max-width:5in}
+.part-stats{margin-top:1.2rem;font-size:9pt;color:#888}
+.chapter{page-break-before:always}
+.lab-section{page-break-before:always}
+.lesson-header{margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:.5pt solid #ccc;page-break-after:avoid}
+.lesson-header .lesson-title{font-family:Georgia,serif;font-size:13pt;font-weight:bold;color:#0f1e35}
+.lesson-header .lesson-duration{font-size:9pt;color:#888}
+.lab-header{margin-bottom:1.2rem;padding-bottom:.65rem;border-bottom:2pt solid #0f1e35;page-break-after:avoid}
+.lab-title{font-family:Georgia,serif;font-size:15pt;font-weight:bold;color:#0f1e35}
+.lab-number{font-size:7.5pt;letter-spacing:.15em;text-transform:uppercase;color:#888;margin-bottom:.25rem}
+.lab-meta{font-size:9pt;color:#666;margin-top:.3rem}
+.module-refs{font-size:9pt;color:#555;margin-bottom:.9rem;padding:.4rem .7rem;background:#f2f2ef;border-left:2pt solid #1a5fa8}
+.module-pill{color:#1a5fa8;margin-right:.5rem;font-size:9pt}
+.refs-label{font-weight:bold;color:#555;margin-right:.3rem}
+ol.lab-steps{padding-left:1.2rem}
+li.lab-step{margin-bottom:.7rem;page-break-inside:avoid}
+li.lab-step h4{font-style:normal;margin-bottom:.15rem}
+.timeline{margin:.9rem 0}
+.tl-item{display:flex;gap:.65rem;padding:.4rem 0;border-bottom:.5pt dotted #ddd;page-break-inside:avoid}
+.tl-year{font-weight:bold;color:#0f1e35;font-size:9pt;min-width:40pt;flex-shrink:0}
+.tl-title{font-weight:bold;font-size:10pt;margin-bottom:2px}
+.tl-desc{font-size:9.5pt;color:#444;line-height:1.5}
+.tl-item.major .tl-year{color:#b45309}
+.tl-content{flex:1}
+.stack{margin:.9rem 0}
+.stack-layer{padding:6px 9px;margin-bottom:3px;background:#f2f2ef;border:.5pt solid #ccc;display:flex;justify-content:space-between;page-break-inside:avoid}
+.stack-name{font-weight:bold;font-size:9pt}.stack-desc{font-size:8.5pt;color:#555}
+.pathway{margin:.9rem 0}
+.pathway-step{display:flex;gap:.65rem;padding:.4rem 0;border-bottom:.5pt dotted #ddd;page-break-inside:avoid}
+.pathway-icon{font-weight:bold;color:#0f1e35;min-width:22pt;flex-shrink:0;font-size:9.5pt}
+.pathway-title{font-weight:bold;font-size:10pt;margin-bottom:2px}
+.pathway-desc{font-size:9.5pt;color:#444;line-height:1.5}
+.pathway-content{flex:1}
+.glossary-section{page-break-before:always}
+.glossary-section h2{font-size:17pt;margin-bottom:1.3rem;padding-bottom:.4rem;border-bottom:1pt solid #ccc}
+dl.glossary-list{column-count:2;column-gap:.3in}
+dl.glossary-list dt{font-weight:bold;font-size:9.5pt;color:#0f1e35;margin-top:.8rem;break-after:avoid}
+dl.glossary-list dd{font-size:9pt;color:#333;margin-left:0;line-height:1.55;margin-bottom:.2rem}
+nav,.sidebar,[id*="sidebar"],.hero,.labs-hero,.chapter-nav,.ch-nav,.progress-bar-wrap,
+.phase-header,.phase-badge,.phase-number,.ch-num,.ch-label,.hero-eyebrow,.hero-stats,
+.hero-meta,.hero-tag,.labs-overview,.labs-grid,.lab-card,.lab-filters,.filter-btn,
+.ch-pill,.lab-badge,.lab-header-badge,.gloss-search-wrap,#gs,#glossary-search,
+.term-tooltip,.term-tip,.nav-phase,.nav-lesson,.nav-phase-header,
+.phase-toggle,.nav-chevron,.labs-overview-title{display:none!important}
+.phase-section,.phase-content{background:none!important;border:none!important}
+</style></head>
+<body><div class="page-wrap">
+<div class="glossary-section">
+<h2>Master Glossary</h2>
+<p style="font-size:10pt;color:#555;font-style:italic;margin-bottom:1.2rem;">
+56 terms spanning semiconductor fabrication, HBM, AI hardware, GPU software stacks, machine learning, and geopolitics.</p>
+<dl class="glossary-list"><dt>AI agents / tool use</dt><dd>LLM systems operating in observe-reason-act loops, calling external tools via function calling (structured JSON output). Core challenge: reliability over multi-step tasks. LangChain (rapid prototyping), LlamaIndex (document RAG), DSPy (prompt optimisation) are major orchestration frameworks.</dd>
+<dt>ArF / EUV</dt><dd>ArF: argon fluoride laser (193 nm) used in immersion lithography. EUV: extreme ultraviolet (13.5 nm) generated by tin-droplet plasma in vacuum. Only ASML manufactures EUV tools (~$380M each). Required for sub-7nm patterning.</dd>
+<dt>Arithmetic intensity / Roofline</dt><dd>Arithmetic intensity = FLOPs per byte of memory traffic. Roofline model: below ridge point (peak FLOPs ÷ peak BW) → memory-bound; above → compute-bound. H100 ridge: ~295 FLOP/byte. LLM inference at batch=1: ~1–5 FLOP/byte — GPU compute is >95% idle.</dd>
+<dt>Autograd</dt><dd>PyTorch's automatic differentiation engine. Records operations in a dynamic computational graph; .backward() applies the chain rule in reverse to compute gradients. Without autograd, manually deriving and implementing gradients for every architecture would be impractical.</dd>
+<dt>BEOL</dt><dd>Back End of Line — the fabrication phase where copper metal interconnect layers are deposited and patterned to wire transistors into circuits. Modern chips have 12–18 BEOL metal layers fabricated by the damascene process.</dd>
+<dt>BERT vs GPT</dt><dd>BERT: encoder-only, bidirectional attention, masked language model training — best for classification and understanding tasks. GPT: decoder-only, causal attention, next-token prediction — scales to trillion+ parameters, enables in-context learning, dominates generation tasks.</dd>
+<dt>BIS / Export controls</dt><dd>US Bureau of Industry and Security restricts advanced chip exports. Oct 2022: blocked A100/H100 to China (compute/bandwidth thresholds). Oct 2023: tightened to catch A800/H800. Goal: maintain 2–3 generation compute gap. Effectiveness limited by transshipment and domestic Chinese chip development.</dd>
+<dt>CANN</dt><dd>Compute Architecture for Neural Networks — Huawei's CUDA equivalent for Ascend processors. Includes ACL for kernel programming, PyTorch-Ascend adapter, HCCL for multi-chip communication. Primary AI compute option in China following US export controls on H100/A100.</dd>
+<dt>CHIPS Act</dt><dd>Creating Helpful Incentives to Produce Semiconductors (US, 2022): $52.7B manufacturing subsidies + $24B tax credits. Recipients: TSMC Arizona, Intel Ohio, Samsung Texas, Micron Idaho. EU Chips Act: €43B. Meaningful US volumes by 2027–2028; full ecosystem parity is multi-decade.</dd>
+<dt>CMP</dt><dd>Chemical Mechanical Planarization — wafer polishing using abrasive slurry to achieve atomic-level surface flatness. Used after each metal layer, after TSV copper fill, and for die thinning. Controls dishing and erosion to sub-30 nm tolerances.</dd>
+<dt>Continuous batching / PagedAttention</dt><dd>vLLM (2023): continuous batching inserts new requests as slots free (vs waiting for whole batch). PagedAttention manages KV cache in non-contiguous physical pages like OS virtual memory. Together: 10–20× throughput improvement over naive serving.</dd>
+<dt>CoWoS</dt><dd>Chip on Wafer on Substrate — TSMC's advanced packaging platform mounting GPU die and HBM stacks on a silicon interposer. H100 interposer: ~800 mm². Variants: CoWoS-S (full silicon), CoWoS-R (RDL interposer).</dd>
+<dt>CPU vs GPU</dt><dd>CPU: few powerful latency-optimised cores — ideal for sequential, branchy code. GPU: thousands of simple cores — ideal for data-parallel workloads like matrix multiplication. Neural network training is maximally data-parallel.</dd>
+<dt>CTE mismatch</dt><dd>Coefficient of Thermal Expansion mismatch between copper (17 ppm/°C) and silicon (2.6 ppm/°C). Causes stress in TSV-silicon interface under temperature cycling; shifts transistor threshold voltages within 8–15 µm keep-out zone.</dd>
+<dt>cuBLAS / cuDNN / NCCL</dt><dd>cuBLAS: optimised BLAS (matrix multiply) using tensor cores automatically. cuDNN: deep learning primitives (convolutions, attention, normalisation). NCCL: collective communication (allreduce, allgather) for multi-GPU training. The invisible infrastructure under every framework.</dd>
+<dt>CUDA kernel</dt><dd>Function running on GPU with a grid of thread blocks. Each thread processes one data element; threads in a block share SM's fast shared memory (228 KB). Warps of 32 threads execute in lockstep (SIMT). GPU hides memory latency by switching warps.</dd>
+<dt>Damascene process</dt><dd>IC wiring method: etch trenches into dielectric, fill with copper, planarize by CMP. Single damascene: lines or vias separately. Dual damascene: both in one step. Standard for all modern BEOL and interposer RDL.</dd>
+<dt>DCGM</dt><dd>Data Center GPU Manager — NVIDIA's fleet-scale telemetry daemon. Polls all GPUs, runs diagnostics, exports Prometheus metrics via dcgm-exporter. Key HBM field IDs: 1004 (SBE volatile), 1005 (DBE volatile), 140 (HBM temperature).</dd>
+<dt>Dennard scaling</dt><dd>1974 law: shrink all transistor dimensions by κ → 2× density, κ× speed, same power density. Broke ~2004 because leakage current couldn't scale with supply voltage. Clock speeds plateaued; industry pivoted to multi-core and domain-specific accelerators.</dd>
+<dt>DRIE</dt><dd>Deep Reactive Ion Etching — plasma etch process (Bosch process) alternating SF₆ etch and C₄F₈ passivation cycles to create deep vertical holes for TSVs. Target: 5 µm diameter × 50 µm deep (10:1 aspect ratio).</dd>
+<dt>ECC / ODECC</dt><dd>Error Correcting Code / On-Die ECC. HBM uses SECDED (single-bit correct, double-bit detect) on every 128-bit data burst with 8 check bits. Correctable errors (CE) are silent; uncorrectable errors (UE) signal data loss.</dd>
+<dt>FEOL</dt><dd>Front End of Line — the fabrication phase where transistors and capacitors are built directly into the silicon. Includes well implants, gate oxidation, source/drain implants, and contact formation. Ends before any metal wiring layers.</dd>
+<dt>FinFET / GAA</dt><dd>FinFET: transistor with vertical fin channel, gate on 3 sides — enables scaling from 22nm to ~5nm. Gate-All-Around (GAA) / nanosheet: horizontal silicon slabs, gate on all 4 sides — next generation below 3nm.</dd>
+<dt>Flash Attention</dt><dd>Algorithm (Dao et al., 2022) computing transformer self-attention without materialising the N×N attention matrix in HBM. Tiles computation in on-chip SRAM. O(N) HBM accesses vs standard O(N²). 2–4× wall-clock speedup; enables long-context models.</dd>
+<dt>GPU architecture</dt><dd>GPU: thousands of simple throughput-optimised CUDA cores for data-parallel computation, plus specialised tensor cores for matrix multiply-accumulate. H100: 132 SMs, 16,896 CUDA cores, 528 tensor cores, 80 GB HBM3 at 3.35 TB/s.</dd>
+<dt>HBM bandwidth equation</dt><dd>Bandwidth = bus width × clock × transfers/clock. HBM3: 1024-bit bus × 6400 MT/s / 8 = 819 GB/s per stack. The wide bus is only physically possible because traces are 50 µm (on-stack) not 100 mm (PCB) — reducing capacitance 1000×.</dd>
+<dt>Hugging Face</dt><dd>Central hub for open AI models (500K+ on Hub) and model infrastructure library (transformers). Unified API (AutoModel, AutoTokenizer, pipeline()) across hundreds of architectures. PEFT (LoRA), Datasets, Accelerate, TGI complete the ecosystem.</dd>
+<dt>Hybrid bonding</dt><dd>Cu-to-Cu direct bonding without solder. Dies polished to <0.3 nm Ra, plasma-activated, bonded at room temperature, annealed at 150–200°C for Cu interdiffusion. Enables <10 µm pitch vs 55 µm for microbumps. Required for HBM4.</dd>
+<dt>JAX</dt><dd>Google's functional AI framework. Four composable transforms: jit() (compile via XLA), grad() (differentiate), vmap() (vectorise), pmap() (parallelise). Used by DeepMind (AlphaFold, Gemini). Steeper learning curve than PyTorch; superior for problems needing composable transforms.</dd>
+<dt>KGD</dt><dd>Known-Good Die — individual die fully tested and burn-in qualified before stacking. Essential because one bad die destroys the entire stack. Includes March algorithm cell tests, TSV continuity, retention test, and 125°C burn-in.</dd>
+<dt>KV cache</dt><dd>Cached key/value tensors from prior tokens during autoregressive generation. Eliminates O(N²) recomputation. Memory cost: ~21 GB at 8K context for Llama 3 70B. Direct constraint on inference concurrency — HBM fills up with KV pages before GPU compute is exhausted.</dd>
+<dt>LoRA / QLoRA</dt><dd>LoRA: fine-tune only low-rank additive matrices (A×B, r ≪ N); base model frozen. Reduces trainable params from 70B to ~4M for a 70B model. QLoRA adds 4-bit quantisation of the base, enabling 70B fine-tuning on one A100 80G. Standard for budget fine-tuning.</dd>
+<dt>Low-k dielectric</dt><dd>Insulating material (k < 3.9) between metal wires to reduce parasitic capacitance and RC delay. Ultra-low-k achieves k ≈ 2.0 via controlled porosity — mechanically fragile.</dd>
+<dt>Microbump</dt><dd>Small solder joint (Cu pillar + SnAg cap, ~55 µm pitch) connecting stacked dies in HBM. Thousands per die interface. Being replaced by hybrid bonding (Cu-Cu direct) for HBM4.</dd>
+<dt>Mixed precision</dt><dd>Training in BF16 for forward/backward pass; FP32 master weights for updates. Halves activation memory; enables tensor cores. BF16 preferred over FP16: same exponent as FP32, no overflow risk under large gradient norms. FP8 (H100 Transformer Engine) is the frontier.</dd>
+<dt>MoE</dt><dd>Mixture of Experts — feed-forward layers with N expert sub-networks; router selects K (typically 2) per token. Increases parameter count without proportional compute. GPT-4 (~1.76T params, 2/16 experts active), Mixtral 8×7B, DeepSeek V3 all use MoE.</dd>
+<dt>NVML</dt><dd>NVIDIA Management Library — C/Python API for querying GPU health. Key HBM calls: nvmlDeviceGetMemoryInfo(), nvmlDeviceGetMemoryErrorCounter() for CE/UE counts, nvmlDeviceGetTemperature(), nvmlDeviceGetCurrentClocksThrottleReasons().</dd>
+<dt>Page retirement</dt><dd>GPU driver mechanism permanently removing physical HBM pages from the usable address space after uncorrectable ECC errors. Check with nvidia-smi --query-retired-pages. Any DBE-retired page warrants scheduling GPU replacement.</dd>
+<dt>PECVD</dt><dd>Plasma Enhanced Chemical Vapor Deposition — low-temperature dielectric deposition using plasma activation. Used for TSV oxide liner (SiO₂/SiN) that isolates copper from silicon.</dd>
+<dt>PVD</dt><dd>Physical Vapor Deposition — sputtering process depositing thin metal films (TaN barrier, Cu seed) inside TSV holes. Ionised PVD (iPVD) improves bottom coverage at high aspect ratios.</dd>
+<dt>PyTorch</dt><dd>Dominant AI research framework. Eager execution (operations run immediately, Python debugger works). Core abstractions: Tensor (n-dim array on CPU/GPU), autograd (automatic differentiation via computational graph), torch.nn (model building). PyTorch 2.0 adds torch.compile for JIT optimisation.</dd>
+<dt>Quantisation</dt><dd>Reducing weight precision (FP16→INT8→INT4) to shrink HBM footprint. GPTQ/AWQ: 4-bit post-training quantisation. GGUF Q4_K_M: llama.cpp format. Llama 3 70B: 140 GB FP16 → ~40 GB Q4_K_M — fits on one H100 or consumer hardware.</dd>
+<dt>RAG</dt><dd>Retrieval-Augmented Generation: embed query → retrieve similar document chunks from vector DB → inject into context → generate grounded response. Adds knowledge to LLMs without retraining. Quality depends on embedding model, chunk size strategy, and retrieval accuracy.</dd>
+<dt>RDL</dt><dd>Redistribution Layer — thin-film copper wiring at 0.4–2 µm pitch on silicon interposers. Routes HBM's 1024-bit bus between die pads at densities impossible on organic substrates.</dd>
+<dt>RLHF</dt><dd>Reinforcement Learning from Human Feedback. Three stages: (1) SFT on human-written good responses, (2) train reward model on human preference rankings, (3) PPO to maximise reward while penalising KL divergence from SFT model. Converts raw LLMs into helpful assistants. Used in ChatGPT, Claude, Gemini.</dd>
+<dt>ROCm</dt><dd>AMD's open-source GPU compute stack. HIP (Heterogeneous Interface for Portability) compiles CUDA code for AMD GPUs with minimal changes. ROCm 6.x supports PyTorch, Flash Attention on MI300X. Remaining gap: profiling tools, third-party library coverage.</dd>
+<dt>Scaling laws</dt><dd>Empirical power laws: test loss ∝ C^(−α) where C = training compute. Chinchilla (2022): optimal D ≈ 20×N params — GPT-3 was significantly undertrained. Doubling compute reliably reduces loss by a predictable factor. Whether they continue indefinitely at frontier scale is actively debated.</dd>
+<dt>Self-attention</dt><dd>Attention(Q,K,V) = softmax(Q·Kᵀ/√d_k)·V. For each query position: compute attention score over all key positions, take weighted sum of values. O(N²) memory cost in sequence length N. Flash Attention reduces HBM accesses from O(N²) to O(N) via SRAM tiling.</dd>
+<dt>Speculative decoding</dt><dd>Small draft model predicts K tokens ahead; large target model verifies all K in one pass. 2–3× throughput for predictable text (code, structured output) with identical quality. Less effective for creative/diverse generation where draft predictions are frequently wrong.</dd>
+<dt>TCB</dt><dd>Thermal Compression Bonding — die stacking via heated bond head at 250–280°C. Forms Cu₃Sn/Cu₆Sn₅ intermetallic joints at microbump interfaces. Cycle time: 5–15 seconds per die.</dd>
+<dt>Tensor cores</dt><dd>Specialised matrix multiply-accumulate units on NVIDIA GPUs. H100 4th-gen: computes 16×16×16 MMA in one instruction cycle. 528 tensor cores provide ~95% of peak FLOPS (989 TFLOPS FP16). Access via cuBLAS, cuDNN, or Triton.</dd>
+<dt>Transformer</dt><dd>Neural network architecture (Vaswani et al., 2017) replacing recurrence with self-attention. Every position attends to every other simultaneously — fully parallelisable. Components: multi-head attention, feed-forward layers, layer norm, residual connections. Foundation of all major LLMs.</dd>
+<dt>Triton</dt><dd>Python-based GPU kernel language (OpenAI) for writing custom GPU operations without raw CUDA. Auto-tiles for tensor cores. Flash Attention is implemented in Triton. Lowers barrier to writing high-performance custom kernels.</dd>
+<dt>TSV</dt><dd>Through-Silicon Via — vertical copper conductor through a silicon die enabling die-to-die connections in HBM stacks. Dimensions: ~5 µm diameter × 50 µm deep. Requires DRIE etch, SiO₂ liner, TaN/Cu PVD, copper electroplating, and CMP.</dd>
+<dt>Underfill / NCF</dt><dd>Underfill: epoxy injected between stacked dies to mechanically reinforce microbump joints. NCF (Non-Conductive Film): solid film laminated before bonding; compatible with sub-40 µm pitch where liquid underfill clogs.</dd>
+<dt>Yield</dt><dd>Fraction of chips passing test. Murphy's model: Y ≈ e^(−D₀A). Exponential decrease with die area — a 2× larger die has roughly Y² yield. Chiplet integration improves yield by using smaller, higher-yielding dies.</dd></dl>
+</div></div></body></html>

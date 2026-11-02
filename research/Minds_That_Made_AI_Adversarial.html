@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minds That Made AI — The Adversarial Research Cohort</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07111e;--bg2:#0d1b2e;--bg3:#112038;--card:#0f1e32;
+  --text:#c8d6e8;--bright:#f0f6fc;--muted:#6a85a0;--dim:#3a4f65;
+  --gold:#e8a020;--gold2:#f5c55a;--gold-bg:rgba(232,160,32,0.08);
+  --blue:#3a8fd4;--blue2:#6ab4f5;--blue-bg:rgba(58,143,212,0.1);
+  --coral:#e05a3a;--coral2:#f58060;--coral-bg:rgba(224,90,58,0.1);
+  --violet:#8060d0;--violet2:#b090f0;--violet-bg:rgba(128,96,208,0.1);
+  --teal:#1a9e88;--teal2:#3dd9c0;--teal-bg:rgba(26,158,136,0.1);
+  --green:#2a9e50;--green2:#5ad080;--green-bg:rgba(42,158,80,0.1);
+  --amber:#c47e00;--amber2:#fbbf24;--amber-bg:rgba(196,126,0,0.1);
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --sans:'IBM Plex Sans',sans-serif;--mono:'IBM Plex Mono',monospace;--serif:'Fraunces',Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:3rem 1.25rem 2.5rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:350px;height:350px;border:1px solid rgba(224,90,58,0.07);border-radius:50%}
+.hero-inner{max-width:860px;margin:0 auto;position:relative;z-index:1}
+.eyebrow{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--coral2);margin-bottom:.75rem}
+.hero h1{font-family:var(--serif);font-size:2.4rem;color:var(--bright);line-height:1.1;margin-bottom:.6rem;font-weight:700}
+.hero h1 em{font-style:italic;color:var(--coral2)}
+.hero-sub{font-size:.95rem;color:var(--muted);max-width:600px;line-height:1.75;margin-bottom:1.75rem;font-weight:300}
+.hero-stats{display:flex;gap:1.5rem;flex-wrap:wrap}
+.hs{display:flex;flex-direction:column}
+.hs-n{font-family:var(--serif);font-size:1.6rem;font-weight:700;color:var(--bright);line-height:1}
+.hs-n span{color:var(--coral2)}
+.hs-l{font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.ch-nav{position:sticky;bottom:0;z-index:100;background:var(--bg2);border-top:1px solid var(--border);padding:9px 1rem;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.ch-nav::-webkit-scrollbar{display:none}
+.ch-inner{display:inline-flex;gap:5px;min-width:max-content}
+.cp{display:inline-block;font-family:var(--mono);font-size:.6rem;letter-spacing:.07em;padding:5px 11px;border-radius:20px;border:1px solid var(--border);color:var(--dim);text-decoration:none;transition:all .2s;white-space:nowrap}
+.cp:hover,.cp.active{background:var(--coral);color:#fff;border-color:var(--coral)}
+.container{max-width:860px;margin:0 auto;padding:0 1.25rem}
+.section-hdr{padding:2.5rem 0 1.25rem;border-top:1px solid var(--border)}
+.section-hdr:first-child{border-top:none;padding-top:2rem}
+.section-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+.section-hdr h2{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--bright);line-height:1.2;margin-bottom:.5rem}
+.section-intro{font-size:.9rem;color:var(--muted);line-height:1.7;font-weight:300;max-width:700px}
+.profile{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1.5rem;transition:border-color .2s}
+.profile:hover{border-color:var(--border2)}
+.profile-accent{height:4px}
+.profile-body{padding:1.4rem 1.5rem}
+.profile-top{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.profile-avatar{width:52px;height:52px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.3rem;font-weight:700;color:#fff;line-height:1}
+.profile-meta{flex:1}
+.profile-name{font-family:var(--serif);font-size:1.15rem;font-weight:700;color:var(--bright);line-height:1.2;margin-bottom:.2rem}
+.profile-affil{font-family:var(--mono);font-size:.65rem;letter-spacing:.06em;color:var(--muted);margin-bottom:.4rem}
+.profile-tags{display:flex;flex-wrap:wrap;gap:.3rem}
+.ptag{font-family:var(--mono);font-size:.58rem;letter-spacing:.05em;padding:2px 7px;border-radius:3px;font-weight:500}
+.profile-bio{font-size:.9rem;color:var(--text);line-height:1.75;font-weight:300;margin-bottom:1rem}
+.profile-bio strong{font-weight:600;color:var(--bright)}
+.profile-bio em{font-style:italic;color:var(--gold2)}
+.profile-bio p{margin-bottom:.75rem}
+.profile-bio p:last-child{margin-bottom:0}
+.works-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
+.work-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem}
+.work-item{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:.65rem .9rem}
+.work-title{font-weight:600;font-size:.85rem;color:var(--bright);margin-bottom:.15rem;line-height:1.4}
+.work-desc{font-size:.8rem;color:var(--muted);line-height:1.6;font-weight:300}
+.work-year{font-family:var(--mono);font-size:.65rem;color:var(--dim);margin-left:.4rem}
+.matters{padding:.9rem 1rem;border-radius:6px;border-left:3px solid;font-size:.85rem;color:var(--muted);line-height:1.7;font-weight:300}
+.matters strong{font-weight:600;display:block;margin-bottom:.3rem;font-size:.72rem;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.75rem;margin:1.25rem 0}
+.concept-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:1rem 1.1rem}
+.concept-box h4{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;font-weight:500}
+.concept-box p{font-size:.83rem;color:var(--muted);line-height:1.65;font-weight:300}
+.concept-box p strong{color:var(--bright);font-weight:600}
+.tl-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin:1.5rem 0}
+.tl-row{display:flex;gap:.75rem;padding:.5rem 0;border-bottom:1px solid var(--border)}
+.tl-row:last-child{border-bottom:none}
+.tl-yr{font-family:var(--mono);font-size:.7rem;color:var(--gold2);min-width:44px;flex-shrink:0;font-weight:500;padding-top:1px}
+.tl-title{font-weight:600;font-size:.88rem;color:var(--bright);margin-bottom:.1rem;line-height:1.4}
+.tl-desc{font-size:.8rem;color:var(--muted);line-height:1.6;font-weight:300}
+.tl-body{flex:1}
+.pq{border-left:3px solid var(--gold);padding:.8rem 1rem;margin:1.25rem 0;background:var(--gold-bg)}
+.pq p{font-family:var(--serif);font-size:1rem;font-style:italic;color:var(--gold2);margin:0;line-height:1.6}
+.pq cite{display:block;font-family:var(--mono);font-size:.62rem;color:var(--dim);margin-top:.4rem;font-style:normal;letter-spacing:.06em}
+@media(max-width:480px){html{font-size:15px}.hero h1{font-size:1.9rem}.profile-body{padding:1rem 1.1rem}.concept-grid{grid-template-columns:1fr}}
+@media(min-width:720px){.hero{padding:4.5rem 1.25rem 3.5rem}.section-hdr{padding:3rem 0 1.5rem}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+<div class="hero-inner">
+  <div class="eyebrow">// minds_that_made_ai · adversarial_cohort</div>
+  <h1>The People Who Try<br>to <em>Break</em> AI</h1>
+  <p class="hero-sub">Profiles of the researchers working at the frontier of adversarial machine learning, LLM security, model extraction, data poisoning, and AI red-teaming — the people whose job is finding what goes wrong before bad actors do.</p>
+  <div class="hero-stats">
+    <div class="hs"><div class="hs-n">11<span>×</span></div><div class="hs-l">Researchers</div></div>
+    <div class="hs"><div class="hs-n">30<span>+</span></div><div class="hs-l">Key papers</div></div>
+    <div class="hs"><div class="hs-n">6</div><div class="hs-l">Attack classes</div></div>
+    <div class="hs"><div class="hs-n">0</div><div class="hs-l">Solved problems</div></div>
+  </div>
+</div>
+</div>
+
+<nav class="ch-nav">
+<div class="ch-inner">
+  <a class="cp" href="#concepts">Attack Taxonomy</a>
+  <a class="cp" href="#carlini">Carlini</a>
+  <a class="cp" href="#tramer">Tramer</a>
+  <a class="cp" href="#zou">Zou</a>
+  <a class="cp" href="#hendrycks">Hendrycks</a>
+  <a class="cp" href="#papernot">Papernot</a>
+  <a class="cp" href="#madry">Madry</a>
+  <a class="cp" href="#wallace">Wallace</a>
+  <a class="cp" href="#perez">Perez</a>
+  <a class="cp" href="#greshake">Greshake</a>
+  <a class="cp" href="#song">Song</a>
+  <a class="cp" href="#fredrikson">Fredrikson</a>
+  <a class="cp" href="#timeline">Timeline</a>
+</div>
+</nav>
+
+<div class="container">
+
+<section class="section-hdr" id="concepts">
+  <div class="section-label">Foundation</div>
+  <h2>The Attack Taxonomy</h2>
+  <p class="section-intro">Adversarial AI research covers three overlapping concerns: making models fail in controlled ways (attacks), understanding why they fail (theory), and preventing failure (defense). For LLMs the attack surface is vastly larger than for classical vision models.</p>
+  <div class="concept-grid">
+    <div class="concept-box"><h4 style="color:var(--coral2)">Adversarial Examples</h4><p>Inputs perturbed to cause misclassification. For images: invisible pixel changes that fool a classifier. For text: token suffixes that bypass safety training. <strong>Core finding: models don't learn the same features humans do.</strong></p></div>
+    <div class="concept-box"><h4 style="color:var(--violet2)">Data Poisoning</h4><p>Corrupting the training dataset so the model behaves maliciously. Can target labelled data or unlabelled web scrapes via expired domains. <strong>Carlini demonstrated this at LAION-400M scale for approximately $60.</strong></p></div>
+    <div class="concept-box"><h4 style="color:var(--blue2)">Model Extraction</h4><p>Reconstructing model weights by querying an API. Proved feasible against GPT-4 and PaLM-2 in production in 2024. <strong>Destroys the "security through obscurity" argument for closed-source models.</strong></p></div>
+    <div class="concept-box"><h4 style="color:var(--teal2)">Privacy / Memorization</h4><p>LLMs memorize training data verbatim and can be prompted to reproduce it. The problem scales with model size. <strong>GPT-2 through GPT-4 all reproduced verbatim training data under targeted prompting.</strong></p></div>
+    <div class="concept-box"><h4 style="color:var(--gold2)">Prompt Injection / Jailbreaking</h4><p>Direct: user prompt bypasses safety alignment. Indirect: malicious content in retrieved data hijacks agent behavior without any user error. <strong>No reliable defense exists as of 2025 — adaptive attacks bypass over 90% of published defenses.</strong></p></div>
+    <div class="concept-box"><h4 style="color:var(--amber2)">Alignment is Not Robustness</h4><p>The critical 2023 insight: RLHF alignment (refusing harmful requests in normal use) is not adversarial alignment (refusing under targeted attack). <strong>These are fundamentally different properties with different threat models.</strong></p></div>
+  </div>
+</section>
+
+<!-- CARLINI -->
+<section class="section-hdr" id="carlini"><div class="section-label">Profile 01 · The Systematic Breaker</div><h2>Nicholas Carlini</h2></section>
+<div class="profile">
+  <div class="profile-accent" style="background:linear-gradient(90deg,var(--coral),var(--coral2))"></div>
+  <div class="profile-body">
+    <div class="profile-top">
+      <div class="profile-avatar" style="background:var(--coral)">NC</div>
+      <div class="profile-meta">
+        <div class="profile-name">Nicholas Carlini</div>
+        <div class="profile-affil">Research Scientist · Anthropic &nbsp;|&nbsp; prev. Google DeepMind / Google Brain</div>
+        <div class="profile-tags">
+          <span class="ptag" style="background:var(--coral-bg);color:var(--coral2)">Adversarial examples</span>
+          <span class="ptag" style="background:var(--coral-bg);color:var(--coral2)">LLM security</span>
+          <span class="ptag" style="background:var(--coral-bg);color:var(--coral2)">Model extraction</span>
+          <span class="ptag" style="background:var(--coral-bg);color:var(--coral2)">Memorization</span>
+          <span class="ptag" style="background:var(--coral-bg);color:var(--coral2)">Data poisoning</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-bio">
+      <p>Carlini is the closest thing adversarial ML has to a household name. His papers have a habit of demolishing whatever defense everyone thought was working. PhD at UC Berkeley under David Wagner (2018), then Google Brain, Google DeepMind, now Anthropic. His defining characteristic is <strong>methodological rigour applied to breaking things</strong>: he designs attacks specifically to evaluate the defense in question, not to attack the previous attack.</p>
+      <p>The <em>Carlini-Wagner (C&W) attack</em> (2016) is the standard benchmark for adversarial robustness evaluation — built because he noticed published defenses were tested against weak attacks. In 2018 he and Athalye broke 7 of 9 defenses at ICLR, establishing the principle that <strong>defenses must be evaluated against adaptive attacks, not fixed attack sets</strong>.</p>
+      <p>His work on <strong>memorization in language models</strong> (2020-2023) showed GPT-2 through GPT-4 reproduce verbatim training text under targeted prompting, and the problem worsens with scale. His 2023 paper "Are Aligned Neural Networks Adversarially Aligned?" drew the critical distinction between RLHF safety and adversarial security robustness — these are not the same property. His 2024 model extraction paper proved hidden layers of GPT-4 can be reconstructed via API queries alone.</p>
+    </div>
+    <div class="works-label">Key Works</div>
+    <ul class="work-list">
+      <li class="work-item"><div class="work-title">Towards Evaluating the Robustness of Neural Networks (C&W Attack)<span class="work-year">2016</span></div><div class="work-desc">Introduced the optimization-based C&W attack. Showed defensive distillation provided essentially no protection. De facto benchmark for adversarial robustness. Best Student Paper, IEEE S&P 2017.</div></li>
+      <li class="work-item"><div class="work-title">Obfuscated Gradients Give a False Sense of Security<span class="work-year">2018</span></div><div class="work-desc">Broke 7/9 ICLR 2018 adversarial defenses showing they merely obscured gradient information. Established adaptive evaluation as mandatory. Best Paper, ICML 2018. Co-authored with Athalye and Madry.</div></li>
+      <li class="work-item"><div class="work-title">Extracting Training Data from Large Language Models<span class="work-year">2020</span></div><div class="work-desc">Showed GPT-2 memorizes and reproduces verbatim training text including PII. The "canary extraction" methodology became the standard for measuring memorization. Foundation for GDPR concerns about LLM training data.</div></li>
+      <li class="work-item"><div class="work-title">Poisoning Web-Scale Training Datasets is Practical<span class="work-year">2023</span></div><div class="work-desc">Practical data poisoning on LAION-400M by purchasing expired domains in the dataset for ~$60, gaining control of 0.01% of training data. "I could have poisoned the dataset for anyone who used LAION in the last six months."</div></li>
+      <li class="work-item"><div class="work-title">Are Aligned Neural Networks Adversarially Aligned?<span class="work-year">2023</span></div><div class="work-desc">Demonstrated RLHF-aligned LLMs can be bypassed under adversarial prompting. Introduced the distinction between "alignment" (safety in normal use) and "adversarial alignment" (safety under attack). These are not the same property.</div></li>
+      <li class="work-item"><div class="work-title">Stealing Part of a Production Language Model<span class="work-year">2024</span></div><div class="work-desc">Extracted a provably identical copy of a hidden layer from GPT-4 and PaLM-2 via API queries. Proved model extraction is practical against frontier closed-source LLMs. Best Paper, ICML 2024.</div></li>
+      <li class="work-item"><div class="work-title">The Attacker Moves Second (Nasr, Carlini, Tramer et al.)<span class="work-year">2025</span></div><div class="work-desc">Evaluated 12 published defenses against jailbreaking and prompt injection using adaptive attacks. Bypassed over 90% — most originally reported near-zero attack success rates. Researchers from Anthropic, OpenAI, and Google DeepMind.</div></li>
+    </ul>
+    <div class="matters" style="background:var(--coral-bg);border-color:var(--coral)">
+      <strong style="color:var(--coral2)">Why this matters for intelligence professionals</strong>
+      Carlini's memorization work directly affects how LLMs can be used with sensitive data. His poisoning attack demonstrates that open training datasets are adversarial surfaces. "Are Aligned Neural Networks Adversarially Aligned?" is required reading for anyone relying on RLHF models in sensitive contexts — alignment is not a security guarantee.
+    </div>
+  </div>
+</div>
+
+<!-- TRAMER -->
+<section class="section-hdr" id="tramer"><div class="section-label">Profile 02 · Cryptography Meets ML Security</div><h2>Florian Tramer</h2></section>
+<div class="profile">
+  <div class="profile-accent" style="background:linear-gradient(90deg,var(--violet),var(--violet2))"></div>
+  <div class="profile-body">
+    <div class="profile-top">
+      <div class="profile-avatar" style="background:var(--violet)">FT</div>
+      <div class="profile-meta">
+        <div class="profile-name">Florian Tramer</div>
+        <div class="profile-affil">Assistant Professor · ETH Zurich &nbsp;|&nbsp; prev. Google Brain (PhD: Stanford / Dan Boneh)</div>
+        <div class="profile-tags">
+          <span class="ptag" style="background:var(--violet-bg);color:var(--violet2)">Model stealing</span>
+          <span class="ptag" style="background:var(--violet-bg);color:var(--violet2)">Differential privacy auditing</span>
+          <span class="ptag" style="background:var(--violet-bg);color:var(--violet2)">Prompt injection (AgentDojo)</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-bio">
+      <p>Tramer sits at the intersection of ML security and cryptography — a rare combination. His PhD was under Dan Boneh (Stanford's leading cryptographer), giving him rigorous formal foundations most ML researchers lack. He is a frequent Carlini co-author and lead on AgentDojo, the standard benchmark for agentic prompt injection research.</p>
+      <p>His 2016 <strong>model stealing paper</strong> was the first systematic study showing black-box API access is sufficient to extract a functionally equivalent model. His 2023 USENIX Distinguished Paper on <strong>differential privacy auditing</strong> showed many DP-ML implementations fail their stated privacy bounds, directly undermining a common compliance argument used by organizations deploying ML on sensitive data.</p>
+    </div>
+    <div class="works-label">Key Works</div>
+    <ul class="work-list">
+      <li class="work-item"><div class="work-title">Stealing Machine Learning Models via Prediction APIs<span class="work-year">2016</span></div><div class="work-desc">First systematic study of model extraction from black-box APIs. Showed logistic regression, neural networks, and SVMs could be reconstructed with far fewer queries than expected. Established model extraction as a real threat.</div></li>
+      <li class="work-item"><div class="work-title">Tight Auditing of Differentially Private Machine Learning<span class="work-year">2023</span></div><div class="work-desc">Demonstrated DP-SGD implementations frequently fail stated privacy guarantees. Distinguished Paper, USENIX Security 2023. Critical for any DP-ML compliance claim in regulated industries.</div></li>
+      <li class="work-item"><div class="work-title">AgentDojo: Evaluating Prompt Injection on LLM Agents<span class="work-year">2024</span></div><div class="work-desc">Standard benchmark for agentic prompt injection vulnerabilities. Won the CAIS SafeBench competition. The reference evaluation framework for LLM agent security research.</div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ZOU -->
+<section class="section-hdr" id="zou"><div class="section-label">Profile 03 · The GCG Author</div><h2>Andy Zou</h2></section>
+<div class="profile">
+  <div class="profile-accent" style="background:linear-gradient(90deg,var(--blue),var(--blue2))"></div>
+  <div class="profile-body">
+    <div class="profile-top">
+      <div class="profile-avatar" style="background:var(--blue)">AZ</div>
+      <div class="profile-meta">
+        <div class="profile-name">Andy Zou</div>
+        <div class="profile-affil">PhD Student · Carnegie Mellon (Kolter & Fredrikson) &nbsp;|&nbsp; prev. Berkeley (Dawn Song)</div>
+        <div class="profile-tags">
+          <span class="ptag" style="background:var(--blue-bg);color:var(--blue2)">Universal jailbreaks (GCG)</span>
+          <span class="ptag" style="background:var(--blue-bg);color:var(--blue2)">Representation engineering</span>
+          <span class="ptag" style="background:var(--blue-bg);color:var(--blue2)">Circuit breakers</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-bio">
+      <p>Zou became one of the most-cited young AI safety researchers with a single 2023 paper: <strong>Universal and Transferable Adversarial Attacks on Aligned Language Models</strong>. The GCG attack generates adversarial suffixes — strings of apparently random tokens appended to a harmful prompt — that reliably cause aligned LLMs to comply. The suffix transfers across Llama, GPT-4, and Claude. The core implication: <strong>RLHF alignment does not provide robust safety guarantees against a motivated attacker with compute</strong>.</p>
+      <p>His "Circuit Breakers" paper (2024) proposes defense-by-representation: rather than detecting adversarial inputs, interrupt the model's generation when it begins producing harmful <em>internal representations</em> — using mechanistic interpretability insights about what activation patterns correspond to harmful outputs.</p>
+    </div>
+    <div class="works-label">Key Works</div>
+    <ul class="work-list">
+      <li class="work-item"><div class="work-title">Universal and Transferable Adversarial Attacks on Aligned LLMs (GCG)<span class="work-year">2023</span></div><div class="work-desc">Gradient-based optimization producing universal adversarial suffixes bypassing alignment in Llama 2, Claude, GPT-4. Proved automated jailbreaking is practical. Over 1,000 citations in under 18 months. Most-discussed AI safety paper of 2023.</div></li>
+      <li class="work-item"><div class="work-title">Representation Engineering: A Top-Down Approach to AI Transparency<span class="work-year">2023</span></div><div class="work-desc">Methods for reading and writing to a model's internal semantic representations. Controls behavior by directly modifying activations. Foundation for Circuit Breakers.</div></li>
+      <li class="work-item"><div class="work-title">Improving Alignment and Robustness with Circuit Breakers<span class="work-year">2024</span></div><div class="work-desc">Monitors internal representations during generation; interrupts the model if harmful representations are detected. Works against GCG and AutoDAN without sacrificing benign utility. With Hendrycks, Fredrikson, Kolter.</div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- HENDRYCKS -->
+<section class="section-hdr" id="hendrycks"><div class="section-label">Profile 04 · Safety as Systems Problem</div><h2>Dan Hendrycks</h2></section>
+<div class="profile">
+  <div class="profile-accent" style="background:linear-gradient(90deg,var(--amber),var(--amber2))"></div>
+  <div class="profile-body">
+    <div class="profile-top">
+      <div class="profile-avatar" style="background:var(--amber)">DH</div>
+      <div class="profile-meta">
+        <div class="profile-name">Dan Hendrycks</div>
+        <div class="profile-affil">Director · Center for AI Safety (CAIS) &nbsp;|&nbsp; PhD, UC Berkeley &nbsp;|&nbsp; Advisor: xAI, Scale AI</div>
+        <div class="profile-tags">
+          <span class="ptag" style="background:var(--amber-bg);color:var(--amber2)">Catastrophic AI risk</span>
+          <span class="ptag" style="background:var(--amber-bg);color:var(--amber2)">MMLU benchmark</span>
+          <span class="ptag" style="background:var(--amber-bg);color:var(--amber2)">GELU activation</span>
+          <span class="ptag" style="background:var(--amber-bg);color:var(--amber2)">Robustness benchmarking</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-bio">
+      <p>Hendrycks occupies a unique position: technically rigorous enough to publish at top adversarial ML venues, but focused on the broader picture — catastrophic AI risk, not just model robustness. He directs the Center for AI Safety, which organized the 2023 "Statement on AI Risk" signed by Hinton, LeCun, Bengio, and hundreds of other researchers.</p>
+      <p>His technical contributions span an unusual range. He created <strong>MMLU</strong> — the standard LLM capability benchmark across 57 academic subjects, used in virtually every frontier model evaluation. He invented the <strong>GELU activation function</strong> used in GPT-2 and BERT. His robustness work showed adversarial training does not transfer to natural distribution shifts — a critical gap between lab results and real-world deployment.</p>
+    </div>
+    <div class="works-label">Key Works</div>
+    <ul class="work-list">
+      <li class="work-item"><div class="work-title">MMLU: Massive Multitask Language Understanding<span class="work-year">2020</span></div><div class="work-desc">Standard LLM knowledge benchmark across 57 subjects. GPT-3 scored 43%; GPT-4 scored 87%+. Now used (and arguably overtrained against) in every frontier model evaluation.</div></li>
+      <li class="work-item"><div class="work-title">Gaussian Error Linear Units (GELUs)<span class="work-year">2016</span></div><div class="work-desc">Introduced the GELU activation function, now used in GPT-2, BERT, and most modern transformers. A rare case of an adversarial/safety researcher making a fundamental positive architectural contribution.</div></li>
+      <li class="work-item"><div class="work-title">Unsolved Problems in ML Safety<span class="work-year">2022</span></div><div class="work-desc">Mapped open research problems into four categories: robustness, monitoring, alignment, and systemic safety. Became a foundational roadmap influencing research agendas at major labs.</div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- PAPERNOT -->
+<section class="section-hdr" id="papernot"><div class="section-label">Profile 05 · Privacy-Preserving ML</div><h2>Nicolas Papernot</h2></section>
+<div class="profile">
+  <div class="profile-accent" style="background:linear-gradient(90deg,var(--teal),var(--teal2))"></div>
+  <div class="profile-body">
+    <div class="profile-top">
+      <div class="profile-avatar" style="background:var(--teal)">NP</div>
+      <div class="profile-meta">
+        <div class="profile-name">Nicolas Papernot</div>
+        <div class="profile-affil">Associate Professor · University of Toronto / Vector Institute &nbsp;|&nbsp; prev. Google Brain</div>
+        <div class="profile-tags">
+          <span class="ptag" style="background:var(--teal-bg);color:var(--teal2)">PATE framework</span>
+          <span class="ptag" style="background:var(--teal-bg);color:var(--teal2)">Adversarial examples (NLP)</span>
+          <span class="ptag" style="background:var(--teal-bg);color:var(--teal2)">CleverHans library</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-bio">
+      <p>Papernot co-authored some of the earliest adversarial examples papers and extended the work to NLP at a time when most adversarial ML was still image-focused. His most practically impactful contribution is the <strong>PATE framework</strong> (Private Aggregation of Teachers' Ensembles) — one of the few differentially private ML approaches that is genuinely deployable in production healthcare and financial settings. He also co-created <strong>CleverHans</strong>, the first widely-used open-source adversarial ML library.</p>
+    </div>
+    <div class="works-label">Key Works</div>
+    <ul class="work-list">
+      <li class="work-item"><div class="work-title">The Limitations of Deep Learning in Adversarial Settings<span class="work-year">2015</span></div><div class="work-desc">One of the foundational adversarial examples papers. Introduced JSMA and characterized the geometry of adversarial perturbations. Established that deep networks are fundamentally non-robust to crafted inputs.</div></li>
+      <li class="work-item"><div class="work-title">Scalable Private Learning with PATE<span class="work-year">2018</span></div><div class="work-desc">Practical differentially private ML for healthcare and finance. One of the few DP-ML approaches actually deployable in regulated production environments where raw data cannot leave secure systems.</div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- MADRY -->
+<section class="section-hdr" id="madry"><div class="section-label">Profile 06 · The PGD Standard</div><h2>Aleksander Madry</h2></section>
+<div class="profile">
+  <div class="profile-accent" style="background:linear-gradient(90deg,var(--green),var(--green2))"></div>
+  <div class="profile-body">
+    <div class="profile-top">
+      <div class="profile-avatar" style="background:var(--green)">AM</div>
+      <div class="profile-meta">
+        <div class="profile-name">Aleksander Madry</div>
+        <div class="profile-affil">Professor · MIT &nbsp;|&nbsp; Director, MIT AI Policy Forum</div>
+        <div class="profile-tags">
+          <span class="ptag" style="background:var(--green-bg);color:var(--green2)">PGD attack</span>
+          <span class="ptag" style="background:var(--green-bg);color:var(--green2)">Adversarial training</span>
+          <span class="ptag" style="background:var(--green-bg);color:var(--green2)">Robust ML theory</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-bio">
+      <p>Madry's 2018 paper introduced two things that remain central to the field: the <strong>PGD attack</strong> (Projected Gradient Descent) as the strongest practical first-order adversarial attack, and <strong>adversarial training with PGD</strong> as the gold standard defense. The core insight: frame robustness as a min-max optimization problem — train against the worst-case attacker within a bounded perturbation set. Resulting models sacrifice some standard accuracy but provide measurably better robustness. It remains the baseline comparison for any new defense a decade later.</p>
+    </div>
+    <div class="works-label">Key Works</div>
+    <ul class="work-list">
+      <li class="work-item"><div class="work-title">Towards Deep Learning Models Resistant to Adversarial Attacks<span class="work-year">2018</span></div><div class="work-desc">Introduced PGD as the strong first-order attack and adversarial training as the gold standard defense. Framed robustness as min-max optimization. Still the baseline comparison for new defenses. One of the most cited papers in adversarial ML.</div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- WALLACE -->
+<section class="section-hdr" id="wallace"><div class="section-label">Profile 07 · Universal Triggers for NLP</div><h2>Eric Wallace</h2></section>
+<div class="profile">
+  <div class="profile-accent" style="background:linear-gradient(90deg,var(--coral),var(--violet))"></div>
+  <div class="profile-body">
+    <div class="profile-top">
+      <div class="profile-avatar" style="background:linear-gradient(135deg,var(--coral),var(--violet))">EW</div>
+      <div class="profile-meta">
+        <div class="profile-name">Eric Wallace</div>
+        <div class="profile-affil">Research Scientist · OpenAI &nbsp;|&nbsp; PhD, UC Berkeley</div>
+        <div class="profile-tags">
+          <span class="ptag" style="background:var(--coral-bg);color:var(--coral2)">Universal adversarial triggers</span>
+          <span class="ptag" style="background:var(--coral-bg);color:var(--coral2)">NLP security</span>
+          <span class="ptag" style="background:var(--coral-bg);color:var(--coral2)">Red teaming</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-bio">
+      <p>Wallace introduced <strong>universal adversarial triggers for NLP</strong> — short token sequences that, when prepended to any input, reliably cause a target output regardless of the actual content. A 4-token sequence could cause GPT-2 to generate racist content from any prompt. This was the conceptual precursor to GCG: it established that gradient-based optimization can find token sequences that manipulate LLM behavior at scale, years before LLMs became the dominant concern. Now at OpenAI working on red-teaming and safety evaluation.</p>
+    </div>
+    <div class="works-label">Key Works</div>
+    <ul class="work-list">
+      <li class="work-item"><div class="work-title">Universal Adversarial Triggers for Attacking and Analyzing NLP<span class="work-year">2019</span></div><div class="work-desc">First demonstration of universal adversarial triggers for language models. Short transferable token sequences predictably alter model behavior regardless of input. Conceptual ancestor of GCG and modern automated jailbreaking.</div></li>
+      <li class="work-item"><div class="work-title">Concealed Data Poisoning Attacks on NLP Models<span class="work-year">2021</span></div><div class="work-desc">Gradient-based attacks inserting backdoors into NLP models by poisoning as little as 0.1% of training data with examples that appear completely benign to human reviewers.</div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- PEREZ -->
+<section class="section-hdr" id="perez"><div class="section-label">Profile 08 · Naming the Threat</div><h2>Fabio Perez, Ian Ribeiro &amp; Riley Goodside</h2></section>
+<div class="profile">
+  <div class="profile-accent" style="background:linear-gradient(90deg,var(--gold),var(--gold2))"></div>
+  <div class="profile-body">
+    <div class="profile-top">
+      <div class="profile-avatar" style="background:var(--gold);color:#111">PI</div>
+      <div class="profile-meta">
+        <div class="profile-name">The Prompt Injection Pioneers</div>
+        <div class="profile-affil">Perez & Ribeiro (IBM Research) · Goodside (Scale AI)</div>
+        <div class="profile-tags">
+          <span class="ptag" style="background:var(--gold-bg);color:var(--gold2)">Coined: prompt injection</span>
+          <span class="ptag" style="background:var(--gold-bg);color:var(--gold2)">Jailbreaking</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-bio">
+      <p><strong>Fabio Perez and Ian Ribeiro</strong> wrote "Ignore Previous Prompt: Attack Techniques For Language Models" (2022) — the paper that formally introduced <em>prompt injection</em> as a named attack category. The simple observation: system prompt instructions are not privileged; user-supplied input can override them in plain natural language. OWASP LLM Top 10 #1 vulnerability for three consecutive years.</p>
+      <p><strong>Riley Goodside</strong> at Scale AI pioneered real-time public red-teaming of GPT-3 and GPT-4, discovering that web-retrieved content could cause GPT-4 to ignore system instructions — one of the first demonstrations of the agentic attack surface, before it had formal terminology.</p>
+    </div>
+    <div class="works-label">Key Works</div>
+    <ul class="work-list">
+      <li class="work-item"><div class="work-title">Ignore Previous Prompt: Attack Techniques For Language Models<span class="work-year">2022</span></div><div class="work-desc">Coined "prompt injection" as a formal attack category. System prompt instructions are not privileged — user input can override them in plain language. OWASP LLM Top 10 #1 vulnerability for three consecutive years (2023-2025).</div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- GRESHAKE -->
+<section class="section-hdr" id="greshake"><div class="section-label">Profile 09 · The Agentic Attack Surface</div><h2>Kai Greshake</h2></section>
+<div class="profile">
+  <div class="profile-accent" style="background:linear-gradient(90deg,var(--coral2),var(--gold))"></div>
+  <div class="profile-body">
+    <div class="profile-top">
+      <div class="profile-avatar" style="background:var(--coral)">KG</div>
+      <div class="profile-meta">
+        <div class="profile-name">Kai Greshake</div>
+        <div class="profile-affil">Security Researcher · Independent / Adversa AI</div>
+        <div class="profile-tags">
+          <span class="ptag" style="background:var(--coral-bg);color:var(--coral2)">Indirect prompt injection</span>
+          <span class="ptag" style="background:var(--coral-bg);color:var(--coral2)">Agentic AI attacks</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-bio">
+      <p>Greshake's 2023 paper "Not What You've Signed Up For" is one of the most practically alarming in LLM security. It demonstrated that <strong>malicious instructions embedded in content retrieved by an LLM agent</strong> — web pages, PDFs, emails — can hijack the agent's behavior without any user error. Simply browsing a page while an AI assistant is active can trigger data exfiltration. His "Inject My PDF" demonstration embedded prompt injection in a resume so that LLM-powered hiring systems would recommend the candidate regardless of actual qualifications.</p>
+    </div>
+    <div class="works-label">Key Works</div>
+    <ul class="work-list">
+      <li class="work-item"><div class="work-title">Not What You've Signed Up For: Compromising Real-World LLM Apps with Indirect Prompt Injection<span class="work-year">2023</span></div><div class="work-desc">First systematic study of indirect prompt injection against production LLM agents. Demonstrated Bing Chat hijacking via malicious webpage — no user error required. Fundamentally changed how the field thinks about agentic AI security.</div></li>
+      <li class="work-item"><div class="work-title">Inject My PDF: Prompt Injection for your Resume<span class="work-year">2023</span></div><div class="work-desc">Prompt injection in a PDF resume causes LLM-powered HR screening to recommend the candidate regardless of qualifications. Highlighted the gap between AI capability and AI security in enterprise tooling.</div></li>
+    </ul>
+    <div class="matters" style="background:var(--coral-bg);border-color:var(--coral);margin-top:1rem">
+      <strong style="color:var(--coral2)">Critical for intelligence and enterprise deployment</strong>
+      When an LLM agent has email, document, or web access, every piece of content it reads is a potential attack vector. You are not only protecting against malicious users — you are protecting against malicious content in the environment. This is qualitatively different from a chatbot threat model and requires a fundamentally different security architecture.
+    </div>
+  </div>
+</div>
+
+<!-- SONG -->
+<section class="section-hdr" id="song"><div class="section-label">Profile 10 · Formal Security Meets ML</div><h2>Dawn Song</h2></section>
+<div class="profile">
+  <div class="profile-accent" style="background:linear-gradient(90deg,var(--violet),var(--blue))"></div>
+  <div class="profile-body">
+    <div class="profile-top">
+      <div class="profile-avatar" style="background:var(--violet)">DS</div>
+      <div class="profile-meta">
+        <div class="profile-name">Dawn Song</div>
+        <div class="profile-affil">Professor · UC Berkeley &nbsp;|&nbsp; MacArthur Fellow &nbsp;|&nbsp; National Academy of Sciences</div>
+        <div class="profile-tags">
+          <span class="ptag" style="background:var(--violet-bg);color:var(--violet2)">AI security (systems)</span>
+          <span class="ptag" style="background:var(--violet-bg);color:var(--violet2)">Certified robustness</span>
+          <span class="ptag" style="background:var(--violet-bg);color:var(--violet2)">Watermarking / provenance</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-bio">
+      <p>Song is one of the most decorated computer security researchers alive and the advisor to Zou and many others in this space. Her work covers certified robustness (proving adversarial bounds rather than testing them), privacy attacks on graph neural networks, backdoor attacks in federated learning, and LLM watermarking for AI-generated content provenance. She co-authored the canonical survey "Identifying and Mitigating the Security Risks of Generative AI" alongside Carlini and Hendrycks — the reference taxonomy for the field.</p>
+    </div>
+    <div class="works-label">Key Works</div>
+    <ul class="work-list">
+      <li class="work-item"><div class="work-title">Identifying and Mitigating the Security Risks of Generative AI<span class="work-year">2023</span></div><div class="work-desc">Comprehensive survey mapping the full attack surface of generative AI. Co-authored with Carlini, Hendrycks, and others. The canonical reference for the field.</div></li>
+      <li class="work-item"><div class="work-title">SoK: Watermarking for AI-Generated Content<span class="work-year">2025</span></div><div class="work-desc">Systematization of watermarking methods for provenance tracking and disinformation detection. Co-authored with Carlini et al. Directly relevant to AI-generated influence operation detection.</div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- FREDRIKSON -->
+<section class="section-hdr" id="fredrikson"><div class="section-label">Profile 11 · Model Inversion</div><h2>Matt Fredrikson</h2></section>
+<div class="profile">
+  <div class="profile-accent" style="background:linear-gradient(90deg,var(--teal),var(--green))"></div>
+  <div class="profile-body">
+    <div class="profile-top">
+      <div class="profile-avatar" style="background:var(--teal)">MF</div>
+      <div class="profile-meta">
+        <div class="profile-name">Matt Fredrikson</div>
+        <div class="profile-affil">Associate Professor · Carnegie Mellon University &nbsp;|&nbsp; Andy Zou's advisor</div>
+        <div class="profile-tags">
+          <span class="ptag" style="background:var(--teal-bg);color:var(--teal2)">Model inversion attacks</span>
+          <span class="ptag" style="background:var(--teal-bg);color:var(--teal2)">Membership inference</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-bio">
+      <p>Fredrikson introduced <strong>model inversion attacks</strong> — given black-box access to a trained model, an attacker can reconstruct sensitive features of the training data, including faces of individuals whose images were used to train a facial recognition model. This demonstrated that ML models "remember" training data in exploitable ways, years before Carlini's GPT-2 memorization results made the same point for language models. At CMU he advises Zou and contributes to the Circuit Breakers line of work.</p>
+    </div>
+    <div class="works-label">Key Works</div>
+    <ul class="work-list">
+      <li class="work-item"><div class="work-title">Model Inversion Attacks that Exploit Confidence Information<span class="work-year">2015</span></div><div class="work-desc">Introduced model inversion — reconstructing sensitive training data from black-box model access. Demonstrated recovery of patient medication data and facial recognition training images. Defined a new category of ML privacy attack.</div></li>
+      <li class="work-item"><div class="work-title">Membership Inference Attacks Against Machine Learning Models<span class="work-year">2017</span></div><div class="work-desc">Black-box determination of whether a specific individual's data was in the training set. Standard privacy auditing tool for ML models used in regulatory compliance contexts.</div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<section class="section-hdr" id="timeline"><div class="section-label">History</div><h2>Adversarial ML — Field Timeline</h2></section>
+<div class="tl-box">
+  <div class="tl-row"><div class="tl-yr">2013</div><div class="tl-body"><div class="tl-title">Szegedy et al. — "Intriguing Properties of Neural Networks"</div><div class="tl-desc">Accidental discovery that neural networks are vulnerable to imperceptible input perturbations. Sparked the entire field.</div></div></div>
+  <div class="tl-row"><div class="tl-yr">2014</div><div class="tl-body"><div class="tl-title">Goodfellow et al. — FGSM</div><div class="tl-desc">Fast Gradient Sign Method — the simplest adversarial attack. Argued adversarial examples arise from high-dimensional linearity, not model complexity.</div></div></div>
+  <div class="tl-row"><div class="tl-yr">2016</div><div class="tl-body"><div class="tl-title">C&W attack · NLP adversarial examples · Model stealing</div><div class="tl-desc">Carlini-Wagner broke defensive distillation. Papernot showed attacks extend to text. Tramer demonstrated API-only model extraction.</div></div></div>
+  <div class="tl-row"><div class="tl-yr">2018</div><div class="tl-body"><div class="tl-title">PGD adversarial training · 7 ICLR defenses broken · Hidden audio commands</div><div class="tl-desc">Madry's PGD established as gold standard. Carlini/Athalye broke 7/9 ICLR defenses via adaptive attack. Carlini demonstrated hidden voice commands in audio.</div></div></div>
+  <div class="tl-row"><div class="tl-yr">2019</div><div class="tl-body"><div class="tl-title">Wallace — universal adversarial triggers for NLP</div><div class="tl-desc">4-token sequences reliably manipulate LLM behavior regardless of input. Conceptual ancestor of GCG and modern jailbreaking.</div></div></div>
+  <div class="tl-row"><div class="tl-yr">2020</div><div class="tl-body"><div class="tl-title">Carlini — LLMs memorize training data verbatim</div><div class="tl-desc">GPT-2 shown to reproduce verbatim training text under targeted prompting. Established privacy as a first-order LLM concern.</div></div></div>
+  <div class="tl-row"><div class="tl-yr">2022</div><div class="tl-body"><div class="tl-title">"Prompt injection" coined · ChatGPT launches</div><div class="tl-desc">Perez & Ribeiro formally named the attack. ChatGPT's launch brought LLM security from academia to the mainstream security community simultaneously.</div></div></div>
+  <div class="tl-row"><div class="tl-yr">2023</div><div class="tl-body"><div class="tl-title">GCG · Indirect prompt injection · "Adversarially aligned?" · Memorization at scale</div><div class="tl-desc">The most consequential year. GCG proved automated jailbreaking. Greshake demonstrated agentic attack surfaces. Carlini showed RLHF alignment is not adversarial alignment. The entire field converged on LLMs.</div></div></div>
+  <div class="tl-row"><div class="tl-yr">2024</div><div class="tl-body"><div class="tl-title">GPT-4 model extraction · Circuit Breakers · "Attacker Moves Second"</div><div class="tl-desc">Carlini/Tramer proved production LLM extraction is feasible. Circuit Breakers proposed as robustness-first defense. Key finding: no published defense reliably withstands adaptive attack.</div></div></div>
+  <div class="tl-row"><div class="tl-yr">2025</div><div class="tl-body"><div class="tl-title">Agentic attack surfaces dominate · AI watermarking for provenance</div><div class="tl-desc">Research focus shifts to LLM agents with tool access. AgentDojo, AutoAdvExBench establish benchmarks. Watermarking for AI-generated content provenance emerges for disinformation response applications.</div></div></div>
+</div>
+
+<div class="pq">
+  <p>"The attacker always moves second — they get to see your defense and then design an attack specifically against it. This is why adaptive attack evaluation is essential, and why near-zero attack success rates in defense papers should be treated with extreme scepticism."</p>
+  <cite>— Synthesis of Carlini, Tramer, Nasr et al. — "The Attacker Moves Second" (2025)</cite>
+</div>
+
+<div style="margin-top:2rem;padding:1.25rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin-bottom:3rem">
+  <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--coral2);margin-bottom:.75rem">Further Reading — Primary Sources</div>
+  <div style="font-size:.85rem;color:var(--muted);line-height:2;font-weight:300">
+    <strong style="color:var(--bright);display:block;margin-bottom:.25rem">Start here (all freely available on arXiv):</strong>
+    Carlini et al. — "Extracting Training Data from Large Language Models" (2020) · Zou et al. — "Universal and Transferable Adversarial Attacks on Aligned LLMs" (2023) · Greshake et al. — "Not What You've Signed Up For" (2023) · Carlini et al. — "Are Aligned Neural Networks Adversarially Aligned?" (2023) · Nasr, Carlini, Tramer et al. — "The Attacker Moves Second" (2025)
+    <strong style="color:var(--bright);display:block;margin-top:.75rem;margin-bottom:.25rem">nicholas.carlini.com:</strong>
+    All papers, recorded talks, and a blog. His ICML alignment workshop talk "What can adversarial ML tell us about AI alignment?" is the best 60-minute introduction to why alignment and security are related but distinct problems.
+    <strong style="color:var(--bright);display:block;margin-top:.75rem;margin-bottom:.25rem">Open tools:</strong>
+    CleverHans (Papernot/Goodfellow) — adversarial ML library · Garak (NVIDIA) — LLM vulnerability scanner · AgentDojo (Tramer lab) — agentic injection benchmark · JailbreakBench — standardized jailbreak evaluation
+  </div>
+</div>
+
+</div>
+
+<script>
+function upNav(){
+  let cur='';
+  document.querySelectorAll('.section-hdr[id]').forEach(el=>{
+    if(el.getBoundingClientRect().top<window.innerHeight*.45)cur=el.id;
+  });
+  document.querySelectorAll('.cp').forEach(p=>
+    p.classList.toggle('active',p.getAttribute('href')==='#'+cur));
+}
+window.addEventListener('scroll',upNav,{passive:true});
+upNav();
+</script>
+</body>
+</html>

@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HBM Global Supply Chain Map</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;600&family=Fraunces:opsz,wght@9..144,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07111e;
+  --bg2: #0d1b2e;
+  --bg3: #112038;
+  --card: #0f1e32;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #c8d6e8;
+  --muted: #6a85a0;
+  --dim: #3a4f65;
+  --gold: #e8a020;
+  --gold2: #f5c55a;
+  --blue: #3a8fd4;
+  --blue2: #6ab4f5;
+  --teal: #1a9e88;
+  --teal2: #3dd9c0;
+  --coral: #e05a3a;
+  --coral2: #f58060;
+  --violet: #8060d0;
+  --violet2: #b090f0;
+  --green: #2a9e50;
+  --green2: #5ad080;
+  --sans: 'IBM Plex Sans', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --serif: 'Fraunces', Georgia, serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text);
+       min-height: 100vh; overflow-x: hidden; }
+
+/* ── HEADER ── */
+.header { padding: 1.75rem 1.5rem 1.25rem; border-bottom: 1px solid var(--border);
+          background: var(--bg2); }
+.header-top { display: flex; align-items: flex-start; justify-content: space-between;
+              flex-wrap: wrap; gap: 1rem; max-width: 1400px; margin: 0 auto; }
+.header-eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.18em;
+                  text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+.header h1 { font-family: var(--serif); font-size: 1.7rem; color: #fff;
+             line-height: 1.2; margin-bottom: 0.3rem; }
+.header-sub { font-size: 0.85rem; color: var(--muted); font-weight: 300; max-width: 520px; }
+.header-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
+.stat { text-align: center; }
+.stat-n { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; color: var(--gold2);
+          line-height: 1; }
+.stat-l { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em;
+          text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+
+/* ── LEGEND ── */
+.legend { display: flex; gap: 1rem; flex-wrap: wrap; padding: 0.75rem 1.5rem;
+          border-bottom: 1px solid var(--border); background: var(--bg);
+          max-width: 1400px; margin: 0 auto; }
+.legend-item { display: flex; align-items: center; gap: 0.4rem;
+               font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em;
+               color: var(--muted); }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── MAIN LAYOUT ── */
+.main { max-width: 1400px; margin: 0 auto; padding: 1.5rem; }
+
+/* ── SUPPLY CHAIN LAYERS ── */
+.layer { margin-bottom: 1rem; }
+.layer-header { display: flex; align-items: center; gap: 0.75rem;
+                margin-bottom: 0.75rem; }
+.layer-num { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.15em;
+             color: var(--muted); }
+.layer-title { font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
+               letter-spacing: 0.12em; text-transform: uppercase; }
+.layer-line { flex: 1; height: 1px; background: var(--border); }
+.layer-arrow { font-size: 1.2rem; color: var(--dim); text-align: center;
+               margin: 0.25rem 0 0.5rem; letter-spacing: 0.5rem; }
+
+/* ── NODE GRID ── */
+.nodes { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+/* ── NODE CARD ── */
+.node { border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem;
+        background: var(--card); cursor: pointer; transition: all 0.2s;
+        flex: 0 0 auto; min-width: 180px; max-width: 260px;
+        position: relative; overflow: hidden; }
+.node::before { content: ''; position: absolute; top: 0; left: 0; right: 0;
+                height: 3px; }
+.node:hover { border-color: var(--border2); transform: translateY(-2px);
+              box-shadow: 0 6px 24px rgba(0,0,0,0.4); }
+.node.active { box-shadow: 0 0 0 2px var(--gold); border-color: var(--gold); }
+
+/* Layer color accents */
+.node.raw::before      { background: var(--teal); }
+.node.equip::before    { background: var(--violet); }
+.node.dram::before     { background: var(--blue); }
+.node.pkg::before      { background: var(--gold); }
+.node.substrate::before{ background: var(--coral); }
+.node.end::before      { background: var(--green); }
+.node.china::before    { background: var(--coral); }
+
+.node-flag { font-size: 1.1rem; margin-bottom: 0.3rem; }
+.node-name { font-weight: 600; font-size: 0.88rem; color: #e8f0f8;
+             margin-bottom: 0.15rem; line-height: 1.3; }
+.node-role { font-family: var(--mono); font-size: 0.62rem; color: var(--muted);
+             letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+.node-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.5rem; }
+.tag { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.05em;
+       padding: 2px 6px; border-radius: 3px; font-weight: 500; }
+.tag-share { background: rgba(232,160,32,0.15); color: var(--gold2); }
+.tag-risk  { background: rgba(224,90,58,0.15);  color: var(--coral2); }
+.tag-sole  { background: rgba(224,90,58,0.25);  color: var(--coral2); border: 1px solid rgba(224,90,58,0.4); }
+.tag-chips { background: rgba(42,158,80,0.15);  color: var(--green2); }
+.tag-ctrl  { background: rgba(128,96,208,0.15); color: var(--violet2); }
+.tag-gen   { background: rgba(58,143,212,0.15); color: var(--blue2); }
+.node-metric { font-size: 0.78rem; color: var(--muted); line-height: 1.5;
+               font-weight: 300; }
+.node-metric strong { color: var(--text); font-weight: 600; }
+
+/* ── FLOW ARROWS between layers ── */
+.flow { text-align: center; padding: 0.4rem 0; color: var(--dim); font-size: 0.85rem; }
+.flow-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
+              text-transform: uppercase; color: var(--dim); }
+
+/* ── DETAIL PANEL ── */
+.detail-panel { position: fixed; right: 0; top: 0; bottom: 0; width: 360px;
+                background: var(--bg2); border-left: 1px solid var(--border2);
+                padding: 1.5rem; overflow-y: auto; z-index: 200;
+                transform: translateX(100%); transition: transform 0.25s ease;
+                display: flex; flex-direction: column; gap: 1rem; }
+.detail-panel.open { transform: translateX(0); }
+.detail-close { position: absolute; top: 1rem; right: 1rem; background: none;
+                border: 1px solid var(--border); color: var(--muted); width: 28px;
+                height: 28px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;
+                display: flex; align-items: center; justify-content: center; }
+.detail-close:hover { border-color: var(--border2); color: var(--text); }
+.detail-flag { font-size: 2rem; margin-bottom: 0.25rem; }
+.detail-name { font-family: var(--serif); font-size: 1.3rem; color: #fff;
+               line-height: 1.2; margin-bottom: 0.15rem; }
+.detail-role { font-family: var(--mono); font-size: 0.65rem; color: var(--muted);
+               letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.detail-section { margin-bottom: 0.75rem; }
+.detail-section-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.15em;
+                         text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+.detail-text { font-size: 0.85rem; color: var(--muted); line-height: 1.65;
+               font-weight: 300; }
+.detail-text strong { color: var(--text); font-weight: 600; }
+.detail-bullets { list-style: none; padding: 0; }
+.detail-bullets li { font-size: 0.82rem; color: var(--muted); padding: 0.3rem 0;
+                     border-bottom: 1px solid var(--border); line-height: 1.5;
+                     font-weight: 300; }
+.detail-bullets li:last-child { border-bottom: none; }
+.detail-bullets li::before { content: '→ '; color: var(--gold); font-family: var(--mono); }
+.risk-bar { height: 4px; border-radius: 2px; background: var(--border);
+            margin-top: 0.4rem; overflow: hidden; }
+.risk-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+
+/* ── BOTTOM RISK SECTION ── */
+.risk-section { background: var(--bg2); border: 1px solid var(--border);
+                border-radius: 10px; padding: 1.25rem; margin-top: 1.5rem; }
+.risk-section h3 { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em;
+                   text-transform: uppercase; color: var(--coral2); margin-bottom: 1rem; }
+.risk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+             gap: 0.75rem; }
+.risk-card { background: var(--bg3); border: 1px solid var(--border);
+             border-left: 3px solid var(--coral); border-radius: 6px;
+             padding: 0.85rem 1rem; }
+.risk-card.warn { border-left-color: var(--gold); }
+.risk-card.info { border-left-color: var(--blue); }
+.risk-title { font-weight: 600; font-size: 0.84rem; color: #e8f0f8;
+              margin-bottom: 0.3rem; }
+.risk-body { font-size: 0.78rem; color: var(--muted); line-height: 1.6;
+             font-weight: 300; }
+
+/* ── MARKET SHARE BAR ── */
+.share-bars { margin-top: 1rem; }
+.share-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
+.share-name { font-size: 0.78rem; color: var(--text); min-width: 90px;
+              font-weight: 500; }
+.share-bar-wrap { flex: 1; height: 8px; background: var(--border); border-radius: 4px;
+                  overflow: hidden; }
+.share-bar-fill { height: 100%; border-radius: 4px; }
+.share-pct { font-family: var(--mono); font-size: 0.68rem; color: var(--muted);
+             min-width: 36px; text-align: right; }
+
+/* ── MOBILE ── */
+@media(max-width: 700px) {
+  .header h1 { font-size: 1.3rem; }
+  .detail-panel { width: 100%; }
+  .node { min-width: 150px; }
+  .header-stats { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="header-eyebrow">// hbm_supply_chain · global_map · 2025</div>
+      <h1>High Bandwidth Memory<br>Global Supply Chain</h1>
+      <p class="header-sub">End-to-end mapping of the HBM production ecosystem — from raw materials and fab equipment through DRAM wafer production, advanced packaging, and final integration into AI accelerators. Tap any node for details.</p>
+    </div>
+    <div class="header-stats">
+      <div class="stat"><div class="stat-n">$35B</div><div class="stat-l">2025 TAM</div></div>
+      <div class="stat"><div class="stat-n">~62%</div><div class="stat-l">SK Hynix share</div></div>
+      <div class="stat"><div class="stat-n">3</div><div class="stat-l">HBM producers</div></div>
+      <div class="stat"><div class="stat-n">&gt;12mo</div><div class="stat-l">Lead time</div></div>
+      <div class="stat"><div class="stat-n">$100B</div><div class="stat-l">2028 forecast</div></div>
+    </div>
+  </div>
+</div>
+
+<div style="max-width:1400px;margin:0 auto;">
+<div class="legend" style="padding:0.75rem 1.5rem;">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div>Raw Materials</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--violet)"></div>Equipment</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>DRAM Production</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Packaging (CoWoS)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--coral)"></div>Substrates</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>End Customers</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--coral)"></div>China (domestic)</div>
+  <div class="legend-item" style="margin-left:auto;">
+    <span style="font-family:var(--mono);font-size:0.62rem;color:var(--coral2);border:1px solid rgba(224,90,58,0.4);padding:2px 7px;border-radius:3px;">SOLE SOURCE</span>
+    <span style="font-size:0.62rem;color:var(--muted);margin-left:4px;">= single supplier risk</span>
+  </div>
+</div>
+</div>
+
+<div class="main">
+
+<!-- LAYER 1: RAW MATERIALS -->
+<div class="layer">
+  <div class="layer-header">
+    <span class="layer-num">LAYER 01</span>
+    <span class="layer-title" style="color:var(--teal2)">Raw Materials & Specialty Chemicals</span>
+    <div class="layer-line"></div>
+  </div>
+  <div class="nodes">
+
+    <div class="node raw" onclick="showDetail('shinetsu')" id="node-shinetsu">
+      <div class="node-flag">🇯🇵</div>
+      <div class="node-name">Shin-Etsu Chemical</div>
+      <div class="node-role">Silicon wafers · photoresists</div>
+      <div class="node-tags"><span class="tag tag-share">~30% wafer share</span></div>
+      <div class="node-metric">World's largest silicon wafer producer. 300mm wafers for DRAM and logic. Also supplies KrF/ArF photoresists critical for DRAM patterning.</div>
+    </div>
+
+    <div class="node raw" onclick="showDetail('sumco')" id="node-sumco">
+      <div class="node-flag">🇯🇵</div>
+      <div class="node-name">SUMCO</div>
+      <div class="node-role">Silicon wafers</div>
+      <div class="node-tags"><span class="tag tag-share">~25% wafer share</span></div>
+      <div class="node-metric">Second-largest silicon wafer supplier globally. SUMCO + Shin-Etsu together control ~55% of the global wafer market.</div>
+    </div>
+
+    <div class="node raw" onclick="showDetail('jsr')" id="node-jsr">
+      <div class="node-flag">🇯🇵</div>
+      <div class="node-name">JSR / TOK / Fujifilm</div>
+      <div class="node-role">Photoresists · EUV resists</div>
+      <div class="node-tags"><span class="tag tag-sole">SOLE SOURCE risk</span></div>
+      <div class="node-metric">Japan controls ~90% of global photoresist supply. EUV resists (needed for sub-10nm DRAM) are manufactured exclusively in Japan.</div>
+    </div>
+
+    <div class="node raw" onclick="showDetail('merck')" id="node-merck">
+      <div class="node-flag">🇩🇪</div>
+      <div class="node-name">Merck KGaA / BASF</div>
+      <div class="node-role">Electronic chemicals · CMP slurries</div>
+      <div class="node-tags"><span class="tag tag-share">~40% e-chem share</span></div>
+      <div class="node-metric">Germany supplies critical specialty chemicals: CMP slurries for planarization, etch gases, and dielectric precursors used across DRAM fab steps.</div>
+    </div>
+
+    <div class="node raw" onclick="showDetail('entegris')" id="node-entegris">
+      <div class="node-flag">🇺🇸</div>
+      <div class="node-name">Entegris / Cabot</div>
+      <div class="node-role">CMP slurries · filtration</div>
+      <div class="node-tags"><span class="tag tag-share">US supplier</span></div>
+      <div class="node-metric">Critical CMP slurries for TSV copper polishing, ultrapure filtration systems for fab chemicals. US-based but globally distributed.</div>
+    </div>
+
+    <div class="node raw" onclick="showDetail('umicore')" id="node-umicore">
+      <div class="node-flag">🇧🇪</div>
+      <div class="node-name">Umicore / Heraeus</div>
+      <div class="node-role">Precious metal targets · bonding wire</div>
+      <div class="node-tags"></div>
+      <div class="node-metric">Sputtering targets (Cu, TaN, Ru) for TSV metallization. Gold and copper bonding wire for die interconnection in packaging.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="flow">↓ &nbsp; ↓ &nbsp; ↓<br><span class="flow-label">wafers + chemicals → fab</span></div>
+
+<!-- LAYER 2: EQUIPMENT -->
+<div class="layer">
+  <div class="layer-header">
+    <span class="layer-num">LAYER 02</span>
+    <span class="layer-title" style="color:var(--violet2)">Fab Equipment</span>
+    <div class="layer-line"></div>
+  </div>
+  <div class="nodes">
+
+    <div class="node equip" onclick="showDetail('asml')" id="node-asml">
+      <div class="node-flag">🇳🇱</div>
+      <div class="node-name">ASML</div>
+      <div class="node-role">EUV / ArF immersion lithography</div>
+      <div class="node-tags"><span class="tag tag-sole">SOLE SOURCE — EUV</span><span class="tag tag-ctrl">Export controlled to China</span></div>
+      <div class="node-metric">Only company in the world that makes EUV lithography machines (~$380M each). DRAM at 1z/1α/1β nodes requires ASML ArF immersion. EUV is export-restricted to China.</div>
+    </div>
+
+    <div class="node equip" onclick="showDetail('appliedmat')" id="node-appliedmat">
+      <div class="node-flag">🇺🇸</div>
+      <div class="node-name">Applied Materials</div>
+      <div class="node-role">Deposition · etch · CMP systems</div>
+      <div class="node-tags"><span class="tag tag-share">Largest equip vendor</span><span class="tag tag-ctrl">Export restricted</span></div>
+      <div class="node-metric">CVD/PVD deposition systems for capacitor dielectrics, cell arrays, and BEOL metal. PECVD for TSV oxide liner. Largest semiconductor equipment company by revenue.</div>
+    </div>
+
+    <div class="node equip" onclick="showDetail('lamresearch')" id="node-lamresearch">
+      <div class="node-flag">🇺🇸</div>
+      <div class="node-name">Lam Research</div>
+      <div class="node-role">Etch · strip · clean</div>
+      <div class="node-tags"><span class="tag tag-ctrl">Export restricted</span></div>
+      <div class="node-metric">Plasma etch for DRAM cell patterning and TSV DRIE (Bosch process). Conductor clean systems. Critical for high-aspect-ratio capacitor etch in 1α/1β DRAM.</div>
+    </div>
+
+    <div class="node equip" onclick="showDetail('kla')" id="node-kla">
+      <div class="node-flag">🇺🇸</div>
+      <div class="node-name">KLA Corporation</div>
+      <div class="node-role">Metrology · defect inspection</div>
+      <div class="node-tags"><span class="tag tag-ctrl">Export restricted</span></div>
+      <div class="node-metric">Wafer inspection and defect review for yield control. Critical at every layer — KGD (Known-Good Die) testing for HBM stacks depends on KLA metrology tools.</div>
+    </div>
+
+    <div class="node equip" onclick="showDetail('tel')" id="node-tel">
+      <div class="node-flag">🇯🇵</div>
+      <div class="node-name">Tokyo Electron (TEL)</div>
+      <div class="node-role">Coaters · developers · CVD</div>
+      <div class="node-tags"><span class="tag tag-share">~20% equip share</span></div>
+      <div class="node-metric">Dominant in track systems (coater/developer for photoresist). Also CVD and oxidation furnaces. TEL + ASML + Applied + Lam + KLA represent ~70% of all fab equipment spending.</div>
+    </div>
+
+    <div class="node equip" onclick="showDetail('besi')" id="node-besi">
+      <div class="node-flag">🇳🇱</div>
+      <div class="node-name">BE Semiconductor (Besi)</div>
+      <div class="node-role">Die bonding · TCB systems</div>
+      <div class="node-tags"><span class="tag tag-sole">Key TCB supplier</span></div>
+      <div class="node-metric">Thermal Compression Bonding equipment used to stack HBM dies at 250–280°C. Besi is the leading supplier of TCB systems critical for HBM3/3E/4 assembly.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="flow">↓ &nbsp; ↓ &nbsp; ↓<br><span class="flow-label">equipment → dram wafer fabrication</span></div>
+
+<!-- LAYER 3: DRAM PRODUCTION -->
+<div class="layer">
+  <div class="layer-header">
+    <span class="layer-num">LAYER 03</span>
+    <span class="layer-title" style="color:var(--blue2)">DRAM Wafer Production & HBM Stacking</span>
+    <div class="layer-line"></div>
+  </div>
+  <div class="nodes">
+
+    <div class="node dram" onclick="showDetail('skhynix')" id="node-skhynix">
+      <div class="node-flag">🇰🇷</div>
+      <div class="node-name">SK Hynix</div>
+      <div class="node-role">DRAM fab · HBM stacking · KGD test</div>
+      <div class="node-tags">
+        <span class="tag tag-share">~62% HBM share</span>
+        <span class="tag tag-gen">HBM3E / HBM4</span>
+      </div>
+      <div class="node-metric">Primary supplier for NVIDIA H100/H200/B200. <strong>First 12-layer HBM3E</strong> (36 GB, 1.2 TB/s) in mass production 2024. Entire 2024–2025 capacity pre-allocated to NVIDIA. Fab locations: Icheon, Cheongju (South Korea); M15X fab in Yongin under construction.</div>
+    </div>
+
+    <div class="node dram" onclick="showDetail('samsung')" id="node-samsung">
+      <div class="node-flag">🇰🇷</div>
+      <div class="node-name">Samsung Electronics</div>
+      <div class="node-role">DRAM fab · HBM stacking</div>
+      <div class="node-tags">
+        <span class="tag tag-share">~21% HBM share</span>
+        <span class="tag tag-gen">HBM3E / HBM4</span>
+        <span class="tag tag-risk">Yield issues 2024</span>
+      </div>
+      <div class="node-metric">World's largest DRAM producer overall but struggled with HBM3E qualification for NVIDIA in 2024 due to yield and thermal issues. Partnered with AMD for next-gen HBM4. Targeting 2026 hybrid bonding HBM4. Fab: Pyeongtaek, Hwaseong.</div>
+    </div>
+
+    <div class="node dram" onclick="showDetail('micron')" id="node-micron">
+      <div class="node-flag">🇺🇸</div>
+      <div class="node-name">Micron Technology</div>
+      <div class="node-role">DRAM fab · HBM3E production</div>
+      <div class="node-tags">
+        <span class="tag tag-share">~16% HBM share</span>
+        <span class="tag tag-chips">CHIPS Act recipient</span>
+        <span class="tag tag-gen">HBM3E</span>
+      </div>
+      <div class="node-metric"><strong>Only US-based HBM producer.</strong> HBM3E qualified for NVIDIA H200 in 2024; entire 2024 capacity sold out. $200B investment plan for US memory expansion. Idaho HBM fab under construction with CHIPS Act support. Boise, Manassas, Singapore fab sites.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="flow">↓ &nbsp; ↓ &nbsp; ↓<br><span class="flow-label">hbm stacks → advanced packaging (cowos)</span></div>
+
+<!-- LAYER 4: ADVANCED PACKAGING -->
+<div class="layer">
+  <div class="layer-header">
+    <span class="layer-num">LAYER 04</span>
+    <span class="layer-title" style="color:var(--gold2)">Advanced Packaging (CoWoS / Interposer)</span>
+    <div class="layer-line"></div>
+  </div>
+  <div class="nodes">
+
+    <div class="node pkg" onclick="showDetail('tsmc_pkg')" id="node-tsmc_pkg">
+      <div class="node-flag">🇹🇼</div>
+      <div class="node-name">TSMC — CoWoS</div>
+      <div class="node-role">2.5D interposer packaging · SoIC</div>
+      <div class="node-tags">
+        <span class="tag tag-sole">DOMINANT — CoWoS</span>
+        <span class="tag tag-risk">Taiwan concentration</span>
+      </div>
+      <div class="node-metric">Mounts HBM stacks + GPU die on silicon interposer. <strong>75K wafers/month in 2025</strong>, targeting 120K by end-2026. CoWoS lines ran at 95% utilisation in 2024. All NVIDIA H/B-series GPUs use TSMC CoWoS. T-Glass substrate shortages caused allocation issues in 2024.</div>
+    </div>
+
+    <div class="node pkg" onclick="showDetail('amkor')" id="node-amkor">
+      <div class="node-flag">🇺🇸🇰🇷</div>
+      <div class="node-name">Amkor Technology</div>
+      <div class="node-role">OSAT · advanced packaging</div>
+      <div class="node-tags"><span class="tag tag-share">Major OSAT</span></div>
+      <div class="node-metric">Outsourced Semiconductor Assembly and Test. Handles wire bonding, flip-chip, and some advanced packaging for AI chips. TSMC alternative for less advanced integration. Arizona fab expanding.</div>
+    </div>
+
+    <div class="node pkg" onclick="showDetail('ase')" id="node-ase">
+      <div class="node-flag">🇹🇼</div>
+      <div class="node-name">ASE Group (USI)</div>
+      <div class="node-role">OSAT · substrate packaging</div>
+      <div class="node-tags"><span class="tag tag-share">Largest OSAT globally</span></div>
+      <div class="node-metric">World's largest OSAT. Handles assembly, test, and some 2.5D packaging. Significant player in AI accelerator backend packaging supply chain.</div>
+    </div>
+
+    <div class="node pkg" onclick="showDetail('samsung_pkg')" id="node-samsung_pkg">
+      <div class="node-flag">🇰🇷</div>
+      <div class="node-name">Samsung — I-Cube / H-Cube</div>
+      <div class="node-role">2.5D packaging · EMIB alternative</div>
+      <div class="node-tags"><span class="tag tag-gen">HBM4 hybrid bonding</span></div>
+      <div class="node-metric">Samsung's own advanced packaging for its Exynos and HBM4 products. Developing hybrid bonding (Cu-Cu direct) for sub-10µm bump pitch targeting HBM4 in 2026.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="flow">↓ &nbsp; ↓ &nbsp; ↓<br><span class="flow-label">interposer assembly → substrates</span></div>
+
+<!-- LAYER 5: SUBSTRATES -->
+<div class="layer">
+  <div class="layer-header">
+    <span class="layer-num">LAYER 05</span>
+    <span class="layer-title" style="color:var(--coral2)">IC Substrates & Interposer Materials</span>
+    <div class="layer-line"></div>
+  </div>
+  <div class="nodes">
+
+    <div class="node substrate" onclick="showDetail('unimicron')" id="node-unimicron">
+      <div class="node-flag">🇹🇼</div>
+      <div class="node-name">Unimicron</div>
+      <div class="node-role">IC substrates · ABF substrates</div>
+      <div class="node-tags"><span class="tag tag-share">Largest IC substrate maker</span></div>
+      <div class="node-metric">Largest IC substrate manufacturer globally. Produces the organic substrates that GPU+HBM packages sit on. ABF (Ajinomoto Build-up Film) substrates for advanced packages.</div>
+    </div>
+
+    <div class="node substrate" onclick="showDetail('ibiden')" id="node-ibiden">
+      <div class="node-flag">🇯🇵</div>
+      <div class="node-name">Ibiden</div>
+      <div class="node-role">ABF substrates · FC-BGA</div>
+      <div class="node-tags"><span class="tag tag-sole">ABF near-duopoly</span></div>
+      <div class="node-metric">Along with Unimicron, Ibiden effectively controls the ABF substrate market. ABF is the key dielectric material for advanced IC substrates — the base that GPU/HBM packages mount onto.</div>
+    </div>
+
+    <div class="node substrate" onclick="showDetail('nanya')" id="node-nanya">
+      <div class="node-flag">🇹🇼</div>
+      <div class="node-name">Nan Ya PCB / AT&S</div>
+      <div class="node-role">IC substrates · PCB</div>
+      <div class="node-tags"><span class="tag tag-share">Taiwan + Austria</span></div>
+      <div class="node-metric">Nan Ya (Taiwan) and AT&S (Austria) supply additional IC substrate capacity. AT&S is the primary European substrate supplier, serving Intel and AMD among others.</div>
+    </div>
+
+    <div class="node substrate" onclick="showDetail('ajinomoto')" id="node-ajinomoto">
+      <div class="node-flag">🇯🇵</div>
+      <div class="node-name">Ajinomoto (ABF film)</div>
+      <div class="node-role">ABF dielectric film</div>
+      <div class="node-tags"><span class="tag tag-sole">SOLE SOURCE — ABF</span></div>
+      <div class="node-metric"><strong>Sole producer of Ajinomoto Build-up Film (ABF)</strong> — the dielectric material used in almost all advanced IC substrates. A food company that accidentally became a semiconductor supply chain chokepoint.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="flow">↓ &nbsp; ↓ &nbsp; ↓<br><span class="flow-label">packaged hbm → ai accelerators → end customers</span></div>
+
+<!-- LAYER 6: END CUSTOMERS -->
+<div class="layer">
+  <div class="layer-header">
+    <span class="layer-num">LAYER 06</span>
+    <span class="layer-title" style="color:var(--green2)">End Customers — AI Accelerators & Hyperscalers</span>
+    <div class="layer-line"></div>
+  </div>
+  <div class="nodes">
+
+    <div class="node end" onclick="showDetail('nvidia')" id="node-nvidia">
+      <div class="node-flag">🇺🇸</div>
+      <div class="node-name">NVIDIA</div>
+      <div class="node-role">GPU design · primary HBM consumer</div>
+      <div class="node-tags">
+        <span class="tag tag-share">~80% AI GPU market</span>
+        <span class="tag tag-gen">H100/H200/B200</span>
+      </div>
+      <div class="node-metric">Largest single consumer of HBM globally. H100: 80GB HBM3 (3.35 TB/s). H200: 141GB HBM3E (4.8 TB/s). B200: 192GB HBM3E (8 TB/s). Primary supplier: SK Hynix. 2M+ Blackwell GPUs shipped in 2025, each requiring multiple HBM stacks.</div>
+    </div>
+
+    <div class="node end" onclick="showDetail('amd')" id="node-amd">
+      <div class="node-flag">🇺🇸</div>
+      <div class="node-name">AMD</div>
+      <div class="node-role">GPU design · MI300X/MI350</div>
+      <div class="node-tags"><span class="tag tag-gen">MI300X: 192GB HBM3</span></div>
+      <div class="node-metric">MI300X unified memory architecture: 192GB HBM3 on a single package — 2.4× more than H100. 5.3 TB/s bandwidth. Samsung partnership for HBM4. Winning inference deployments at Microsoft Azure and Meta.</div>
+    </div>
+
+    <div class="node end" onclick="showDetail('google')" id="node-google">
+      <div class="node-flag">🇺🇸</div>
+      <div class="node-name">Google (TPU)</div>
+      <div class="node-role">Custom AI ASIC · hyperscaler</div>
+      <div class="node-tags"><span class="tag tag-gen">TPUv5 HBM2e</span></div>
+      <div class="node-metric">Designs custom TPUs for internal AI workloads (Gemini training). TPUv5 uses HBM2e. Also largest hyperscaler buyer of NVIDIA GPUs for external cloud customers.</div>
+    </div>
+
+    <div class="node end" onclick="showDetail('meta')" id="node-meta">
+      <div class="node-flag">🇺🇸</div>
+      <div class="node-name">Meta / Microsoft / Amazon</div>
+      <div class="node-role">Hyperscaler direct procurement</div>
+      <div class="node-tags"><span class="tag tag-share">Largest GPU fleet owners</span></div>
+      <div class="node-metric">Hyperscalers collectively commit to multi-year HBM supply agreements directly with SK Hynix, Micron, Samsung. Meta's 600K+ GPU cluster; Microsoft's OpenAI partnership drives massive HBM demand. Amazon custom Trainium/Inferentia chips also use HBM.</div>
+    </div>
+
+    <div class="node end" onclick="showDetail('waymo')" id="node-waymo">
+      <div class="node-flag">🇺🇸</div>
+      <div class="node-name">Waymo / Automotive</div>
+      <div class="node-role">Autonomous vehicle AI · first automotive HBM</div>
+      <div class="node-tags"><span class="tag tag-gen">HBM2E (SK Hynix)</span></div>
+      <div class="node-metric"><strong>First automotive HBM deployment</strong> (2024). Waymo's Level 4 AV system uses SK Hynix HBM2E. CAGR for automotive HBM projected at 34% through 2031 — fastest-growing end market.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CHINA DOMESTIC SECTION -->
+<div class="layer" style="margin-top:1.5rem;">
+  <div class="layer-header">
+    <span class="layer-num">PARALLEL</span>
+    <span class="layer-title" style="color:var(--coral2)">China Domestic HBM Ecosystem (Emerging)</span>
+    <div class="layer-line"></div>
+  </div>
+  <div class="nodes">
+
+    <div class="node china" onclick="showDetail('cxmt')" id="node-cxmt">
+      <div class="node-flag">🇨🇳</div>
+      <div class="node-name">CXMT</div>
+      <div class="node-role">DRAM fab · HBM2 development</div>
+      <div class="node-tags"><span class="tag tag-ctrl">Export restricted from ASML EUV</span></div>
+      <div class="node-metric">China's DRAM national champion. Aggressively stockpiled semiconductor equipment pre-2024 export controls. HBM2 8-high entering mass production H1 2025. Cannot access ASML EUV — uses ArF immersion with multi-patterning. $200B Chinese semiconductor subsidy tailwind.</div>
+    </div>
+
+    <div class="node china" onclick="showDetail('huawei_hbm')" id="node-huawei_hbm">
+      <div class="node-flag">🇨🇳</div>
+      <div class="node-name">Huawei / XMC + SJSemi</div>
+      <div class="node-role">HBM wafer (XMC) · packaging (SJSemi)</div>
+      <div class="node-tags"><span class="tag tag-risk">Entity listed</span></div>
+      <div class="node-metric">XMC (Wuhan Xinxin) produces HBM wafers; SJSemi (Shenghe Jingwei) handles packaging. Huawei's domestic HBM stack for Ascend AI chips. Bypasses all export controls but significantly behind SK Hynix/Samsung on performance and yield.</div>
+    </div>
+
+    <div class="node china" onclick="showDetail('smic')" id="node-smic">
+      <div class="node-flag">🇨🇳</div>
+      <div class="node-name">SMIC</div>
+      <div class="node-role">Logic fab · 7nm-equivalent</div>
+      <div class="node-tags"><span class="tag tag-ctrl">Export restricted</span></div>
+      <div class="node-metric">China's most advanced foundry. Produces Huawei's Kirin and Ascend chips at ~7nm-equivalent using ArF immersion + multi-patterning (no EUV). Lower density and yield than TSMC N7. Critical node for China's domestic AI compute stack.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MARKET SHARE -->
+<div class="risk-section" style="border-color:var(--blue);border-left-color:var(--blue);">
+  <h3 style="color:var(--blue2)">// HBM Market Share & Key Metrics (2025)</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;flex-wrap:wrap;">
+    <div>
+      <div style="font-family:var(--mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem;">HBM Revenue Share</div>
+      <div class="share-bars">
+        <div class="share-row">
+          <div class="share-name">SK Hynix</div>
+          <div class="share-bar-wrap"><div class="share-bar-fill" style="width:62%;background:var(--blue2)"></div></div>
+          <div class="share-pct">~62%</div>
+        </div>
+        <div class="share-row">
+          <div class="share-name">Samsung</div>
+          <div class="share-bar-wrap"><div class="share-bar-fill" style="width:21%;background:var(--violet2)"></div></div>
+          <div class="share-pct">~21%</div>
+        </div>
+        <div class="share-row">
+          <div class="share-name">Micron</div>
+          <div class="share-bar-wrap"><div class="share-bar-fill" style="width:16%;background:var(--green2)"></div></div>
+          <div class="share-pct">~16%</div>
+        </div>
+        <div class="share-row">
+          <div class="share-name">CXMT / China</div>
+          <div class="share-bar-wrap"><div class="share-bar-fill" style="width:1%;background:var(--coral2)"></div></div>
+          <div class="share-pct">&lt;1%</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:var(--mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem;">HBM End-Use (2025)</div>
+      <div class="share-bars">
+        <div class="share-row">
+          <div class="share-name">AI Servers</div>
+          <div class="share-bar-wrap"><div class="share-bar-fill" style="width:68%;background:var(--gold)"></div></div>
+          <div class="share-pct">68%</div>
+        </div>
+        <div class="share-row">
+          <div class="share-name">Graphics/GPU</div>
+          <div class="share-bar-wrap"><div class="share-bar-fill" style="width:40%;background:var(--teal2)"></div></div>
+          <div class="share-pct">40%</div>
+        </div>
+        <div class="share-row">
+          <div class="share-name">HPC</div>
+          <div class="share-bar-wrap"><div class="share-bar-fill" style="width:28%;background:var(--blue2)"></div></div>
+          <div class="share-pct">28%</div>
+        </div>
+        <div class="share-row">
+          <div class="share-name">Networking</div>
+          <div class="share-bar-wrap"><div class="share-bar-fill" style="width:12%;background:var(--violet2)"></div></div>
+          <div class="share-pct">12%</div>
+        </div>
+        <div class="share-row">
+          <div class="share-name">Automotive</div>
+          <div class="share-bar-wrap"><div class="share-bar-fill" style="width:4%;background:var(--coral2)"></div></div>
+          <div class="share-pct">4%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RISK SECTION -->
+<div class="risk-section" style="margin-top:1rem;">
+  <h3>// Critical Chokepoints & Supply Chain Risks</h3>
+  <div class="risk-grid">
+    <div class="risk-card">
+      <div class="risk-title">⚠ ASML EUV Monopoly</div>
+      <div class="risk-body">ASML is the sole manufacturer of EUV lithography tools. Each costs $150–380M and takes 18+ months to build. Loss of ASML supply (geopolitical disruption, factory incident) halts all sub-7nm DRAM production globally within 1–2 years. China cannot access EUV; this is the primary export control chokepoint.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-title">⚠ Taiwan Concentration (TSMC CoWoS)</div>
+      <div class="risk-body">All NVIDIA H/B-series GPUs are packaged at TSMC's CoWoS facilities in Taiwan. TSMC's CoWoS lines ran at 95% utilisation in 2024 and are the primary bottleneck for AI accelerator supply. Any Taiwan Strait disruption halts global AI GPU production.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-title">⚠ Korea HBM Duopoly</div>
+      <div class="risk-body">SK Hynix and Samsung together produce ~83% of global HBM. Both are headquartered in South Korea. North Korean missile tests, geopolitical instability, or natural disasters affecting Icheon, Cheongju, or Pyeongtaek fabs would cause immediate global HBM shortage. Lead times already exceed 12 months.</div>
+    </div>
+    <div class="risk-card warn">
+      <div class="risk-title">⚡ ABF Substrate — Ajinomoto</div>
+      <div class="risk-body">Ajinomoto (a Japanese food company) is the sole producer of ABF film, the dielectric used in virtually all advanced IC substrates. A supply disruption would affect GPU packaging timelines within weeks. This is the most underappreciated single-company risk in the semiconductor supply chain.</div>
+    </div>
+    <div class="risk-card warn">
+      <div class="risk-title">⚡ Japanese Chemical Monopolies</div>
+      <div class="risk-body">Japan controls ~90% of photoresist supply, ~70% of silicon wafer supply, and dominates high-purity chemicals. Japan imposed export controls on photoresists and etch gases to Korea in 2019 (since eased), demonstrating how quickly this dependency can become a weapon.</div>
+    </div>
+    <div class="risk-card warn">
+      <div class="risk-title">⚡ HBM Demand vs Supply Gap</div>
+      <div class="risk-body">Global HBM demand exceeded 25M units in 2024 against supply of ~20M units. Lead times stretch beyond 12 months. Micron's entire 2024–2025 HBM3E capacity was pre-sold. Demand is growing at 40%+ annually; supply capacity additions take 2–3 years to build out.</div>
+    </div>
+    <div class="risk-card info">
+      <div class="risk-title">ℹ US Export Controls (BIS)</div>
+      <div class="risk-body">October 2022 and October 2023 BIS rules restrict HBM exports to China above performance thresholds. December 2024 rules tightened further. Korea separately introduced HBM export controls. CXMT and Huawei/XMC are building domestic alternatives but trail 2–3 generations behind. China's $200B semiconductor subsidy aims to close the gap.</div>
+    </div>
+    <div class="risk-card info">
+      <div class="risk-title">ℹ CHIPS Act & Diversification</div>
+      <div class="risk-body">Micron's Idaho HBM fab (CHIPS Act funded) will provide US domestic HBM supply by 2027–2028. TSMC Arizona CoWoS capacity (N4, eventually CoWoS) reduces Taiwan packaging concentration slightly. EU Chips Act targets European substrate and materials capability. Full diversification is a decade-long project.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- DETAIL PANEL -->
+<div class="detail-panel" id="detailPanel">
+  <button class="detail-close" onclick="closeDetail()">✕</button>
+  <div id="detailContent"></div>
+</div>
+
+<script>
+const DETAILS = {
+  shinetsu: {
+    flag:'🇯🇵', name:'Shin-Etsu Chemical', role:'Silicon Wafers & Photoresists',
+    country:'Japan',
+    about:'World\'s largest silicon wafer producer and a major photoresist supplier. Founded 1926, headquartered in Tokyo. Silicon wafer revenue alone exceeds $4B annually.',
+    keyFacts:[
+      '~30% global market share in 300mm silicon wafers',
+      'Supplies all major DRAM fabs including SK Hynix, Samsung, Micron',
+      'KrF and ArF photoresist products for DRAM patterning',
+      'Shin-Etsu + SUMCO = ~55% of global silicon wafer market',
+      'Critical upstream dependency — no wafers = no DRAM'
+    ],
+    risk:'Medium. Diversified across multiple product lines and geographies. Japanese export control risk exists but has not been applied to silicon wafers.',
+    riskLevel: 35
+  },
+  sumco: {
+    flag:'🇯🇵', name:'SUMCO Corporation', role:'Silicon Wafers',
+    country:'Japan',
+    about:'Second-largest silicon wafer manufacturer globally. Spun off from Sumitomo Metal Industries in 2002. Major customer base includes Samsung, SK Hynix, Micron, and TSMC.',
+    keyFacts:[
+      '~25% global silicon wafer market share',
+      '300mm and 200mm wafer production in Japan and Taiwan',
+      'Working with TSMC and others on next-generation wafer specs',
+      'Capacity expansion ongoing for AI-driven DRAM demand',
+      'Shin-Etsu + SUMCO form near-duopoly in advanced wafers'
+    ],
+    risk:'Medium. Concentration of silicon wafer supply in Japan is a structural risk, partially mitigated by the non-discretionary nature of wafer supply to all global customers.',
+    riskLevel: 30
+  },
+  jsr: {
+    flag:'🇯🇵', name:'JSR / Tokyo Ohka Kogyo (TOK) / Fujifilm', role:'Photoresists',
+    country:'Japan',
+    about:'Japan controls approximately 90% of global photoresist supply. JSR, TOK, Shin-Etsu, and Fujifilm dominate both KrF/ArF resists (standard) and EUV resists (emerging). JSR was taken private by the Japanese government in 2023 to preserve strategic photoresist technology.',
+    keyFacts:[
+      '~90% of global photoresist supply is Japanese',
+      'EUV photoresists: JSR and TOK are primary developers',
+      'Japanese government nationalized JSR in 2023 for strategic reasons',
+      '2019: Japan restricted photoresist exports to South Korea during trade dispute',
+      'No viable non-Japanese alternatives exist for advanced EUV resists at scale'
+    ],
+    risk:'HIGH. Japan demonstrated willingness to weaponize photoresist exports in 2019 Korea trade dispute. The entire global DRAM industry depends on Japanese photoresists with no viable substitutes.',
+    riskLevel: 80
+  },
+  merck: {
+    flag:'🇩🇪', name:'Merck KGaA / BASF', role:'Electronic Chemicals',
+    country:'Germany',
+    about:'Merck KGaA\'s Electronics division is a leading supplier of specialty chemicals for semiconductor manufacturing. BASF also supplies process chemicals. Together they represent a significant share of European electronic chemical supply.',
+    keyFacts:[
+      'CMP slurries for copper and dielectric polishing',
+      'Etch gases (HF, HCl, specialty fluorines)',
+      'Precursors for ALD/CVD dielectric deposition',
+      'Liquid crystal and OLED materials (separate from semiconductors)',
+      'Merck acquired Versum Materials (US) in 2019 for $5.9B to expand'
+    ],
+    risk:'Low-Medium. Merck is diversified globally. German export controls are possible but historically less likely than Japanese ones. Alternative suppliers exist for most commodity chemicals.',
+    riskLevel: 25
+  },
+  entegris: {
+    flag:'🇺🇸', name:'Entegris / Cabot Microelectronics', role:'CMP Slurries & Filtration',
+    country:'USA',
+    about:'Entegris is a critical US-based supplier of advanced materials used in semiconductor manufacturing. Following its merger with CMC Materials (Cabot Microelectronics) in 2022, it is now the largest pure-play advanced materials company for semiconductor fabs.',
+    keyFacts:[
+      'CMP slurries for Cu, W, STI, and oxide polishing',
+      'Ultrapure filtration systems for fab chemical delivery',
+      'Acquired Mykrolis, ATMI, and CMC Materials through M&A',
+      'Critical for TSV copper planarization in HBM stacking',
+      'US export controls could restrict supply to Chinese fabs'
+    ],
+    risk:'Low. US-based, subject to US export controls that actually advantage Entegris by restricting Chinese customers. Western fab customers are stable.',
+    riskLevel: 15
+  },
+  umicore: {
+    flag:'🇧🇪', name:'Umicore / Heraeus', role:'Precious Metal Targets & Bonding Wire',
+    country:'Belgium / Germany',
+    about:'Umicore (Belgium) and Heraeus (Germany) supply sputtering targets and bonding materials critical for HBM metallization and packaging. Heraeus is the world\'s largest precious metals recycler and a key bonding wire supplier.',
+    keyFacts:[
+      'Copper and TaN sputtering targets for TSV metallization',
+      'Gold and copper bonding wire for IC packaging',
+      'Ruthenium targets emerging for sub-2nm BEOL interconnects',
+      'Heraeus dominates the bonding wire market globally',
+      'Materials critical but relatively commoditized — lower strategic risk'
+    ],
+    risk:'Low. These materials are important but have more diversified supplier bases than photoresists or silicon wafers.',
+    riskLevel: 15
+  },
+  asml: {
+    flag:'🇳🇱', name:'ASML Holding', role:'EUV & ArF Immersion Lithography',
+    country:'Netherlands',
+    about:'ASML is the sole manufacturer of EUV lithography machines — the most complex machines humans have ever built for mass production. Each EUV system costs $150–380M, takes 18+ months to produce, weighs 180 tonnes, and contains over 100,000 precision parts from hundreds of specialist suppliers worldwide. Without ASML EUV, sub-7nm DRAM is impossible.',
+    keyFacts:[
+      'Only company in the world that makes EUV tools',
+      'High-NA EUV (0.55 NA) enables sub-5nm features — $380M per system',
+      'EUV export to China blocked since 2023 by Dutch government',
+      'Also dominant in ArF immersion scanners (used for older DRAM nodes)',
+      'TSMC, Samsung, SK Hynix are primary EUV customers',
+      'ASML\'s 2024 revenue: ~€28B; backlog exceeds €40B',
+      'Zeiss (Germany) supplies the precision optics — also export-controlled'
+    ],
+    risk:'CRITICAL. ASML is the single most important chokepoint in advanced semiconductor manufacturing. Any disruption to ASML supply or Dutch export policy has immediate global consequences. This is why the US, EU, and Japan coordinate semiconductor export controls so carefully.',
+    riskLevel: 95
+  },
+  appliedmat: {
+    flag:'🇺🇸', name:'Applied Materials', role:'Deposition, Etch & CMP Systems',
+    country:'USA',
+    about:'Applied Materials is the world\'s largest semiconductor equipment company by revenue (~$27B in FY2024). Its deposition (CVD, PVD, ALD), etch, and CMP systems are used in virtually every step of DRAM fabrication and HBM TSV processing.',
+    keyFacts:[
+      'CVD systems for capacitor dielectrics (hafnium oxide, zirconium oxide)',
+      'PVD for TSV barrier/seed layers (TaN, Cu)',
+      'CMP for planarization at every process step',
+      'Subject to US BIS export controls for China',
+      'DRAM fabs typically have 50–100+ Applied Materials tools each',
+      'Largest capex item for DRAM fabs after lithography'
+    ],
+    risk:'High for China (export restricted), Low for Western fabs. Applied Materials\' dominance in deposition creates dependency, but the company has deep fab relationships and its own supply chain is diversified.',
+    riskLevel: 45
+  },
+  lamresearch: {
+    flag:'🇺🇸', name:'Lam Research', role:'Etch & Strip Systems',
+    country:'USA',
+    about:'Lam Research dominates the plasma etch and strip equipment market. DRAM scaling requires extremely precise deep etch processes for capacitors and TSVs. Lam\'s Kiyo and Versys product lines are in virtually every advanced DRAM fab.',
+    keyFacts:[
+      'Dielectric etch for DRAM cell patterning (capacitor holes)',
+      'DRIE (Bosch process) for TSV etch — up to 50µm deep, 5µm wide',
+      'Conductor clean systems for pre-etch surface prep',
+      'Atomic layer etch (ALE) for sub-5nm critical dimensions',
+      'Export restricted to China since 2022; Lam revenue hit ~$2B from restrictions',
+      'No equivalent alternative for high-aspect-ratio DRAM etch at scale'
+    ],
+    risk:'High for China (major revenue impact from export controls), Medium for global supply — Lam equipment takes 6–12 months to deliver even for unrestricted customers.',
+    riskLevel: 50
+  },
+  kla: {
+    flag:'🇺🇸', name:'KLA Corporation', role:'Metrology & Defect Inspection',
+    country:'USA',
+    about:'KLA is the world\'s dominant supplier of process control equipment — the tools that inspect every wafer for defects and measure critical dimensions to nanometre precision. Without KLA tools, yield engineering is essentially blind.',
+    keyFacts:[
+      'Wafer inspection: detects defects as small as 15nm',
+      'Optical and e-beam critical dimension measurement',
+      'KGD (Known-Good Die) testing flow for HBM stacks depends on KLA metrology',
+      'Export restricted to China; KLA has faced $580M+ in fines for violations',
+      '~50% market share in wafer inspection globally',
+      'Each fab requires dozens of KLA systems — typically $2–10M each'
+    ],
+    risk:'High for China (restrictions enforced aggressively), Medium globally. KLA systems are deeply embedded in yield engineering workflows — switching costs are enormous.',
+    riskLevel: 40
+  },
+  tel: {
+    flag:'🇯🇵', name:'Tokyo Electron (TEL)', role:'Track Systems, CVD & Oxidation',
+    country:'Japan',
+    about:'Tokyo Electron is Japan\'s largest semiconductor equipment company and globally the third-largest, behind Applied Materials and ASML. Its coater/developer (track) systems handle photoresist application and development — every lithography step in DRAM fab goes through a TEL track.',
+    keyFacts:[
+      'Dominant in coater/developer (track) systems — ~85% market share',
+      'CVD and thermal oxidation furnaces for gate oxides and isolation',
+      'Cleaning systems for wafer surface preparation',
+      'TEL + ASML + Applied + Lam + KLA = ~70% of total equipment spend',
+      'Subject to Japanese export controls; Japan aligned with US BIS in 2023',
+      'DRAM fabs typically have 20–40 TEL track systems each'
+    ],
+    risk:'High for China (Japan export controls). TEL\'s track monopoly is the most underappreciated equipment dependency after ASML — every lithography step passes through TEL equipment.',
+    riskLevel: 55
+  },
+  besi: {
+    flag:'🇳🇱', name:'BE Semiconductor Industries (Besi)', role:'Die Bonding & TCB Systems',
+    country:'Netherlands',
+    about:'Besi is the leading supplier of Thermal Compression Bonding (TCB) equipment — the machines that physically stack HBM dies onto each other at 250–280°C to form Cu-Cu microbump joints. Without TCB equipment, HBM stacks cannot be assembled.',
+    keyFacts:[
+      'TCB systems: stack HBM dies at 5–15 seconds per die at 280°C',
+      'Microbump bonding for HBM2/3/3E (55µm pitch)',
+      'Developing hybrid bonding equipment for HBM4 (sub-10µm pitch)',
+      'Market share: Besi + ASM Pacific dominate TCB equipment globally',
+      'Revenue ~€700M (2024); HBM demand driving strong growth',
+      'Netherlands-based but less export-controlled than lithography tools'
+    ],
+    risk:'Medium. Besi is highly concentrated in HBM-critical equipment but not currently subject to the same export restrictions as lithography tools. A single-point dependency for the TCB step.',
+    riskLevel: 50
+  },
+  skhynix: {
+    flag:'🇰🇷', name:'SK Hynix', role:'DRAM Fab & HBM Market Leader',
+    country:'South Korea',
+    about:'SK Hynix is the world\'s second-largest DRAM maker and the dominant HBM producer with approximately 62% market share. It is the primary HBM supplier for NVIDIA\'s entire H/B-series GPU lineup. SK Hynix invested in HBM earlier than competitors, giving it a multi-year lead in TSV process maturity.',
+    keyFacts:[
+      '~62% global HBM revenue share (2025)',
+      'Primary HBM supplier for NVIDIA H100, H200, B200',
+      'First to produce 12-layer HBM3E (36GB, 1.2 TB/s) — 2024',
+      'Entire 2024–2025 HBM3E capacity pre-allocated to NVIDIA',
+      'M15X fab in Yongin: 900K sqm, largest semiconductor fab in the world',
+      'Developing HBM4 with hybrid bonding (Cu-Cu direct, no solder)',
+      'AI chip revenue now >50% of total SK Hynix revenue'
+    ],
+    risk:'HIGH concentration risk. A disruption at Icheon or Cheongju fabs (earthquake, geopolitical event, fire) would immediately constrain global AI GPU supply. No single-facility replacement exists.',
+    riskLevel: 70
+  },
+  samsung: {
+    flag:'🇰🇷', name:'Samsung Electronics', role:'DRAM & HBM Producer',
+    country:'South Korea',
+    about:'Samsung is the world\'s largest DRAM producer overall (~45% DRAM market share) but has struggled specifically with HBM3E qualification, losing ground to SK Hynix in the highest-value AI memory segment. It is working aggressively to close the gap with HBM4.',
+    keyFacts:[
+      '~21% HBM revenue share (2025) — significantly below DRAM share',
+      'HBM3E qualification for NVIDIA delayed by thermal/yield issues in 2024',
+      'Partnership with AMD for next-gen HBM4 integration',
+      'HBM4 targeting 2026 production with hybrid bonding',
+      'Pyeongtaek P4/P5 fabs: largest DRAM production complex globally',
+      'World\'s largest fabless IP licensing revenue from memory patents',
+      'Risk: losing HBM qualification permanently to SK Hynix + Micron'
+    ],
+    risk:'Medium. Samsung\'s scale and capital base mean it will remain a major player, but its HBM execution risk is real — falling further behind SK Hynix in the highest-margin segment.',
+    riskLevel: 35
+  },
+  micron: {
+    flag:'🇺🇸', name:'Micron Technology', role:'US DRAM & HBM Producer',
+    country:'USA',
+    about:'Micron is the only US-based HBM producer, making it strategically critical for US national security policy. Its HBM3E was validated for NVIDIA\'s H200 in 2024, and its entire initial capacity sold out immediately. Micron\'s $200B investment commitment represents the largest single semiconductor investment announcement in US history.',
+    keyFacts:[
+      '~16% HBM market share (2025), growing rapidly',
+      'First US company to mass-produce HBM3E',
+      'HBM3E validated for NVIDIA H200 — 2024',
+      'Entire 2024 HBM3E capacity pre-sold (majority to NVIDIA)',
+      '$200B investment in US memory manufacturing announced',
+      'Idaho HBM fab under construction with CHIPS Act support',
+      '36GB, 12-layer HBM3E product in volume production mid-2025',
+      'Also fab sites: Boise ID, Manassas VA, Singapore, Japan (IMFT)'
+    ],
+    risk:'Low-Medium. Micron\'s US base is a strategic asset. CHIPS Act funding reduces financial risk. Main risk is execution speed relative to SK Hynix\'s continued capacity lead.',
+    riskLevel: 25
+  },
+  tsmc_pkg: {
+    flag:'🇹🇼', name:'TSMC — CoWoS Platform', role:'Advanced 2.5D Packaging',
+    country:'Taiwan',
+    about:'TSMC\'s Chip-on-Wafer-on-Substrate (CoWoS) platform is the dominant advanced packaging technology for AI accelerators. Every NVIDIA H100, H200, and B200 GPU is assembled at TSMC CoWoS facilities in Taiwan. CoWoS integrates HBM stacks and GPU logic dies on a silicon interposer with fine-pitch RDL routing.',
+    keyFacts:[
+      '75,000 CoWoS wafers/month capacity in 2025',
+      'Targeting 120,000 wafers/month by end of 2026',
+      'CoWoS lines ran at 95% utilization throughout 2024',
+      'T-Glass substrate shortages caused allocation issues in 2024',
+      'All NVIDIA Hopper and Blackwell GPUs use TSMC CoWoS',
+      'Silicon interposers: up to 800mm², connecting GPU + 6 HBM stacks',
+      'CoWoS-R (RDL interposer) emerging for cost-reduced applications',
+      'SoIC (System on Integrated Chips) for face-to-face stacking in development'
+    ],
+    risk:'CRITICAL. Taiwan concentration of CoWoS is a systemic risk for global AI GPU supply. Any disruption to Taiwan operations halts all NVIDIA GPU production with no alternative packaging source capable of substitution at scale.',
+    riskLevel: 85
+  },
+  amkor: {
+    flag:'🇺🇸', name:'Amkor Technology', role:'OSAT & Advanced Packaging',
+    country:'USA (HQ) / Korea, Taiwan operations',
+    about:'Amkor is one of the world\'s largest OSATs (Outsourced Semiconductor Assembly and Test). It provides flip-chip packaging, wire bonding, and increasingly advanced packaging for AI chips. Its Arizona fab (opened 2024) is the first advanced OSAT facility in the US.',
+    keyFacts:[
+      'Major OSAT for Qualcomm, Apple, AMD, and AI chip customers',
+      'Advanced packaging including FCBGA and some 2.5D',
+      'Arizona fab: first advanced semiconductor packaging in the US',
+      'Cannot yet match TSMC CoWoS for most complex AI GPU packages',
+      'Revenue ~$7B (2024)',
+      'Important for diversifying away from Taiwan packaging concentration'
+    ],
+    risk:'Low-Medium. Amkor is diversified across geographies and customers. Its US expansion is strategically important but limited in near-term AI GPU relevance.',
+    riskLevel: 20
+  },
+  ase: {
+    flag:'🇹🇼', name:'ASE Group (USI)', role:'Largest OSAT Globally',
+    country:'Taiwan',
+    about:'ASE Group (Advanced Semiconductor Engineering) is the world\'s largest OSAT by revenue. Through its Universal Scientific Industrial subsidiary, it provides a full range of assembly and test services. Headquartered in Taiwan with major operations in Malaysia, China, and the US.',
+    keyFacts:[
+      'World\'s largest OSAT — revenue ~$18B (2024)',
+      'Wire bonding, flip-chip, and FOWLP packaging',
+      'Key packaging provider for memory, networking, and AI chips',
+      'Less exposure to leading-edge CoWoS-type packaging than TSMC',
+      'Significant China operations — exposed to US export control dynamics',
+      'Malaysia facilities serve as important geographic diversification'
+    ],
+    risk:'Medium. Taiwan concentration is a risk, but ASE\'s geographic diversification (Malaysia, China, US) provides more resilience than TSMC packaging.',
+    riskLevel: 30
+  },
+  samsung_pkg: {
+    flag:'🇰🇷', name:'Samsung — I-Cube / H-Cube Packaging', role:'2.5D Packaging & Hybrid Bonding',
+    country:'South Korea',
+    about:'Samsung\'s advanced packaging platforms (I-Cube for 2.5D, H-Cube for 3D stacking) serve its own chips and some third-party customers. Samsung is developing hybrid bonding technology for HBM4 that would eliminate microbumps entirely, enabling much denser interconnects.',
+    keyFacts:[
+      'I-Cube: 2.5D interposer package for Exynos AI and HBM integration',
+      'H-Cube: 3D package combining logic and memory face-to-face',
+      'Hybrid bonding (Cu-Cu direct): targeting sub-10µm pitch for HBM4',
+      'AMD partnership for next-gen HBM4 packaging',
+      'Competes with TSMC CoWoS but with lower third-party customer adoption',
+      'Key differentiator: Samsung does wafer fab + packaging in-house'
+    ],
+    risk:'Medium. Samsung\'s integrated fab+packaging model is a strategic advantage but HBM4 hybrid bonding yield risks are real. AMD adoption is critical for commercial viability.',
+    riskLevel: 30
+  },
+  unimicron: {
+    flag:'🇹🇼', name:'Unimicron Technology', role:'IC Substrates & ABF',
+    country:'Taiwan',
+    about:'Unimicron is the world\'s largest IC substrate manufacturer, producing the organic substrates that GPUs and AI accelerators are mounted on. The IC substrate is the physical foundation of advanced packaging — without it, CoWoS cannot function.',
+    keyFacts:[
+      'World\'s largest IC substrate maker — ~$5B revenue',
+      'Supplies NVIDIA, AMD, Intel, and Apple substrate needs',
+      'ABF (flip-chip ball grid array) substrates for AI packages',
+      'Taiwan concentration: most production in Taiwan',
+      'Capacity expansion ongoing but substrate lead times are 6–12 months',
+      '93% of IC substrate market is Taiwan-based (Unimicron, Nan Ya, Kinsus)'
+    ],
+    risk:'High. Taiwan concentration of substrate production is a key risk. Substrates have long lead times and limited geographic diversification.',
+    riskLevel: 65
+  },
+  ibiden: {
+    flag:'🇯🇵', name:'Ibiden Co., Ltd.', role:'ABF Substrates',
+    country:'Japan',
+    about:'Ibiden is Japan\'s premier IC substrate manufacturer and one of only two companies (with Unimicron) that can produce the most advanced ABF substrates for leading-edge AI accelerators. The company has its roots in ceramics and evolved into a critical semiconductor materials supplier.',
+    keyFacts:[
+      'Primary ABF substrate supplier for Intel (Meteor Lake, etc.)',
+      'Produces the most complex multi-layer ABF substrates',
+      'Substrate complexity is increasing: 20+ layer counts for AI chips',
+      'ABF film from Ajinomoto (sole source) is used in all Ibiden substrates',
+      'Ibiden + Unimicron = near-duopoly in advanced ABF substrates',
+      'Japan location: subject to Japanese export controls if applied'
+    ],
+    risk:'High. Ibiden + Unimicron duopoly in advanced substrates, with Ibiden uniquely critical for Intel\'s packaging. The substrate chokepoint is less discussed than lithography but equally consequential.',
+    riskLevel: 60
+  },
+  nanya: {
+    flag:'🇹🇼', name:'Nan Ya PCB / AT&S', role:'IC Substrates',
+    country:'Taiwan / Austria',
+    about:'Nan Ya PCB (subsidiary of Formosa Plastics Group, Taiwan) and AT&S (Austria) provide additional IC substrate capacity. AT&S is the primary European IC substrate producer and a strategic asset for European semiconductor supply chain diversification.',
+    keyFacts:[
+      'Nan Ya: major Taiwan-based substrate maker for memory and networking chips',
+      'AT&S (Austria): Europe\'s only advanced IC substrate producer of note',
+      'AT&S supplies Intel, Samsung, and others in Europe',
+      'Combined market share: ~15% of advanced substrate market',
+      'AT&S is building new capacity in Malaysia and Austria',
+      'Important for geographic diversification but limited in leading-edge capability'
+    ],
+    risk:'Medium. Important capacity but not at the leading edge of the most complex AI accelerator substrates. Geographic diversification value is real.',
+    riskLevel: 25
+  },
+  ajinomoto: {
+    flag:'🇯🇵', name:'Ajinomoto Co. (ABF Film)', role:'Sole ABF Dielectric Film Producer',
+    country:'Japan',
+    about:'Ajinomoto is primarily a Japanese food company (MSG, seasonings) that developed Ajinomoto Build-up Film (ABF) as a semiconductor dielectric in the 1990s. It is now the sole producer of ABF — the critical dielectric material used in virtually all advanced IC substrates. This is arguably the most surprising single-company chokepoint in the entire semiconductor supply chain.',
+    keyFacts:[
+      'SOLE PRODUCER of ABF film globally — zero substitutes at scale',
+      'ABF is the dielectric layer in all advanced flip-chip IC substrates',
+      'Without ABF, Ibiden, Unimicron, and Nan Ya cannot make substrates',
+      'Without substrates, GPU and HBM packages cannot be assembled',
+      'Ajinomoto\'s ABF division revenue: ~¥40B/year (small for Ajinomoto, enormous for semis)',
+      'Japan-based: exposed to Japanese export controls',
+      'Alternative dielectrics exist but require complete substrate redesign — years of work'
+    ],
+    risk:'CRITICAL. Ajinomoto is the most underappreciated single-company risk in semiconductors. A food company controls the supply of a critical material for every advanced AI chip. A fire at their ABF plant, a labor dispute, or a Japanese export restriction would freeze global advanced packaging within weeks.',
+    riskLevel: 90
+  },
+  nvidia: {
+    flag:'🇺🇸', name:'NVIDIA Corporation', role:'Primary HBM Consumer — GPU Design',
+    country:'USA',
+    about:'NVIDIA is the largest single consumer of HBM globally and the company whose demand has driven the HBM market from a niche product to a $35B+ industry. Its CUDA ecosystem lock-in gives it dominant pricing power — the H100 GPU sells for $25–40K despite estimated manufacturing costs of ~$3K.',
+    keyFacts:[
+      'H100: 80GB HBM3, 3.35 TB/s — primary AI training GPU 2023–2024',
+      'H200: 141GB HBM3E, 4.8 TB/s — upgrade for larger models',
+      'B200 (Blackwell): 192GB HBM3E, 8 TB/s — 2025 flagship',
+      '2M+ Blackwell GPUs shipped in 2025 = ~384,000 TB of HBM consumed',
+      'Primary HBM supplier: SK Hynix; secondary: Micron',
+      '~80% AI accelerator market share',
+      '$3.3T market cap (2024 peak) — 110× growth from 2019',
+      'CUDA ecosystem creates switching costs that persist despite hardware competition'
+    ],
+    risk:'N/A (customer). NVIDIA\'s concentration as the primary HBM consumer creates a systemic dependency — its roadmap essentially dictates HBM development priorities for all three suppliers.',
+    riskLevel: 10
+  },
+  amd: {
+    flag:'🇺🇸', name:'AMD — Instinct Series', role:'AI GPU Design & HBM Consumer',
+    country:'USA',
+    about:'AMD is NVIDIA\'s primary competitor in AI accelerators. Its MI300X with 192GB of HBM3 in a unified memory architecture won significant inference deployments at Microsoft Azure and Meta in 2024. AMD\'s software stack (ROCm) has improved substantially but still lags CUDA ecosystem depth.',
+    keyFacts:[
+      'MI300X: 192GB HBM3, 5.3 TB/s — 2.4× more memory than H100',
+      'Unified CPU+GPU memory architecture (APU design)',
+      'Samsung partnership for next-gen HBM4',
+      'ROCm software now supports PyTorch, Flash Attention on MI300X',
+      'Winning inference deployments over H100 where memory capacity matters most',
+      'MI350 (HBM3E) in development for 2025/2026',
+      'Fabless — depends entirely on TSMC for manufacturing'
+    ],
+    risk:'Low (customer). AMD\'s HBM partnerships are diversifying the supplier base slightly but its dependence on TSMC for manufacturing remains.',
+    riskLevel: 10
+  },
+  google: {
+    flag:'🇺🇸', name:'Google / Alphabet', role:'TPU Design & Hyperscaler',
+    country:'USA',
+    about:'Google designs custom Tensor Processing Units (TPUs) for its internal AI workloads and has been doing so since 2016 — longer than any other hyperscaler. TPUv5 uses HBM2e. Google is also one of the largest buyers of NVIDIA GPUs for its cloud business.',
+    keyFacts:[
+      'TPU design: proprietary systolic array architecture for matrix multiply',
+      'TPUv4: HBM2e, 1.2 TB/s — primary Gemini training platform',
+      'TPUv5: HBM2e (performance details limited)',
+      'Also major NVIDIA H100/H200 customer for GCP',
+      'AI models: Gemini, Bard, AlphaFold trained on TPU pods',
+      'DeepMind research runs on internal TPU infrastructure',
+      'Cloud TPU available to external customers via GCP'
+    ],
+    risk:'Low (customer). Google\'s TPU diversification reduces dependence on NVIDIA but TPUs still use HBM, maintaining exposure to HBM supply constraints.',
+    riskLevel: 10
+  },
+  meta: {
+    flag:'🇺🇸', name:'Meta / Microsoft / Amazon', role:'Hyperscaler AI Infrastructure',
+    country:'USA',
+    about:'The three US hyperscalers collectively represent the largest GPU fleet owners in the world. Meta\'s 600K+ GPU cluster, Microsoft\'s Azure AI infrastructure for OpenAI, and Amazon\'s AWS Trainium/Inferentia all drive enormous HBM demand. These companies also negotiate multi-year supply commitments directly with HBM manufacturers.',
+    keyFacts:[
+      'Meta: 600K+ H100 equivalent GPUs; training Llama models',
+      'Microsoft: largest Azure AI customer (OpenAI partnership)',
+      'Amazon: custom Trainium (training) and Inferentia (inference) chips with HBM',
+      'All three negotiate direct multi-year supply agreements with SK Hynix, Micron',
+      'Hyperscalers collectively committing >$500B in AI capex for 2024–2026',
+      'Their procurement decisions essentially set HBM roadmap priorities',
+      'Microsoft: $80B AI capex planned for 2025 alone'
+    ],
+    risk:'Low (customers). Their purchasing power is so large they have negotiated supply priority. Their primary risk is supply constraints propagating from the Korean/Taiwan supply chain.',
+    riskLevel: 10
+  },
+  waymo: {
+    flag:'🇺🇸', name:'Waymo / Automotive Sector', role:'Autonomous Vehicle AI',
+    country:'USA',
+    about:'Waymo made history in 2024 as the first company to deploy HBM in an automotive application — using SK Hynix HBM2E in its Level 4 autonomous vehicle compute stack. This opened a new market segment for HBM that is projected to grow at 34% CAGR through 2031.',
+    keyFacts:[
+      'First automotive HBM deployment globally (2024)',
+      'Uses SK Hynix HBM2E in Waymo Driver compute system',
+      'Level 4 AV requires bandwidth previously only needed in data centers',
+      'Automotive HBM segment: 34% CAGR projected through 2031',
+      'ASIL D safety requirements add certification complexity vs datacenter HBM',
+      'Mobileye, Tesla FSD, and Nvidia DRIVE also exploring HBM for AV',
+      'Automotive HBM must operate at extended temperature ranges (-40°C to +105°C)'
+    ],
+    risk:'Low (customer). Automotive is a nascent but fast-growing HBM end market. Safety certification requirements create high switching costs once designs are qualified.',
+    riskLevel: 10
+  },
+  cxmt: {
+    flag:'🇨🇳', name:'CXMT (ChangXin Memory Technologies)', role:'China DRAM — HBM Development',
+    country:'China',
+    about:'CXMT is China\'s leading DRAM manufacturer and its primary attempt to develop domestic HBM capability. It stockpiled semiconductor equipment before the 2022–2024 US/Allied export controls and is now ramping HBM2 production using that equipment. Without EUV access, it cannot match HBM3/3E performance.',
+    keyFacts:[
+      'China\'s primary domestic DRAM manufacturer',
+      'HBM2 8-high entering mass production H1 2025',
+      'Stockpiled ArF immersion and other tools pre-export controls',
+      'Cannot access ASML EUV — limited to ArF + multi-patterning',
+      'TSV capacity estimated to reach Micron-equivalent by end 2025',
+      'Beneficiary of China\'s $200B semiconductor subsidy program',
+      'HBM2 targets Chinese domestic AI chip market (Huawei Ascend, Biren)',
+      '2–3 generations behind SK Hynix on performance and density'
+    ],
+    risk:'Medium systemic risk. CXMT\'s development trajectory represents China\'s most credible HBM self-sufficiency effort. HBM2 quality is uncertain; HBM3+ requires EUV they cannot access.',
+    riskLevel: 20
+  },
+  huawei_hbm: {
+    flag:'🇨🇳', name:'Huawei / XMC + SJSemi', role:'China Domestic HBM Vertical Stack',
+    country:'China',
+    about:'Huawei has built a domestic HBM supply chain using affiliated companies: XMC (Wuhan Xinxin Semiconductor Manufacturing) for wafer production and SJSemi (Shenghe Jingwei) for packaging. This allows Huawei\'s Ascend AI chips to use HBM-like memory without depending on SK Hynix, Samsung, or Micron.',
+    keyFacts:[
+      'XMC produces HBM wafers in Wuhan using domestically available tools',
+      'SJSemi handles TSV processing and die stacking',
+      'Output used in Huawei Ascend 910B and successor AI chips',
+      'Performance: estimated significantly below HBM3 on bandwidth/power',
+      'Huawei Entity Listed by BIS (2019) — cannot buy US tech',
+      'CANN (software stack) provides Ascend programming model',
+      'Entire stack is domestic but ~2 generations behind frontier',
+      'Domestic Chinese AI labs (Baidu, Alibaba) are primary customers'
+    ],
+    risk:'Low systemic risk to global supply (small scale). High strategic significance — Huawei has effectively built a parallel HBM supply chain insulated from Western export controls.',
+    riskLevel: 15
+  },
+  smic: {
+    flag:'🇨🇳', name:'SMIC (Semiconductor Manufacturing International)', role:'China Logic Foundry',
+    country:'China',
+    about:'SMIC is China\'s most advanced chip foundry, capable of ~7nm-equivalent logic using ArF immersion lithography with aggressive multiple patterning (no EUV). It manufactures Huawei\'s Kirin and Ascend chips, demonstrating that domestic Chinese AI compute is possible — albeit at lower density and yield than TSMC N7.',
+    keyFacts:[
+      'Most advanced Chinese foundry — 7nm equivalent with multi-patterning',
+      'No EUV access — uses ArF 193nm + SADP/SAQP multi-patterning',
+      'Produced Huawei Kirin 9000S (used in Mate 60 Pro) — surprised analysts',
+      'Manufactures Ascend 910B for Huawei AI infrastructure',
+      'Added to US Entity List — restricted from US equipment',
+      'Stockpiled significant equipment pre-2022 controls',
+      'TSMC N7 equivalent: ~2× better transistor density than SMIC 7nm',
+      'Key client: Huawei (all advanced chips), plus Chinese fabless companies'
+    ],
+    risk:'Strategic significance high — SMIC\'s existence proves China can manufacture advanced chips despite controls. Commercial risk to Western supply chain is low; geopolitical significance is high.',
+    riskLevel: 20
+  }
+};
+
+function showDetail(id) {
+  const d = DETAILS[id];
+  if (!d) return;
+  
+  // Remove active from all nodes
+  document.querySelectorAll('.node').forEach(n => n.classList.remove('active'));
+  document.getElementById('node-' + id)?.classList.add('active');
+  
+  const riskColor = d.riskLevel >= 80 ? 'var(--coral2)' :
+                    d.riskLevel >= 50 ? 'var(--gold2)' : 'var(--green2)';
+  const riskLabel = d.riskLevel >= 80 ? 'CRITICAL' :
+                    d.riskLevel >= 60 ? 'HIGH' :
+                    d.riskLevel >= 40 ? 'MEDIUM' : 'LOW';
+  
+  document.getElementById('detailContent').innerHTML = `
+    <div class="detail-flag">${d.flag}</div>
+    <div class="detail-name">${d.name}</div>
+    <div class="detail-role">${d.role} · ${d.country}</div>
+    
+    <div class="detail-section">
+      <div class="detail-section-label">About</div>
+      <div class="detail-text">${d.about}</div>
+    </div>
+    
+    <div class="detail-section">
+      <div class="detail-section-label">Key Facts</div>
+      <ul class="detail-bullets">
+        ${d.keyFacts.map(f => `<li>${f}</li>`).join('')}
+      </ul>
+    </div>
+    
+    <div class="detail-section">
+      <div class="detail-section-label">Supply Chain Risk</div>
+      <div class="detail-text">${d.risk}</div>
+      <div class="risk-bar">
+        <div class="risk-fill" style="width:${d.riskLevel}%;background:${riskColor}"></div>
+      </div>
+      <div style="font-family:var(--mono);font-size:0.62rem;color:${riskColor};margin-top:4px;">
+        ${riskLabel} (${d.riskLevel}/100)
+      </div>
+    </div>
+  `;
+  document.getElementById('detailPanel').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detailPanel').classList.remove('open');
+  document.querySelectorAll('.node').forEach(n => n.classList.remove('active'));
+}
+
+// Close on outside click
+document.addEventListener('click', e => {
+  const panel = document.getElementById('detailPanel');
+  if (panel.classList.contains('open') &&
+      !panel.contains(e.target) &&
+      !e.target.closest('.node')) {
+    closeDetail();
+  }
+});
+
+// Keyboard close
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeDetail();
+});
+</script>
+</body>
+</html>
