@@ -1,0 +1,19 @@
+{
+  "layout": "compare",
+  "eyebrow": "ai-education · Part 2 · RLHF & Alignment",
+  "title": "RLHF with PPO vs DPO",
+  "accent": "DPO",
+  "subtitle": "Both start from the SFT model and the same preference data: (prompt, chosen, rejected) triples ranked by humans. They differ in whether a reward model sits in the middle.",
+  "panels": [
+    {"label": "RLHF · PPO", "tone": "neutral", "key": "Train a reward model, then optimise against it",
+     "code": ["maximize E[RM(response)]", ">   - β × KL(π_θ || π_SFT)"],
+     "flow": ["**SFT model**: base model fine-tuned on instructions", "**Preference data**: sample 2+ responses, humans rank them", "**Reward model**: SFT + scalar head, trained so score(chosen) > score(rejected)", "**PPO**: the policy samples, the RM scores, the KL penalty holds it near SFT"],
+     "result": "4 stages · complex"},
+    {"label": "DPO", "tone": "good", "key": "Skip the reward model; optimise the policy directly",
+     "code": ["loss = -logσ(logit_w - logit_l)", ">  logit = β × (log π_θ - log π_ref)"],
+     "flow": ["**Same SFT model**, frozen as the reference π_ref", "**Same preference triples**: chosen y_w, rejected y_l", "**No reward model**: the optimal policy has a closed form", "**One loss**: widen the margin between chosen and rejected, relative to π_ref"],
+     "result": "similar results · simpler"}
+  ],
+  "callout": {"label": "Both keep a KL anchor.", "text": "Without it the policy **reward-hacks**: it finds responses that score high but are unlike natural language, and forgets its original language capabilities. In DPO, β sets that strength (typical 0.1–0.5)."},
+  "footer": ["curriculum/Part2_Mastering_AI_Curriculum.html", "same data, one fewer model"]
+}
