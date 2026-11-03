@@ -1,0 +1,17 @@
+{
+  "layout": "compare",
+  "eyebrow": "ai-education · ML fundamentals · Tier 1",
+  "title": "Same gradient, different target",
+  "accent": "different target",
+  "subtitle": "Backpropagation trains essentially every neural network. Point the same math at the input instead of the weights and you have an adversarial example.",
+  "panels": [
+    {"label": "Training", "tone": "neutral", "key": "Gradient with respect to the weights",
+     "flow": ["**Forward pass**: input → output, compared to the correct answer to get the **loss**", "**Backward pass**: chain rule gives each weight's share of the error, its **gradient**", "**Gradient descent** nudges every weight a small step to reduce error", "Step size is the **learning rate**. Repeat millions of times"],
+     "result": "changes the weights"},
+    {"label": "Evasion attack", "tone": "bad", "key": "Gradient with respect to the input",
+     "flow": ["**Same forward pass** and loss on the target model", "**Backward pass** carried through to the input, not the weights", "**Change the input** in the direction that helps the attacker: what FGSM does", "No gradient access (black-box)? Estimate gradients, or use **transfer attacks**"],
+     "result": "changes the input"}
+  ],
+  "callout": {"label": "White-box vs black-box is about gradients.", "text": "White-box means the attacker can compute gradients; black-box means query access only. Shared gradients leak too: in federated learning they can reconstruct training data."},
+  "footer": ["ml-fundamentals/ML_Fundamentals_for_AI_Security.md", "§1 backprop and gradient descent"]
+}

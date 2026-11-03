@@ -79,6 +79,8 @@ The step size is the **learning rate** — the single most consequential knob in
 - **White-box vs. black-box is a statement about gradient access.** White-box = attacker can compute gradients. Black-box = query access only, so the attacker must estimate gradients or use transfer attacks. You have always known the *consequence* of this distinction; now you know the mechanism generating it.
 - **Gradient leakage is an attack surface** in federated learning — shared gradients can reconstruct training data.
 
+![Training versus an evasion attack: the same backpropagation, with the gradient taken with respect to the weights or to the input](../docs/img/03-backprop-vs-evasion.png)
+
 ### 2. Loss curves and training diagnostics
 
 **What it is:** a plot of loss (y-axis) against training steps (x-axis). Healthy curves descend then flatten.
@@ -111,6 +113,8 @@ Read the shapes:
 - **Membership inference exists because of the train/test gap.** Models behave measurably differently on data they trained on. That gap *is* the attack.
 - **Data leakage is a claim-verification tool.** When a vendor claims 99% detection accuracy, "how was your test set constructed, and was it ever used for tuning?" is the question that collapses most inflated benchmarks. This is an *evaluation* skill, which is exactly the OpenAI NS Cyber Eval Lead role shape.
 - **Poisoning the validation set** is an under-discussed attack: corrupt the data used to select models and you influence which model ships.
+
+![Training, validation and test splits compared by whether they update weights, inform your choices, and when they are touched; tuning on the test set is data leakage](../docs/img/04-data-splits.png)
 
 ### 4. Numerical stability and log space
 
@@ -147,6 +151,8 @@ One concept, three attacks you already talk about.
 **Vocabulary in this neighborhood:** *transfer learning* is the umbrella idea (reuse what a model learned on one task for another); *fine-tuning* is the usual method; *retraining* means running training again, often from scratch, on updated data.
 
 **Why a red teamer cares:** this table *is* a threat model. It's also the frame that makes your GTG-1002 argument legible to an ML audience — and note that the entire right-hand column maps to ATLAS except the parts ATLAS says it doesn't cover yet.
+
+![The five LLM pipeline stages from pretraining to post-hoc editing, with the attacks that land at each](../docs/img/05-pipeline-attacks.png)
 
 ### 7. Three ways to change a model — don't conflate them
 
