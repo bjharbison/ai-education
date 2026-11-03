@@ -483,6 +483,7 @@ At $1 per A100-hour (cloud spot), 1 A100 does ~312 TFLOPS FP16:
 <div class="box-label">ZeRO / FSDP</div>
 <p>DeepSpeed ZeRO and PyTorch FSDP shard optimizer states (ZeRO-1), gradients (ZeRO-2), or parameters themselves (ZeRO-3 / FSDP) across data-parallel ranks. ZeRO-3 reduces per-GPU memory by DP-degree, enabling models too large for a single GPU to train with data parallelism. Cost: all-gather communication before each layer (reconstructing the full parameter shard on-the-fly).</p>
 </div>
+<p><img src="../docs/img/01-parallelism.png" alt="Data, tensor, pipeline and ZeRO/FSDP parallelism compared by what each GPU holds, what data it sees, and how it syncs" style="max-width:100%;height:auto;display:block;margin:1em auto;border-radius:8px"></p>
 <h3>Mixed Precision Training</h3>
 <p>Training in full FP32 (4 bytes per parameter) has been largely abandoned for large models. The standard approach is mixed precision training: keep a FP32 master copy of weights for numerical stability; perform forward pass and gradient computation in BF16 (2 bytes per parameter); update the FP32 master weights. This halves the activation memory, enables tensor core utilisation, and reduces communication bandwidth without sacrificing training stability.</p>
 <div class="formula">Why BF16, not FP16?
