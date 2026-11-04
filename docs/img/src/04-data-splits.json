@@ -1,0 +1,81 @@
+{
+  "layout": "matrix",
+  "eyebrow": "ai-education · ML fundamentals · Tier 1",
+  "title": "Three splits, three jobs",
+  "accent": "three jobs",
+  "subtitle": "Three disjoint slices of data. The model learns from one, you decide with another, and the third stays sealed until the end.",
+  "columns": [
+    "Updates weights",
+    "Informs choices",
+    "When touched"
+  ],
+  "label_width": "250px",
+  "rows": [
+    {
+      "key": "Training",
+      "desc": "what it learns from",
+      "cells": [
+        {
+          "text": "yes",
+          "tone": "yes"
+        },
+        {
+          "text": "no"
+        },
+        {
+          "text": "during training"
+        }
+      ]
+    },
+    {
+      "key": "Validation",
+      "desc": "held out in training",
+      "cells": [
+        {
+          "text": "no"
+        },
+        {
+          "text": "yes",
+          "sub": "stop · tune · pick arch",
+          "tone": "yes"
+        },
+        {
+          "text": "during development"
+        }
+      ]
+    },
+    {
+      "key": "Test",
+      "desc": "one honest number",
+      "tag": "sealed",
+      "cells": [
+        {
+          "text": "no"
+        },
+        {
+          "text": "never",
+          "sub": "or it's contaminated",
+          "tone": "never"
+        },
+        {
+          "text": "once",
+          "sub": "at the very end",
+          "tone": "once"
+        }
+      ]
+    }
+  ],
+  "tones": {
+    "yes": "#7ED957",
+    "never": "#FF5C8A",
+    "once": "#F5C542"
+  },
+  "callout": {
+    "label": "Data leakage:",
+    "text": "tune against the test set and your number is a lie. It's the most common way ML results are quietly wrong, and \"how was your test set built, and was it ever used for tuning?\" collapses most inflated vendor benchmarks."
+  },
+  "footer": [
+    "ml-fundamentals/ML_Fundamentals_for_AI_Security.md",
+    "§3 train / validation / test"
+  ]
+}

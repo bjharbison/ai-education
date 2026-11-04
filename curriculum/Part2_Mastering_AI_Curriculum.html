@@ -2788,6 +2788,7 @@ Step 4: PPO Fine-Tuning
     reward_acc = (logit_w &gt; logit_l).float().mean()  <span class="cm"># fraction chosen preferred</span>
     <span class="kw">return</span> loss, reward_acc</pre>
 </div>
+<p><img src="../docs/img/02-rlhf-vs-dpo.png" alt="RLHF with PPO compared with DPO: both use the SFT model and the same preference triples, but DPO drops the reward model; both keep a KL anchor against reward hacking" style="max-width:100%;height:auto;display:block;margin:1em auto;border-radius:8px"></p>
 <div class="quiz-box">
 <div class="quiz-header"><span>Knowledge Check</span></div>
 <div class="quiz-body">

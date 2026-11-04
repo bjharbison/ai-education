@@ -1,0 +1,37 @@
+{
+  "layout": "steps",
+  "eyebrow": "ai-education · ML fundamentals · Tier 1",
+  "title": "Where attacks land",
+  "accent": "attacks land",
+  "subtitle": "Modern LLMs are built in stages. Knowing the stage tells you which attacks apply, and which defenses never see them.",
+  "steps": [
+    {
+      "key": "PRETRAINING",
+      "desc": "Predict the next token over a huge corpus. **Lands here:** data poisoning at scale, backdoor implantation."
+    },
+    {
+      "key": "FINE-TUNING (SFT)",
+      "desc": "Further training on task-specific examples. **Lands here:** targeted poisoning, safety removal via fine-tuning."
+    },
+    {
+      "key": "RLHF / ALIGNMENT",
+      "desc": "Humans rank outputs; the model optimizes for preference. **Lands here:** preference-data poisoning, reward hacking."
+    },
+    {
+      "key": "DEPLOYMENT",
+      "desc": "The model serves requests. **Lands here:** prompt injection, jailbreaks, evasion, extraction."
+    },
+    {
+      "key": "POST-HOC EDITING",
+      "desc": "Direct weight modification (ROME), no training at all. **Lands here:** model tampering, supply chain."
+    }
+  ],
+  "callout": {
+    "label": "Not everything is \"poisoning\".",
+    "text": "Data poisoning corrupts what goes in; fine-tuning and RLHF shape behavior through training; model editing is weight surgery on the finished model. PoisonGPT used editing, so data-provenance defenses never saw it: the shipped weights were the problem."
+  },
+  "footer": [
+    "ml-fundamentals/ML_Fundamentals_for_AI_Security.md",
+    "§6–7 stages and attacks"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "layout": "matrix",
+  "eyebrow": "ai-education · Part 1 · Training at scale",
+  "title": "Four ways to split a training run",
+  "accent": "split",
+  "subtitle": "A 70B-parameter model in BF16 occupies 140 GB. An H100 has 80 GB of HBM. Each strategy answers a different question: what does one GPU have to hold?",
+  "columns": ["Each GPU holds", "Each GPU sees", "Syncs by"],
+  "label_width": "250px",
+  "rows": [
+    {"key": "Data (DP)", "desc": "fits on one GPU", "cells": [{"text": "full model", "sub": "+ grads + optimizer", "tone": "full"}, {"text": "own mini-batch", "tone": "part"}, {"text": "all-reduce", "sub": "gradients each step"}]},
+    {"key": "Tensor (TP)", "desc": "needs NVLink", "cells": [{"text": "a shard of", "sub": "each weight matrix", "tone": "part"}, {"text": "full batch", "tone": "full"}, {"text": "all-gather", "sub": "after each layer"}]},
+    {"key": "Pipeline (PP)", "desc": "cost: bubbles", "cells": [{"text": "a run of layers", "sub": "e.g. layers 1–8", "tone": "part"}, {"text": "micro-batches", "sub": "flowing through", "tone": "part"}, {"text": "activations", "sub": "between stages"}]},
+    {"key": "ZeRO / FSDP", "desc": "sharded DP", "cells": [{"text": "a shard of", "sub": "opt states → grads → params", "tone": "part"}, {"text": "own mini-batch", "tone": "part"}, {"text": "all-gather", "sub": "before each layer"}]}
+  ],
+  "tones": {"full": "#FF8A3D", "part": "#3DA9FC"},
+  "callout": {"label": "Data parallelism alone won't fit it.", "text": "DP puts the full model, gradients **and** optimizer states on every GPU, so it only works for models that fit on one. The other three exist to shard what DP copies."},
+  "footer": ["curriculum/Part1_Understanding_AI.html", "orange = whole thing · blue = a slice"]
+}
